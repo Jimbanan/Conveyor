@@ -8,22 +8,31 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class ConveyorServiceImpl implements ConveyorService{
+public class ConveyorServiceImpl implements ConveyorService {
 
 
     @Override
     public List<LoanOfferDTO> getOffers(LoanApplicationRequestDTO loanApplicationRequestDTO) {
 
-        System.out.println("getOffers");
-//        if(prescoring(loanApplicationRequestDTO)){
-//            List<LoanOfferDTO> loanOfferList = new ArrayList<>();
-//
-//
-//
-//            return null;
-//        }
+        List<LoanOfferDTO> loanOfferList = new ArrayList<>();
 
+        loanOfferList.add(formationOfOffers(loanApplicationRequestDTO, true, true));
+        loanOfferList.add(formationOfOffers(loanApplicationRequestDTO, true, false));
+        loanOfferList.add(formationOfOffers(loanApplicationRequestDTO, false, false));
+        loanOfferList.add(formationOfOffers(loanApplicationRequestDTO, false, true));
 
-        return null;
+        return loanOfferList;
     }
+
+    @Override
+    public LoanOfferDTO formationOfOffers(LoanApplicationRequestDTO loanApplicationRequestDTO, Boolean isInsuranceEnabled, Boolean isSalaryClient) {
+
+        LoanOfferDTO loanOfferDTO = new LoanOfferDTO();
+        loanOfferDTO.setIsInsuranceEnabled(isInsuranceEnabled);
+        loanOfferDTO.setIsSalaryClient(isSalaryClient);
+
+        return loanOfferDTO;
+    }
+
+
 }

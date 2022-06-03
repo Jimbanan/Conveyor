@@ -1,5 +1,6 @@
 package com.neoflex.conveyor.DTO;
 
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

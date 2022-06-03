@@ -19,10 +19,10 @@ public class ConveyorController {
     ConveyorServiceImpl conveyorService;
 
     @PostMapping("/offers")
-    public LoanApplicationRequestDTO offers(@Valid @RequestBody LoanApplicationRequestDTO loanApplicationRequestDTO) {
+    public List<LoanOfferDTO> offers(@Valid @RequestBody LoanApplicationRequestDTO loanApplicationRequestDTO) {
         //расчёт возможных условий кредита
-        conveyorService.getOffers(loanApplicationRequestDTO);
-        return loanApplicationRequestDTO;
+        List<LoanOfferDTO> loanOfferList = conveyorService.getOffers(loanApplicationRequestDTO);
+        return loanOfferList;
     }
 
     @PostMapping("/calculation")
