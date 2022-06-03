@@ -22,6 +22,9 @@ public class ConveyorController {
     public List<LoanOfferDTO> offers(@Valid @RequestBody LoanApplicationRequestDTO loanApplicationRequestDTO) {
         //расчёт возможных условий кредита
         List<LoanOfferDTO> loanOfferList = conveyorService.getOffers(loanApplicationRequestDTO);
+
+//        loanOfferList
+
         return loanOfferList;
     }
 

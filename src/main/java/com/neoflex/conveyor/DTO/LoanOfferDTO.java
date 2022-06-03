@@ -1,5 +1,6 @@
 package com.neoflex.conveyor.DTO;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -7,17 +8,19 @@ import lombok.NoArgsConstructor;
 import java.math.BigDecimal;
 
 @Data
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 public class LoanOfferDTO {
 
-    private Long applicationId;
-    private BigDecimal requestedAmount;
-    private BigDecimal totalAmount;
-    private Integer term;
-    private BigDecimal monthlyPayment;
-    private BigDecimal rate;
-    private Boolean isInsuranceEnabled;
-    private Boolean isSalaryClient;
+    private Long applicationId; //Идентификатор
+    private BigDecimal requestedAmount;//Запрошенная сумма
+    private BigDecimal totalAmount;//Итого
+    private Integer term; //Срок кредита
+    private BigDecimal monthlyPayment; //Ежемесячная оплата
+    private BigDecimal rate; //Ставка
+    private Boolean isInsuranceEnabled; //Включено ли страхование
+    private Boolean isSalaryClient; //Зарплатный ли клиент
 }
 
 
