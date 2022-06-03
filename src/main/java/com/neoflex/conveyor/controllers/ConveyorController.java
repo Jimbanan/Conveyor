@@ -4,21 +4,25 @@ import com.neoflex.conveyor.DTO.CreditDTO;
 import com.neoflex.conveyor.DTO.LoanApplicationRequestDTO;
 import com.neoflex.conveyor.DTO.LoanOfferDTO;
 import com.neoflex.conveyor.DTO.ScoringDataDTO;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.neoflex.conveyor.services.ConveyorServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RequestMapping(("/conveyor"))
 @RestController
 public class ConveyorController {
 
-    @PostMapping("/offers")
-    public List<LoanOfferDTO> offers(LoanApplicationRequestDTO loanApplicationRequestDTO) {
-        //расчёт возможных условий кредита
+    @Autowired
+    ConveyorServiceImpl conveyorService;
 
-        return null;
+    @PostMapping("/offers")
+    public LoanApplicationRequestDTO offers(@Valid @RequestBody LoanApplicationRequestDTO loanApplicationRequestDTO) {
+        //расчёт возможных условий кредита
+        conveyorService.getOffers(loanApplicationRequestDTO);
+        return loanApplicationRequestDTO;
     }
 
     @PostMapping("/calculation")
