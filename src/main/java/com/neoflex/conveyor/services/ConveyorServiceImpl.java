@@ -1,5 +1,6 @@
 package com.neoflex.conveyor.services;
 
+import com.neoflex.conveyor.Calculations;
 import com.neoflex.conveyor.DTO.*;
 import com.neoflex.conveyor.enums.Gender;
 import org.springframework.beans.factory.annotation.Value;
@@ -48,22 +49,24 @@ public class ConveyorServiceImpl implements ConveyorService {
         }
 
         //TODO УДАЛИТЬ
-        ScoringDataDTO scoringDataDTO = new ScoringDataDTO();
-        scoringDataDTO.setBirthdate(loanApplicationRequestDTO.getBirthdate());
-        scoringDataDTO.setGender(Gender.MALE);
-        ageAndGenderVerification(scoringDataDTO);
+//        ScoringDataDTO scoringDataDTO = new ScoringDataDTO();
+//        scoringDataDTO.setBirthdate(loanApplicationRequestDTO.getBirthdate());
+//        scoringDataDTO.setGender(Gender.MALE);
+//        ageAndGenderVerification(scoringDataDTO);
         //TODO УДАЛИТЬ
+
+        BigDecimal monthlyPayment = Calculations.getMonthlyPayment(rate, totalAmount);
 
         //TODO Наполнить класс Calculations методами и расчетами для корректного создания объектов
         return LoanOfferDTO.builder()
-                .applicationId(new Long((long) (Math.random() * 10)))
+                .applicationId(Long.valueOf(1))
                 .requestedAmount(loanApplicationRequestDTO.getAmount()) //Готово
-                .totalAmount(totalAmount)//Готово
+                .totalAmount(Calculations.getTotalAmount(monthlyPayment,loanApplicationRequestDTO.getTerm()))//Готово
                 .term(loanApplicationRequestDTO.getTerm()) //Готово
-                .monthlyPayment(new BigDecimal(Math.random() * 3000))
+                .monthlyPayment(monthlyPayment)//Готово
                 .rate(rate) //Готово
-                .isInsuranceEnabled(isInsuranceEnabled)
-                .isSalaryClient(isSalaryClient)
+                .isInsuranceEnabled(isInsuranceEnabled)//Готово
+                .isSalaryClient(isSalaryClient)//Готово
                 .build();
     }
 
@@ -91,31 +94,31 @@ public class ConveyorServiceImpl implements ConveyorService {
 
         LocalDate now = LocalDate.now();
 
-        if(scoringDataDTO.getGender() == Gender.MALE
+        if (scoringDataDTO.getGender() == Gender.MALE
                 && (ChronoUnit.YEARS.between(scoringDataDTO.getBirthdate(), now) >= 30)
-                && (ChronoUnit.YEARS.between(scoringDataDTO.getBirthdate(), now) <=55)){
+                && (ChronoUnit.YEARS.between(scoringDataDTO.getBirthdate(), now) <= 55)) {
             rateUpdate = -3;
 //            rateUpdate = rateUpdate.subtract(BigDecimal.valueOf(-3));
         }
 
-        if(scoringDataDTO.getGender() == Gender.WOMAN
+        if (scoringDataDTO.getGender() == Gender.WOMAN
                 && (ChronoUnit.YEARS.between(scoringDataDTO.getBirthdate(), now) >= 35)
-                && (ChronoUnit.YEARS.between(scoringDataDTO.getBirthdate(), now) <=60)){
+                && (ChronoUnit.YEARS.between(scoringDataDTO.getBirthdate(), now) <= 60)) {
             rateUpdate = -3;
 //            rateUpdate = rateUpdate.subtract(BigDecimal.valueOf(-3));
         }
 
-        if(scoringDataDTO.getGender() == Gender.NOT_BINARY){
+        if (scoringDataDTO.getGender() == Gender.NOT_BINARY) {
             rateUpdate = 3;
 //            rateUpdate = rateUpdate.subtract(BigDecimal.valueOf(3));
         }
 
-        System.out.println(rateUpdate);
+//        System.out.println(rateUpdate);
         return rateUpdate;
 
     }
 
-    private List<PaymentScheduleElement> getPaymentScheduleElement(BigDecimal rate, Integer term, BigDecimal monthlyPayment, BigDecimal amount){
+    private List<PaymentScheduleElement> getPaymentScheduleElement(BigDecimal rate, Integer term, BigDecimal monthlyPayment, BigDecimal amount) {
 
         //18.29
 

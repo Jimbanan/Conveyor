@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Comparator;
 import java.util.List;
 
 @RequestMapping(("/conveyor"))
@@ -22,6 +23,10 @@ public class ConveyorController {
     public List<LoanOfferDTO> offers(@Valid @RequestBody LoanApplicationRequestDTO loanApplicationRequestDTO) {
         //расчёт возможных условий кредита
         List<LoanOfferDTO> loanOfferList = conveyorService.getOffers(loanApplicationRequestDTO);
+
+
+        loanOfferList.sort(Comparator.comparing(LoanOfferDTO::getRate).reversed());
+
 
 //        loanOfferList
 
