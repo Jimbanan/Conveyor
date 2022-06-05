@@ -59,7 +59,7 @@ public class ConveyorServiceImpl implements ConveyorService {
         BigDecimal monthlyPayment = calculations.getMonthlyPayment(rate, totalAmount);
 
         return LoanOfferDTO.builder()
-                .applicationId(Long.valueOf(1))
+                .applicationId(1L)
                 .requestedAmount(loanApplicationRequestDTO.getAmount())
                 .totalAmount(calculations.getTotalAmount(monthlyPayment, loanApplicationRequestDTO.getTerm()))
                 .term(loanApplicationRequestDTO.getTerm())
@@ -100,7 +100,7 @@ public class ConveyorServiceImpl implements ConveyorService {
             rate = rate.add(BigDecimal.valueOf(4));
         }
 
-        if (scoringDataDTO.getEmployment().getSalary().multiply(BigDecimal.valueOf(20)).compareTo(scoringDataDTO.getAmount()) == -1) {
+        if (scoringDataDTO.getEmployment().getSalary().multiply(BigDecimal.valueOf(20)).compareTo(scoringDataDTO.getAmount()) < 0) {
             throw new ScoringException("Requested amount more than 20 salaries - Denied");
         }
 

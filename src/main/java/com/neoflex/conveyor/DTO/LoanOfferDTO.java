@@ -14,8 +14,8 @@ import java.math.BigDecimal;
 public class LoanOfferDTO {
 
     private Long applicationId; //Идентификатор
-    private BigDecimal requestedAmount;//Запрошенная сумма
-    private BigDecimal totalAmount;//Итого
+    private BigDecimal requestedAmount; //Запрошенная сумма
+    private BigDecimal totalAmount; //Итого
     private Integer term; //Срок кредита
     private BigDecimal monthlyPayment; //Ежемесячная оплата
     private BigDecimal rate; //Ставка

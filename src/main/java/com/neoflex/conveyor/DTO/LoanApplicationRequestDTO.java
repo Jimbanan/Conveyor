@@ -27,7 +27,7 @@ public class LoanApplicationRequestDTO {
     @Size(min = 2, max = 30, message = "Длина отчества: 2-30 символов")
     private String middleName;
 
-    @Pattern(regexp = "[\\w\\.]{2,50}@[\\w\\.]{2,20}")
+    @Pattern(regexp = "[\\w.]{2,50}@[\\w.]{2,20}")
     private String email;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")

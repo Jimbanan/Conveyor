@@ -12,10 +12,10 @@ import java.math.BigDecimal;
 public class EmploymentDTO {
 
     private EmploymentStatus employmentStatus; //Рабочий статус
-    private String employerINN;//ИНН работника
-    private BigDecimal salary;//Зарплата
-    private Position position;//Должность
-    private Integer workExperienceTotal;//Общий стаж работы
-    private Integer workExperienceCurrent;//Текущий стаж работы
+    private String employerINN; //ИНН работника
+    private BigDecimal salary; //Зарплата
+    private Position position; //Должность
+    private Integer workExperienceTotal; //Общий стаж работы
+    private Integer workExperienceCurrent; //Текущий стаж работы
 
 }
