@@ -13,6 +13,7 @@ import java.math.RoundingMode;
 public class Calculations {
 
     public BigDecimal getMonthlyInterest(BigDecimal rate) {
+        log.info("getMonthlyInterest() - rate: {}", rate);
 
         BigDecimal monthlyInterest = rate.divide(BigDecimal.valueOf(100)).divide(BigDecimal.valueOf(12), 5, RoundingMode.HALF_UP);
 
@@ -22,6 +23,7 @@ public class Calculations {
     }
 
     public BigDecimal getMonthlyPayment(BigDecimal rate, BigDecimal totalAmount) {
+        log.info("getMonthlyPayment() - rate: {}, totalAmount: {}", rate, totalAmount);
 
         BigDecimal i = getMonthlyInterest(rate);
 
@@ -33,6 +35,7 @@ public class Calculations {
     }
 
     public BigDecimal getTotalAmount(BigDecimal monthlyPayment, Integer term) {
+        log.info("getTotalAmount() - monthlyPayment: {}, term: {}", monthlyPayment, term);
 
         BigDecimal totalAmount = monthlyPayment.multiply(BigDecimal.valueOf(term));
 
@@ -42,6 +45,7 @@ public class Calculations {
     }
 
     public BigDecimal getInterestPayment(BigDecimal monthlyPayment, BigDecimal totalAmount, Integer term) {
+        log.info("getTotalAmount() - monthlyPayment: {}, totalAmount: {}, term: {}", monthlyPayment, totalAmount, term);
 
         BigDecimal interestPayment = monthlyPayment.subtract(totalAmount.divide(BigDecimal.valueOf(term), 5, RoundingMode.HALF_UP));
 

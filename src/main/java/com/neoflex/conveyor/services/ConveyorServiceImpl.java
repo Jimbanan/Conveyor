@@ -31,6 +31,7 @@ public class ConveyorServiceImpl implements ConveyorService {
 
     @Override
     public List<LoanOfferDTO> getOffers(LoanApplicationRequestDTO loanApplicationRequestDTO) {
+        log.info("getOffers() - loanApplicationRequestDTO: {}", loanApplicationRequestDTO);
 
         List<LoanOfferDTO> loanOfferList = new ArrayList<>();
 
@@ -46,6 +47,7 @@ public class ConveyorServiceImpl implements ConveyorService {
 
     @Override
     public LoanOfferDTO formationOfOffers(LoanApplicationRequestDTO loanApplicationRequestDTO, Boolean isInsuranceEnabled, Boolean isSalaryClient) {
+        log.info("formationOfOffers() - loanApplicationRequestDTO: {}, isInsuranceEnabled: {}, isSalaryClient: {}", loanApplicationRequestDTO, isInsuranceEnabled, isSalaryClient);
 
         BigDecimal rate = BaseRate;
         BigDecimal totalAmount = loanApplicationRequestDTO.getAmount();
@@ -85,6 +87,7 @@ public class ConveyorServiceImpl implements ConveyorService {
 
     @Override
     public CreditDTO loanCalculation(ScoringDataDTO scoringDataDTO) {
+        log.info("loanCalculation() - scoringDataDTO: {}", scoringDataDTO);
 
         BigDecimal rate = BaseRate;
         BigDecimal amount = scoringDataDTO.getAmount();
@@ -184,6 +187,7 @@ public class ConveyorServiceImpl implements ConveyorService {
     }
 
     private List<PaymentScheduleElement> getPaymentScheduleElement(Integer term, BigDecimal monthlyPayment, BigDecimal amount, BigDecimal totalAmount) {
+        log.info("getPaymentScheduleElement() - term: {}, monthlyPayment: {}, amount: {}, totalAmount: {}", term, monthlyPayment, amount, totalAmount);
 
         List<PaymentScheduleElement> paymentScheduleElementList = new ArrayList<>();
         LocalDate now = LocalDate.now();
