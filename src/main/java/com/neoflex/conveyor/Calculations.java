@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 public class Calculations {
 
     public BigDecimal getMonthlyInterest(BigDecimal rate, BigDecimal totalAmount) {
+
         return rate.divide(BigDecimal.valueOf(100)).divide(BigDecimal.valueOf(12), 5, 4);
     }
 
@@ -25,6 +26,11 @@ public class Calculations {
         BigDecimal totalAmount = monthlyPayment.multiply(BigDecimal.valueOf(term));
 
         return totalAmount;
+    }
+
+    public BigDecimal getInterestPayment(BigDecimal monthlyPayment, BigDecimal totalAmount, Integer term) {
+
+        return monthlyPayment.subtract(totalAmount.divide(BigDecimal.valueOf(term), 5, 4));
     }
 
 }

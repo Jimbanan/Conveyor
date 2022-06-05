@@ -71,7 +71,7 @@ public class ConveyorServiceImpl implements ConveyorService {
     }
 
     @Override
-    public CreditDTO loanCalculation(ScoringDataDTO scoringDataDTO) { //TODO Доделать!
+    public CreditDTO loanCalculation(ScoringDataDTO scoringDataDTO) {
 
         BigDecimal rate = BaseRate;
         BigDecimal amount = scoringDataDTO.getAmount();
@@ -147,15 +147,16 @@ public class ConveyorServiceImpl implements ConveyorService {
                 .psk(calculations.getTotalAmount(monthlyPayment, scoringDataDTO.getTerm()))
                 .isInsuranceEnabled(scoringDataDTO.getIsInsuranceEnabled())
                 .isSalaryClient(scoringDataDTO.getIsSalaryClient())
-                .paymentSchedule(getPaymentScheduleElement(rate, scoringDataDTO.getTerm(), monthlyPayment, amount))
+                .paymentSchedule(getPaymentScheduleElement(scoringDataDTO.getTerm(), monthlyPayment, amount, calculations.getTotalAmount(monthlyPayment, scoringDataDTO.getTerm())))
                 .build();
     }
 
-    private List<PaymentScheduleElement> getPaymentScheduleElement(BigDecimal rate, Integer term, BigDecimal monthlyPayment, BigDecimal amount) {
+    private List<PaymentScheduleElement> getPaymentScheduleElement(Integer term, BigDecimal monthlyPayment, BigDecimal amount, BigDecimal totalAmount) {
 
         List<PaymentScheduleElement> paymentScheduleElementList = new ArrayList<>();
         LocalDate now = LocalDate.now();
-        BigDecimal remainingDebt = amount;
+        BigDecimal remainingDebt = totalAmount;
+        BigDecimal totalPayment = BigDecimal.valueOf(0);
 
         for (int i = 1; i <= term; i++) {
             PaymentScheduleElement paymentScheduleElement = new PaymentScheduleElement();
@@ -164,7 +165,10 @@ public class ConveyorServiceImpl implements ConveyorService {
             now = now.plusMonths(1);
             paymentScheduleElement.setDate(now);
 
-//            paymentScheduleElement.getTotalPayment(); TODO Я ХЗ ЧТО ЭТО
+            totalPayment = totalPayment.add(monthlyPayment);
+            paymentScheduleElement.setTotalPayment(totalPayment);
+
+            paymentScheduleElement.setInterestPayment(calculations.getInterestPayment(monthlyPayment, amount, term));
 
             paymentScheduleElement.setDebtPayment(monthlyPayment);
 
