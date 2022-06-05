@@ -2,6 +2,7 @@ package com.neoflex.conveyor.DTO;
 
 import com.neoflex.conveyor.enums.Genders;
 import com.neoflex.conveyor.enums.MaritalStatus;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,6 +15,7 @@ import java.time.LocalDate;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Schema(description = "Сущность скоринга данных")
 public class ScoringDataDTO {
 
     private BigDecimal amount;

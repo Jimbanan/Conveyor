@@ -1,5 +1,6 @@
 package com.neoflex.conveyor.DTO;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -10,6 +11,7 @@ import java.time.LocalDate;
 
 @Data
 @NoArgsConstructor
+@Schema(description = "Сущность первоначальных данных пользователя")
 public class LoanApplicationRequestDTO {
 
     @DecimalMin(value = "10000", message = "Минимальная сумма кредита: 10000")
