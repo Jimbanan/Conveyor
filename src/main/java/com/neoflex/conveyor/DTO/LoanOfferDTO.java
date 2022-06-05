@@ -21,6 +21,7 @@ public class LoanOfferDTO {
     private BigDecimal rate; //Ставка
     private Boolean isInsuranceEnabled; //Включено ли страхование
     private Boolean isSalaryClient; //Зарплатный ли клиент
+
 }
 
 

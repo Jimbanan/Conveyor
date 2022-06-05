@@ -2,7 +2,12 @@ package com.neoflex.conveyor.services;
 
 import com.neoflex.conveyor.Calculations;
 import com.neoflex.conveyor.DTO.*;
-import com.neoflex.conveyor.enums.Gender;
+import com.neoflex.conveyor.Exceptions.ScoringException;
+import com.neoflex.conveyor.enums.EmploymentStatus;
+import com.neoflex.conveyor.enums.Genders;
+import com.neoflex.conveyor.enums.MaritalStatus;
+import com.neoflex.conveyor.enums.Position;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +22,9 @@ public class ConveyorServiceImpl implements ConveyorService {
 
     @Value("${credit.baseRate}")
     BigDecimal BaseRate;
+
+    @Autowired
+    Calculations calculations;
 
     @Override
     public List<LoanOfferDTO> getOffers(LoanApplicationRequestDTO loanApplicationRequestDTO) {
@@ -48,25 +56,17 @@ public class ConveyorServiceImpl implements ConveyorService {
             rate = rate.subtract(BigDecimal.valueOf(3));
         }
 
-        //TODO УДАЛИТЬ
-//        ScoringDataDTO scoringDataDTO = new ScoringDataDTO();
-//        scoringDataDTO.setBirthdate(loanApplicationRequestDTO.getBirthdate());
-//        scoringDataDTO.setGender(Gender.MALE);
-//        ageAndGenderVerification(scoringDataDTO);
-        //TODO УДАЛИТЬ
+        BigDecimal monthlyPayment = calculations.getMonthlyPayment(rate, totalAmount);
 
-        BigDecimal monthlyPayment = Calculations.getMonthlyPayment(rate, totalAmount);
-
-        //TODO Наполнить класс Calculations методами и расчетами для корректного создания объектов
         return LoanOfferDTO.builder()
                 .applicationId(Long.valueOf(1))
-                .requestedAmount(loanApplicationRequestDTO.getAmount()) //Готово
-                .totalAmount(Calculations.getTotalAmount(monthlyPayment,loanApplicationRequestDTO.getTerm()))//Готово
-                .term(loanApplicationRequestDTO.getTerm()) //Готово
-                .monthlyPayment(monthlyPayment)//Готово
-                .rate(rate) //Готово
-                .isInsuranceEnabled(isInsuranceEnabled)//Готово
-                .isSalaryClient(isSalaryClient)//Готово
+                .requestedAmount(loanApplicationRequestDTO.getAmount())
+                .totalAmount(calculations.getTotalAmount(monthlyPayment, loanApplicationRequestDTO.getTerm()))
+                .term(loanApplicationRequestDTO.getTerm())
+                .monthlyPayment(monthlyPayment)
+                .rate(rate)
+                .isInsuranceEnabled(isInsuranceEnabled)
+                .isSalaryClient(isSalaryClient)
                 .build();
     }
 
@@ -75,6 +75,7 @@ public class ConveyorServiceImpl implements ConveyorService {
 
         BigDecimal rate = BaseRate;
         BigDecimal amount = scoringDataDTO.getAmount();
+        LocalDate now = LocalDate.now();
 
         if (scoringDataDTO.getIsSalaryClient()) {
             rate = rate.subtract(BigDecimal.valueOf(1));
@@ -85,44 +86,95 @@ public class ConveyorServiceImpl implements ConveyorService {
             rate = rate.subtract(BigDecimal.valueOf(3));
         }
 
-        return null;
-    }
+        if (scoringDataDTO.getEmployment().getEmploymentStatus() == EmploymentStatus.UNEMPLOYED) {
+            throw new ScoringException("Work Status: Unemployed - Denied");
+        } else if (scoringDataDTO.getEmployment().getEmploymentStatus() == EmploymentStatus.SELF_EMPLOYED) {
+            rate = rate.add(BigDecimal.valueOf(1));
+        } else if (scoringDataDTO.getEmployment().getEmploymentStatus() == EmploymentStatus.BUSINESS_OWNER) {
+            rate = rate.add(BigDecimal.valueOf(3));
+        }
 
-    private Integer ageAndGenderVerification(ScoringDataDTO scoringDataDTO) {
+        if (scoringDataDTO.getEmployment().getPosition() == Position.MIDDLE_MANAGER) {
+            rate = rate.subtract(BigDecimal.valueOf(2));
+        } else if (scoringDataDTO.getEmployment().getPosition() == Position.TOP_MANAGER) {
+            rate = rate.add(BigDecimal.valueOf(4));
+        }
 
-        Integer rateUpdate = new Integer(0);
+        if (scoringDataDTO.getEmployment().getSalary().multiply(BigDecimal.valueOf(20)).compareTo(scoringDataDTO.getAmount()) == -1) {
+            throw new ScoringException("Requested amount more than 20 salaries - Denied");
+        }
 
-        LocalDate now = LocalDate.now();
+        if (scoringDataDTO.getMaritalStatus() == MaritalStatus.MARRIED_MARRIED) {
+            rate = rate.subtract(BigDecimal.valueOf(3));
+        } else if (scoringDataDTO.getMaritalStatus() == MaritalStatus.DIVORCED) {
+            rate = rate.add(BigDecimal.valueOf(3));
+        }
 
-        if (scoringDataDTO.getGender() == Gender.MALE
+        if (scoringDataDTO.getDependentAmount() > 1) {
+            rate = rate.add(BigDecimal.valueOf(1));
+        }
+
+        if (ChronoUnit.YEARS.between(scoringDataDTO.getBirthdate(), now) < 20) {
+            throw new ScoringException("Age under 20 - Denied");
+        } else if (ChronoUnit.YEARS.between(scoringDataDTO.getBirthdate(), now) > 60) {
+            throw new ScoringException("Age over 60 - Denied");
+        }
+
+        if (scoringDataDTO.getGender() == Genders.MALE
                 && (ChronoUnit.YEARS.between(scoringDataDTO.getBirthdate(), now) >= 30)
                 && (ChronoUnit.YEARS.between(scoringDataDTO.getBirthdate(), now) <= 55)) {
-            rateUpdate = -3;
-//            rateUpdate = rateUpdate.subtract(BigDecimal.valueOf(-3));
-        }
-
-        if (scoringDataDTO.getGender() == Gender.WOMAN
+            rate = rate.subtract(BigDecimal.valueOf(3));
+        } else if (scoringDataDTO.getGender() == Genders.WOMAN
                 && (ChronoUnit.YEARS.between(scoringDataDTO.getBirthdate(), now) >= 35)
                 && (ChronoUnit.YEARS.between(scoringDataDTO.getBirthdate(), now) <= 60)) {
-            rateUpdate = -3;
-//            rateUpdate = rateUpdate.subtract(BigDecimal.valueOf(-3));
+            rate = rate.subtract(BigDecimal.valueOf(3));
+        } else if (scoringDataDTO.getGender() == Genders.NOT_BINARY) {
+            rate = rate.add(BigDecimal.valueOf(3));
         }
 
-        if (scoringDataDTO.getGender() == Gender.NOT_BINARY) {
-            rateUpdate = 3;
-//            rateUpdate = rateUpdate.subtract(BigDecimal.valueOf(3));
+        if (scoringDataDTO.getEmployment().getWorkExperienceTotal() < 12) {
+            throw new ScoringException("Total work experience less than 12 months - Denied");
+        } else if (scoringDataDTO.getEmployment().getWorkExperienceCurrent() < 3) {
+            throw new ScoringException("Current work experience less than 3 months - Denied");
         }
 
-//        System.out.println(rateUpdate);
-        return rateUpdate;
-
+        BigDecimal monthlyPayment = calculations.getMonthlyPayment(rate, amount);
+        return CreditDTO.builder()
+                .amount(amount)
+                .term(scoringDataDTO.getTerm())
+                .monthlyPayment(monthlyPayment)
+                .rate(rate)
+                .psk(calculations.getTotalAmount(monthlyPayment, scoringDataDTO.getTerm()))
+                .isInsuranceEnabled(scoringDataDTO.getIsInsuranceEnabled())
+                .isSalaryClient(scoringDataDTO.getIsSalaryClient())
+                .paymentSchedule(getPaymentScheduleElement(rate, scoringDataDTO.getTerm(), monthlyPayment, amount))
+                .build();
     }
 
     private List<PaymentScheduleElement> getPaymentScheduleElement(BigDecimal rate, Integer term, BigDecimal monthlyPayment, BigDecimal amount) {
 
-        //18.29
+        List<PaymentScheduleElement> paymentScheduleElementList = new ArrayList<>();
+        LocalDate now = LocalDate.now();
+        BigDecimal remainingDebt = amount;
 
-        return null;
+        for (int i = 1; i <= term; i++) {
+            PaymentScheduleElement paymentScheduleElement = new PaymentScheduleElement();
+            paymentScheduleElement.setNumber(i);
+
+            now = now.plusMonths(1);
+            paymentScheduleElement.setDate(now);
+
+//            paymentScheduleElement.getTotalPayment(); TODO Я ХЗ ЧТО ЭТО
+
+            paymentScheduleElement.setDebtPayment(monthlyPayment);
+
+            remainingDebt = remainingDebt.subtract(monthlyPayment);
+            paymentScheduleElement.setRemainingDebt(remainingDebt);
+
+            paymentScheduleElementList.add(paymentScheduleElement);
+        }
+
+        return paymentScheduleElementList;
     }
 
 

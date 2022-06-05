@@ -1,6 +1,6 @@
 package com.neoflex.conveyor.enums;
 
-public enum Gender {
+public enum Genders {
 
     MALE,
     WOMAN,
