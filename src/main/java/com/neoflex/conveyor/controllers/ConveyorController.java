@@ -22,6 +22,8 @@ public class ConveyorController {
     @Autowired
     ConveyorServiceImpl conveyorService;
 
+    //TODO Сделать логирование
+
     @PostMapping("/offers")
     public List<LoanOfferDTO> offers(@Valid @RequestBody LoanApplicationRequestDTO loanApplicationRequestDTO) {
         List<LoanOfferDTO> loanOfferList = conveyorService.getOffers(loanApplicationRequestDTO);
