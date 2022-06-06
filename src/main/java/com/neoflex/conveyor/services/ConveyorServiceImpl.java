@@ -7,7 +7,6 @@ import com.neoflex.conveyor.enums.EmploymentStatus;
 import com.neoflex.conveyor.enums.Genders;
 import com.neoflex.conveyor.enums.MaritalStatus;
 import com.neoflex.conveyor.enums.Position;
-import lombok.extern.log4j.Log4j;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -87,6 +86,7 @@ public class ConveyorServiceImpl implements ConveyorService {
 
     @Override
     public CreditDTO loanCalculation(ScoringDataDTO scoringDataDTO) {
+
         log.info("loanCalculation() - scoringDataDTO: {}", scoringDataDTO);
 
         BigDecimal rate = BaseRate;
