@@ -19,6 +19,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+//TODO - Автоматическая генерация даты
 
 @RunWith(MockitoJUnitRunner.class)
 class ConveyorServiceImplTest {
@@ -176,13 +177,7 @@ class ConveyorServiceImplTest {
         ReflectionTestUtils.setField(conveyorService, "BaseRate", BigDecimal.valueOf(20));
         ReflectionTestUtils.setField(conveyorService, "calculations", calculations);
 
-        EmploymentDTO employment1 = new EmploymentDTO();
-        employment1.setEmploymentStatus(EmploymentStatus.BUSINESS_OWNER);
-        employment1.setEmployerINN("7727563778");
-        employment1.setSalary(BigDecimal.valueOf(10000));
-        employment1.setPosition(Position.MIDDLE_MANAGER);
-        employment1.setWorkExperienceTotal(30);
-        employment1.setWorkExperienceCurrent(5);
+        EmploymentDTO employment1 = getEmploymentDTO(EmploymentStatus.BUSINESS_OWNER, "7727563778", BigDecimal.valueOf(10000), Position.MIDDLE_MANAGER, 30, 5);
 
         ScoringDataDTO scoringDataDTO = new ScoringDataDTO();
         scoringDataDTO.setAmount(BigDecimal.valueOf(200000));
@@ -206,45 +201,22 @@ class ConveyorServiceImplTest {
 
         List<PaymentScheduleElement> paymentSchedule = new ArrayList<>();
 
-        PaymentScheduleElement paymentScheduleElement1 = new PaymentScheduleElement();
-        paymentScheduleElement1.setNumber(1);
-        paymentScheduleElement1.setDate(LocalDate.of(2022, 7, 6));
-        paymentScheduleElement1.setTotalPayment(BigDecimal.valueOf(101754.00000).setScale(5));
-        paymentScheduleElement1.setInterestPayment(BigDecimal.valueOf(1754.00000).setScale(5));
-        paymentScheduleElement1.setDebtPayment(BigDecimal.valueOf(101754.00000).setScale(5));
-        paymentScheduleElement1.setRemainingDebt(BigDecimal.valueOf(101754.00000).setScale(5));
+        PaymentScheduleElement paymentScheduleElement1 = getPaymentScheduleElement(1, LocalDate.of(2022, 7, 7), BigDecimal.valueOf(101754.00000).setScale(5),
+                BigDecimal.valueOf(1754.00000).setScale(5), BigDecimal.valueOf(101754.00000).setScale(5), BigDecimal.valueOf(101754.00000).setScale(5));
 
-        PaymentScheduleElement paymentScheduleElement2 = new PaymentScheduleElement();
-        paymentScheduleElement2.setNumber(2);
-        paymentScheduleElement2.setDate(LocalDate.of(2022, 8, 6));
-        paymentScheduleElement2.setTotalPayment(BigDecimal.valueOf(203508.00000).setScale(5));
-        paymentScheduleElement2.setInterestPayment(BigDecimal.valueOf(1754.00000).setScale(5));
-        paymentScheduleElement2.setDebtPayment(BigDecimal.valueOf(101754.00000).setScale(5));
-        paymentScheduleElement2.setRemainingDebt(BigDecimal.valueOf(0.00000).setScale(5));
+        PaymentScheduleElement paymentScheduleElement2 = getPaymentScheduleElement(2, LocalDate.of(2022, 8, 7), BigDecimal.valueOf(203508.00000).setScale(5),
+                BigDecimal.valueOf(1754.00000).setScale(5), BigDecimal.valueOf(101754.00000).setScale(5), BigDecimal.valueOf(0.00000).setScale(5));
 
         paymentSchedule.add(paymentScheduleElement1);
         paymentSchedule.add(paymentScheduleElement2);
 
-        CreditDTO creditDTO = new CreditDTO();
-        creditDTO.setAmount(BigDecimal.valueOf(200000));
-        creditDTO.setTerm(2);
-        creditDTO.setMonthlyPayment(BigDecimal.valueOf(101754.00000).setScale(5));
-        creditDTO.setRate(BigDecimal.valueOf(14));
-        creditDTO.setPsk(BigDecimal.valueOf(203508.00000).setScale(5));
-        creditDTO.setIsInsuranceEnabled(false);
-        creditDTO.setIsSalaryClient(true);
-        creditDTO.setPaymentSchedule(paymentSchedule);
-
+        CreditDTO creditDTO = getCreditDTO(BigDecimal.valueOf(200000), 2, BigDecimal.valueOf(101754.00000).setScale(5), BigDecimal.valueOf(14), BigDecimal.valueOf(203508.00000).setScale(5),
+                false, true, paymentSchedule);
 
         Assertions.assertEquals(creditDTO, conveyorService.loanCalculation(scoringDataDTO));
 
-        EmploymentDTO employment2 = new EmploymentDTO();
-        employment2.setEmploymentStatus(EmploymentStatus.SELF_EMPLOYED);
-        employment2.setEmployerINN("7727563778");
-        employment2.setSalary(BigDecimal.valueOf(10000));
-        employment2.setPosition(Position.TOP_MANAGER);
-        employment2.setWorkExperienceTotal(30);
-        employment2.setWorkExperienceCurrent(5);
+        EmploymentDTO employment2 = getEmploymentDTO(EmploymentStatus.SELF_EMPLOYED, "7727563778", BigDecimal.valueOf(10000), Position.TOP_MANAGER, 30, 5);
+
 
         scoringDataDTO.setAmount(BigDecimal.valueOf(200000));
         scoringDataDTO.setTerm(2);
@@ -267,15 +239,16 @@ class ConveyorServiceImplTest {
 
         List<PaymentScheduleElement> paymentSchedule2 = new ArrayList<>();
 
+        //TODO - ДОДЕЛАТЬ
         paymentScheduleElement1.setNumber(1);
-        paymentScheduleElement1.setDate(LocalDate.of(2022, 7, 6));
+        paymentScheduleElement1.setDate(LocalDate.of(2022, 7, 7));
         paymentScheduleElement1.setTotalPayment(BigDecimal.valueOf(107895.9000000).setScale(7));
         paymentScheduleElement1.setInterestPayment(BigDecimal.valueOf(2895.9000000).setScale(7));
         paymentScheduleElement1.setDebtPayment(BigDecimal.valueOf(107895.9000000).setScale(7));
         paymentScheduleElement1.setRemainingDebt(BigDecimal.valueOf(107895.9000000).setScale(7));
 
         paymentScheduleElement2.setNumber(2);
-        paymentScheduleElement2.setDate(LocalDate.of(2022, 8, 6));
+        paymentScheduleElement2.setDate(LocalDate.of(2022, 8, 7));
         paymentScheduleElement2.setTotalPayment(BigDecimal.valueOf(215791.8000000).setScale(7));
         paymentScheduleElement2.setInterestPayment(BigDecimal.valueOf(2895.9000000).setScale(7));
         paymentScheduleElement2.setDebtPayment(BigDecimal.valueOf(107895.9000000).setScale(7));
@@ -284,14 +257,8 @@ class ConveyorServiceImplTest {
         paymentSchedule2.add(paymentScheduleElement1);
         paymentSchedule2.add(paymentScheduleElement2);
 
-        creditDTO.setAmount(BigDecimal.valueOf(210000.00).setScale(2));
-        creditDTO.setTerm(2);
-        creditDTO.setMonthlyPayment(BigDecimal.valueOf(107895.9000000).setScale(7));
-        creditDTO.setRate(BigDecimal.valueOf(22));
-        creditDTO.setPsk(BigDecimal.valueOf(215791.8000000).setScale(7));
-        creditDTO.setIsInsuranceEnabled(true);
-        creditDTO.setIsSalaryClient(true);
-        creditDTO.setPaymentSchedule(paymentSchedule);
+        creditDTO = getCreditDTO(BigDecimal.valueOf(210000.00).setScale(2), 2, BigDecimal.valueOf(107895.9000000).setScale(7), BigDecimal.valueOf(22), BigDecimal.valueOf(215791.8000000).setScale(7),
+                true, true, paymentSchedule);
 
 
         Assertions.assertEquals(creditDTO, conveyorService.loanCalculation(scoringDataDTO));
@@ -304,21 +271,11 @@ class ConveyorServiceImplTest {
 
         List<PaymentScheduleElement> paymentSchedule = new ArrayList<>();
 
-        PaymentScheduleElement paymentScheduleElement1 = new PaymentScheduleElement();
-        paymentScheduleElement1.setNumber(1);
-        paymentScheduleElement1.setDate(LocalDate.of(2022, 7, 6));
-        paymentScheduleElement1.setTotalPayment(BigDecimal.valueOf(101754.00000).setScale(5));
-        paymentScheduleElement1.setInterestPayment(BigDecimal.valueOf(1754.00000).setScale(5));
-        paymentScheduleElement1.setDebtPayment(BigDecimal.valueOf(101754.00000).setScale(5));
-        paymentScheduleElement1.setRemainingDebt(BigDecimal.valueOf(101754.00000).setScale(5));
+        PaymentScheduleElement paymentScheduleElement1 = getPaymentScheduleElement(1, LocalDate.of(2022, 7, 7), BigDecimal.valueOf(101754.00000).setScale(5),
+                BigDecimal.valueOf(1754.00000).setScale(5), BigDecimal.valueOf(101754.00000).setScale(5), BigDecimal.valueOf(101754.00000).setScale(5));
 
-        PaymentScheduleElement paymentScheduleElement2 = new PaymentScheduleElement();
-        paymentScheduleElement2.setNumber(2);
-        paymentScheduleElement2.setDate(LocalDate.of(2022, 8, 6));
-        paymentScheduleElement2.setTotalPayment(BigDecimal.valueOf(203508.00000).setScale(5));
-        paymentScheduleElement2.setInterestPayment(BigDecimal.valueOf(1754.00000).setScale(5));
-        paymentScheduleElement2.setDebtPayment(BigDecimal.valueOf(101754.00000).setScale(5));
-        paymentScheduleElement2.setRemainingDebt(BigDecimal.valueOf(0.00000).setScale(5));
+        PaymentScheduleElement paymentScheduleElement2 = getPaymentScheduleElement(2, LocalDate.of(2022, 8, 7), BigDecimal.valueOf(203508.00000).setScale(5),
+                BigDecimal.valueOf(1754.00000).setScale(5), BigDecimal.valueOf(101754.00000).setScale(5), BigDecimal.valueOf(0.00000).setScale(5));
 
         paymentSchedule.add(paymentScheduleElement1);
         paymentSchedule.add(paymentScheduleElement2);
@@ -334,13 +291,7 @@ class ConveyorServiceImplTest {
             ReflectionTestUtils.setField(conveyorService, "BaseRate", BigDecimal.valueOf(20));
             ReflectionTestUtils.setField(conveyorService, "calculations", calculations);
 
-            EmploymentDTO employment1 = new EmploymentDTO();
-            employment1.setEmploymentStatus(EmploymentStatus.UNEMPLOYED);
-            employment1.setEmployerINN("7727563778");
-            employment1.setSalary(BigDecimal.valueOf(10000));
-            employment1.setPosition(Position.MIDDLE_MANAGER);
-            employment1.setWorkExperienceTotal(30);
-            employment1.setWorkExperienceCurrent(5);
+            EmploymentDTO employment1 = getEmploymentDTO(EmploymentStatus.UNEMPLOYED, "7727563778", BigDecimal.valueOf(10000), Position.MIDDLE_MANAGER, 30, 5);
 
             ScoringDataDTO scoringDataDTO = new ScoringDataDTO();
             scoringDataDTO.setAmount(BigDecimal.valueOf(200000));
@@ -364,34 +315,17 @@ class ConveyorServiceImplTest {
 
             List<PaymentScheduleElement> paymentSchedule = new ArrayList<>();
 
-            PaymentScheduleElement paymentScheduleElement1 = new PaymentScheduleElement();
-            paymentScheduleElement1.setNumber(1);
-            paymentScheduleElement1.setDate(LocalDate.of(2022, 7, 6));
-            paymentScheduleElement1.setTotalPayment(BigDecimal.valueOf(101754.00000).setScale(5));
-            paymentScheduleElement1.setInterestPayment(BigDecimal.valueOf(1754.00000).setScale(5));
-            paymentScheduleElement1.setDebtPayment(BigDecimal.valueOf(101754.00000).setScale(5));
-            paymentScheduleElement1.setRemainingDebt(BigDecimal.valueOf(101754.00000).setScale(5));
+            PaymentScheduleElement paymentScheduleElement1 = getPaymentScheduleElement(1, LocalDate.of(2022, 7, 7), BigDecimal.valueOf(101754.00000).setScale(5),
+                    BigDecimal.valueOf(1754.00000).setScale(5), BigDecimal.valueOf(101754.00000).setScale(5), BigDecimal.valueOf(101754.00000).setScale(5));
 
-            PaymentScheduleElement paymentScheduleElement2 = new PaymentScheduleElement();
-            paymentScheduleElement2.setNumber(2);
-            paymentScheduleElement2.setDate(LocalDate.of(2022, 8, 6));
-            paymentScheduleElement2.setTotalPayment(BigDecimal.valueOf(203508.00000).setScale(5));
-            paymentScheduleElement2.setInterestPayment(BigDecimal.valueOf(1754.00000).setScale(5));
-            paymentScheduleElement2.setDebtPayment(BigDecimal.valueOf(101754.00000).setScale(5));
-            paymentScheduleElement2.setRemainingDebt(BigDecimal.valueOf(0.00000).setScale(5));
+            PaymentScheduleElement paymentScheduleElement2 = getPaymentScheduleElement(2, LocalDate.of(2022, 8, 7), BigDecimal.valueOf(203508.00000).setScale(5),
+                    BigDecimal.valueOf(1754.00000).setScale(5), BigDecimal.valueOf(101754.00000).setScale(5), BigDecimal.valueOf(0.00000).setScale(5));
 
             paymentSchedule.add(paymentScheduleElement1);
             paymentSchedule.add(paymentScheduleElement2);
 
-            CreditDTO creditDTO = new CreditDTO();
-            creditDTO.setAmount(BigDecimal.valueOf(200000));
-            creditDTO.setTerm(2);
-            creditDTO.setMonthlyPayment(BigDecimal.valueOf(101754.00000).setScale(5));
-            creditDTO.setRate(BigDecimal.valueOf(14));
-            creditDTO.setPsk(BigDecimal.valueOf(203508.00000).setScale(5));
-            creditDTO.setIsInsuranceEnabled(false);
-            creditDTO.setIsSalaryClient(true);
-            creditDTO.setPaymentSchedule(paymentSchedule);
+            CreditDTO creditDTO = getCreditDTO(BigDecimal.valueOf(200000), 2, BigDecimal.valueOf(101754.00000).setScale(5), BigDecimal.valueOf(14), BigDecimal.valueOf(203508.00000).setScale(5),
+                    false, true, paymentSchedule);
 
 
             Assertions.assertEquals(creditDTO, conveyorService.loanCalculation(scoringDataDTO));
@@ -404,13 +338,7 @@ class ConveyorServiceImplTest {
             ReflectionTestUtils.setField(conveyorService, "BaseRate", BigDecimal.valueOf(20));
             ReflectionTestUtils.setField(conveyorService, "calculations", calculations);
 
-            EmploymentDTO employment1 = new EmploymentDTO();
-            employment1.setEmploymentStatus(EmploymentStatus.SELF_EMPLOYED);
-            employment1.setEmployerINN("7727563778");
-            employment1.setSalary(BigDecimal.valueOf(10000));
-            employment1.setPosition(Position.MIDDLE_MANAGER);
-            employment1.setWorkExperienceTotal(30);
-            employment1.setWorkExperienceCurrent(5);
+            EmploymentDTO employment1 = getEmploymentDTO(EmploymentStatus.SELF_EMPLOYED, "7727563778", BigDecimal.valueOf(10000), Position.MIDDLE_MANAGER, 30, 5);
 
             ScoringDataDTO scoringDataDTO = new ScoringDataDTO();
             scoringDataDTO.setAmount(BigDecimal.valueOf(500000));
@@ -434,34 +362,17 @@ class ConveyorServiceImplTest {
 
             List<PaymentScheduleElement> paymentSchedule = new ArrayList<>();
 
-            PaymentScheduleElement paymentScheduleElement1 = new PaymentScheduleElement();
-            paymentScheduleElement1.setNumber(1);
-            paymentScheduleElement1.setDate(LocalDate.of(2022, 7, 6));
-            paymentScheduleElement1.setTotalPayment(BigDecimal.valueOf(101754.00000).setScale(5));
-            paymentScheduleElement1.setInterestPayment(BigDecimal.valueOf(1754.00000).setScale(5));
-            paymentScheduleElement1.setDebtPayment(BigDecimal.valueOf(101754.00000).setScale(5));
-            paymentScheduleElement1.setRemainingDebt(BigDecimal.valueOf(101754.00000).setScale(5));
+            PaymentScheduleElement paymentScheduleElement1 = getPaymentScheduleElement(1, LocalDate.of(2022, 7, 7), BigDecimal.valueOf(101754.00000).setScale(5),
+                    BigDecimal.valueOf(1754.00000).setScale(5), BigDecimal.valueOf(101754.00000).setScale(5), BigDecimal.valueOf(101754.00000).setScale(5));
 
-            PaymentScheduleElement paymentScheduleElement2 = new PaymentScheduleElement();
-            paymentScheduleElement2.setNumber(2);
-            paymentScheduleElement2.setDate(LocalDate.of(2022, 8, 6));
-            paymentScheduleElement2.setTotalPayment(BigDecimal.valueOf(203508.00000).setScale(5));
-            paymentScheduleElement2.setInterestPayment(BigDecimal.valueOf(1754.00000).setScale(5));
-            paymentScheduleElement2.setDebtPayment(BigDecimal.valueOf(101754.00000).setScale(5));
-            paymentScheduleElement2.setRemainingDebt(BigDecimal.valueOf(0.00000).setScale(5));
+            PaymentScheduleElement paymentScheduleElement2 = getPaymentScheduleElement(2, LocalDate.of(2022, 8, 7), BigDecimal.valueOf(203508.00000).setScale(5),
+                    BigDecimal.valueOf(1754.00000).setScale(5), BigDecimal.valueOf(101754.00000).setScale(5), BigDecimal.valueOf(0.00000).setScale(5));
 
             paymentSchedule.add(paymentScheduleElement1);
             paymentSchedule.add(paymentScheduleElement2);
 
-            CreditDTO creditDTO = new CreditDTO();
-            creditDTO.setAmount(BigDecimal.valueOf(200000));
-            creditDTO.setTerm(2);
-            creditDTO.setMonthlyPayment(BigDecimal.valueOf(101754.00000).setScale(5));
-            creditDTO.setRate(BigDecimal.valueOf(14));
-            creditDTO.setPsk(BigDecimal.valueOf(203508.00000).setScale(5));
-            creditDTO.setIsInsuranceEnabled(false);
-            creditDTO.setIsSalaryClient(true);
-            creditDTO.setPaymentSchedule(paymentSchedule);
+            CreditDTO creditDTO = getCreditDTO(BigDecimal.valueOf(200000), 2, BigDecimal.valueOf(101754.00000).setScale(5), BigDecimal.valueOf(14), BigDecimal.valueOf(203508.00000).setScale(5),
+                    false, true, paymentSchedule);
 
 
             Assertions.assertEquals(creditDTO, conveyorService.loanCalculation(scoringDataDTO));
@@ -474,13 +385,7 @@ class ConveyorServiceImplTest {
             ReflectionTestUtils.setField(conveyorService, "BaseRate", BigDecimal.valueOf(20));
             ReflectionTestUtils.setField(conveyorService, "calculations", calculations);
 
-            EmploymentDTO employment1 = new EmploymentDTO();
-            employment1.setEmploymentStatus(EmploymentStatus.SELF_EMPLOYED);
-            employment1.setEmployerINN("7727563778");
-            employment1.setSalary(BigDecimal.valueOf(10000));
-            employment1.setPosition(Position.MIDDLE_MANAGER);
-            employment1.setWorkExperienceTotal(30);
-            employment1.setWorkExperienceCurrent(5);
+            EmploymentDTO employment1 = getEmploymentDTO(EmploymentStatus.SELF_EMPLOYED, "7727563778", BigDecimal.valueOf(10000), Position.MIDDLE_MANAGER, 30, 5);
 
             ScoringDataDTO scoringDataDTO = new ScoringDataDTO();
             scoringDataDTO.setAmount(BigDecimal.valueOf(150000));
@@ -504,35 +409,17 @@ class ConveyorServiceImplTest {
 
             List<PaymentScheduleElement> paymentSchedule = new ArrayList<>();
 
-            PaymentScheduleElement paymentScheduleElement1 = new PaymentScheduleElement();
-            paymentScheduleElement1.setNumber(1);
-            paymentScheduleElement1.setDate(LocalDate.of(2022, 7, 6));
-            paymentScheduleElement1.setTotalPayment(BigDecimal.valueOf(101754.00000).setScale(5));
-            paymentScheduleElement1.setInterestPayment(BigDecimal.valueOf(1754.00000).setScale(5));
-            paymentScheduleElement1.setDebtPayment(BigDecimal.valueOf(101754.00000).setScale(5));
-            paymentScheduleElement1.setRemainingDebt(BigDecimal.valueOf(101754.00000).setScale(5));
+            PaymentScheduleElement paymentScheduleElement1 = getPaymentScheduleElement(1, LocalDate.of(2022, 7, 7), BigDecimal.valueOf(101754.00000).setScale(5),
+                    BigDecimal.valueOf(1754.00000).setScale(5), BigDecimal.valueOf(101754.00000).setScale(5), BigDecimal.valueOf(101754.00000).setScale(5));
 
-            PaymentScheduleElement paymentScheduleElement2 = new PaymentScheduleElement();
-            paymentScheduleElement2.setNumber(2);
-            paymentScheduleElement2.setDate(LocalDate.of(2022, 8, 6));
-            paymentScheduleElement2.setTotalPayment(BigDecimal.valueOf(203508.00000).setScale(5));
-            paymentScheduleElement2.setInterestPayment(BigDecimal.valueOf(1754.00000).setScale(5));
-            paymentScheduleElement2.setDebtPayment(BigDecimal.valueOf(101754.00000).setScale(5));
-            paymentScheduleElement2.setRemainingDebt(BigDecimal.valueOf(0.00000).setScale(5));
+            PaymentScheduleElement paymentScheduleElement2 = getPaymentScheduleElement(2, LocalDate.of(2022, 8, 7), BigDecimal.valueOf(203508.00000).setScale(5),
+                    BigDecimal.valueOf(1754.00000).setScale(5), BigDecimal.valueOf(101754.00000).setScale(5), BigDecimal.valueOf(0.00000).setScale(5));
 
             paymentSchedule.add(paymentScheduleElement1);
             paymentSchedule.add(paymentScheduleElement2);
 
-            CreditDTO creditDTO = new CreditDTO();
-            creditDTO.setAmount(BigDecimal.valueOf(200000));
-            creditDTO.setTerm(2);
-            creditDTO.setMonthlyPayment(BigDecimal.valueOf(101754.00000).setScale(5));
-            creditDTO.setRate(BigDecimal.valueOf(14));
-            creditDTO.setPsk(BigDecimal.valueOf(203508.00000).setScale(5));
-            creditDTO.setIsInsuranceEnabled(false);
-            creditDTO.setIsSalaryClient(true);
-            creditDTO.setPaymentSchedule(paymentSchedule);
-
+            CreditDTO creditDTO = getCreditDTO(BigDecimal.valueOf(200000), 2, BigDecimal.valueOf(101754.00000).setScale(5), BigDecimal.valueOf(14), BigDecimal.valueOf(203508.00000).setScale(5),
+                    false, true, paymentSchedule);
 
             Assertions.assertEquals(creditDTO, conveyorService.loanCalculation(scoringDataDTO));
         });
@@ -544,13 +431,7 @@ class ConveyorServiceImplTest {
             ReflectionTestUtils.setField(conveyorService, "BaseRate", BigDecimal.valueOf(20));
             ReflectionTestUtils.setField(conveyorService, "calculations", calculations);
 
-            EmploymentDTO employment1 = new EmploymentDTO();
-            employment1.setEmploymentStatus(EmploymentStatus.SELF_EMPLOYED);
-            employment1.setEmployerINN("7727563778");
-            employment1.setSalary(BigDecimal.valueOf(10000));
-            employment1.setPosition(Position.MIDDLE_MANAGER);
-            employment1.setWorkExperienceTotal(30);
-            employment1.setWorkExperienceCurrent(5);
+            EmploymentDTO employment1 = getEmploymentDTO(EmploymentStatus.SELF_EMPLOYED, "7727563778", BigDecimal.valueOf(10000), Position.MIDDLE_MANAGER, 30, 5);
 
             ScoringDataDTO scoringDataDTO = new ScoringDataDTO();
             scoringDataDTO.setAmount(BigDecimal.valueOf(150000));
@@ -574,34 +455,17 @@ class ConveyorServiceImplTest {
 
             List<PaymentScheduleElement> paymentSchedule = new ArrayList<>();
 
-            PaymentScheduleElement paymentScheduleElement1 = new PaymentScheduleElement();
-            paymentScheduleElement1.setNumber(1);
-            paymentScheduleElement1.setDate(LocalDate.of(2022, 7, 6));
-            paymentScheduleElement1.setTotalPayment(BigDecimal.valueOf(101754.00000).setScale(5));
-            paymentScheduleElement1.setInterestPayment(BigDecimal.valueOf(1754.00000).setScale(5));
-            paymentScheduleElement1.setDebtPayment(BigDecimal.valueOf(101754.00000).setScale(5));
-            paymentScheduleElement1.setRemainingDebt(BigDecimal.valueOf(101754.00000).setScale(5));
+            PaymentScheduleElement paymentScheduleElement1 = getPaymentScheduleElement(1, LocalDate.of(2022, 7, 7), BigDecimal.valueOf(101754.00000).setScale(5),
+                    BigDecimal.valueOf(1754.00000).setScale(5), BigDecimal.valueOf(101754.00000).setScale(5), BigDecimal.valueOf(101754.00000).setScale(5));
 
-            PaymentScheduleElement paymentScheduleElement2 = new PaymentScheduleElement();
-            paymentScheduleElement2.setNumber(2);
-            paymentScheduleElement2.setDate(LocalDate.of(2022, 8, 6));
-            paymentScheduleElement2.setTotalPayment(BigDecimal.valueOf(203508.00000).setScale(5));
-            paymentScheduleElement2.setInterestPayment(BigDecimal.valueOf(1754.00000).setScale(5));
-            paymentScheduleElement2.setDebtPayment(BigDecimal.valueOf(101754.00000).setScale(5));
-            paymentScheduleElement2.setRemainingDebt(BigDecimal.valueOf(0.00000).setScale(5));
+            PaymentScheduleElement paymentScheduleElement2 = getPaymentScheduleElement(2, LocalDate.of(2022, 8, 7), BigDecimal.valueOf(203508.00000).setScale(5),
+                    BigDecimal.valueOf(1754.00000).setScale(5), BigDecimal.valueOf(101754.00000).setScale(5), BigDecimal.valueOf(0.00000).setScale(5));
 
             paymentSchedule.add(paymentScheduleElement1);
             paymentSchedule.add(paymentScheduleElement2);
 
-            CreditDTO creditDTO = new CreditDTO();
-            creditDTO.setAmount(BigDecimal.valueOf(200000));
-            creditDTO.setTerm(2);
-            creditDTO.setMonthlyPayment(BigDecimal.valueOf(101754.00000).setScale(5));
-            creditDTO.setRate(BigDecimal.valueOf(14));
-            creditDTO.setPsk(BigDecimal.valueOf(203508.00000).setScale(5));
-            creditDTO.setIsInsuranceEnabled(false);
-            creditDTO.setIsSalaryClient(true);
-            creditDTO.setPaymentSchedule(paymentSchedule);
+            CreditDTO creditDTO = getCreditDTO(BigDecimal.valueOf(200000), 2, BigDecimal.valueOf(101754.00000).setScale(5), BigDecimal.valueOf(14),
+                    BigDecimal.valueOf(203508.00000).setScale(5), false, true, paymentSchedule);
 
 
             Assertions.assertEquals(creditDTO, conveyorService.loanCalculation(scoringDataDTO));
@@ -614,13 +478,7 @@ class ConveyorServiceImplTest {
             ReflectionTestUtils.setField(conveyorService, "BaseRate", BigDecimal.valueOf(20));
             ReflectionTestUtils.setField(conveyorService, "calculations", calculations);
 
-            EmploymentDTO employment1 = new EmploymentDTO();
-            employment1.setEmploymentStatus(EmploymentStatus.SELF_EMPLOYED);
-            employment1.setEmployerINN("7727563778");
-            employment1.setSalary(BigDecimal.valueOf(10000));
-            employment1.setPosition(Position.MIDDLE_MANAGER);
-            employment1.setWorkExperienceTotal(1);
-            employment1.setWorkExperienceCurrent(1);
+            EmploymentDTO employment1 = getEmploymentDTO(EmploymentStatus.SELF_EMPLOYED, "7727563778", BigDecimal.valueOf(10000), Position.MIDDLE_MANAGER, 1, 1);
 
             ScoringDataDTO scoringDataDTO = new ScoringDataDTO();
             scoringDataDTO.setAmount(BigDecimal.valueOf(150000));
@@ -644,34 +502,17 @@ class ConveyorServiceImplTest {
 
             List<PaymentScheduleElement> paymentSchedule = new ArrayList<>();
 
-            PaymentScheduleElement paymentScheduleElement1 = new PaymentScheduleElement();
-            paymentScheduleElement1.setNumber(1);
-            paymentScheduleElement1.setDate(LocalDate.of(2022, 7, 6));
-            paymentScheduleElement1.setTotalPayment(BigDecimal.valueOf(101754.00000).setScale(5));
-            paymentScheduleElement1.setInterestPayment(BigDecimal.valueOf(1754.00000).setScale(5));
-            paymentScheduleElement1.setDebtPayment(BigDecimal.valueOf(101754.00000).setScale(5));
-            paymentScheduleElement1.setRemainingDebt(BigDecimal.valueOf(101754.00000).setScale(5));
+            PaymentScheduleElement paymentScheduleElement1 = getPaymentScheduleElement(1, LocalDate.of(2022, 7, 7), BigDecimal.valueOf(101754.00000).setScale(5),
+                    BigDecimal.valueOf(1754.00000).setScale(5), BigDecimal.valueOf(101754.00000).setScale(5), BigDecimal.valueOf(101754.00000).setScale(5));
 
-            PaymentScheduleElement paymentScheduleElement2 = new PaymentScheduleElement();
-            paymentScheduleElement2.setNumber(2);
-            paymentScheduleElement2.setDate(LocalDate.of(2022, 8, 6));
-            paymentScheduleElement2.setTotalPayment(BigDecimal.valueOf(203508.00000).setScale(5));
-            paymentScheduleElement2.setInterestPayment(BigDecimal.valueOf(1754.00000).setScale(5));
-            paymentScheduleElement2.setDebtPayment(BigDecimal.valueOf(101754.00000).setScale(5));
-            paymentScheduleElement2.setRemainingDebt(BigDecimal.valueOf(0.00000).setScale(5));
+            PaymentScheduleElement paymentScheduleElement2 = getPaymentScheduleElement(2, LocalDate.of(2022, 8, 7), BigDecimal.valueOf(203508.00000).setScale(5),
+                    BigDecimal.valueOf(1754.00000).setScale(5), BigDecimal.valueOf(101754.00000).setScale(5), BigDecimal.valueOf(0.00000).setScale(5));
 
             paymentSchedule.add(paymentScheduleElement1);
             paymentSchedule.add(paymentScheduleElement2);
 
-            CreditDTO creditDTO = new CreditDTO();
-            creditDTO.setAmount(BigDecimal.valueOf(200000));
-            creditDTO.setTerm(2);
-            creditDTO.setMonthlyPayment(BigDecimal.valueOf(101754.00000).setScale(5));
-            creditDTO.setRate(BigDecimal.valueOf(14));
-            creditDTO.setPsk(BigDecimal.valueOf(203508.00000).setScale(5));
-            creditDTO.setIsInsuranceEnabled(false);
-            creditDTO.setIsSalaryClient(true);
-            creditDTO.setPaymentSchedule(paymentSchedule);
+            CreditDTO creditDTO = getCreditDTO((BigDecimal.valueOf(200000)), 2, BigDecimal.valueOf(101754.00000).setScale(5), BigDecimal.valueOf(14),
+                    BigDecimal.valueOf(203508.00000).setScale(5), false, true, paymentSchedule);
 
 
             Assertions.assertEquals(creditDTO, conveyorService.loanCalculation(scoringDataDTO));
@@ -684,67 +525,90 @@ class ConveyorServiceImplTest {
             ReflectionTestUtils.setField(conveyorService, "BaseRate", BigDecimal.valueOf(20));
             ReflectionTestUtils.setField(conveyorService, "calculations", calculations);
 
-            EmploymentDTO employment1 = new EmploymentDTO();
-            employment1.setEmploymentStatus(EmploymentStatus.SELF_EMPLOYED);
-            employment1.setEmployerINN("7727563778");
-            employment1.setSalary(BigDecimal.valueOf(10000));
-            employment1.setPosition(Position.MIDDLE_MANAGER);
-            employment1.setWorkExperienceTotal(30);
-            employment1.setWorkExperienceCurrent(1);
+            EmploymentDTO employment1 = getEmploymentDTO(EmploymentStatus.SELF_EMPLOYED, "7727563778", BigDecimal.valueOf(10000), Position.MIDDLE_MANAGER, 30, 1);
 
-            ScoringDataDTO scoringDataDTO = new ScoringDataDTO();
-            scoringDataDTO.setAmount(BigDecimal.valueOf(150000));
-            scoringDataDTO.setTerm(2);
-            scoringDataDTO.setFirstName("Николай");
-            scoringDataDTO.setLastName("Козьяков");
-            scoringDataDTO.setMiddleName("Николаевич");
-            scoringDataDTO.setGender(Genders.NOT_BINARY);
-            scoringDataDTO.setBirthdate(LocalDate.of(1980, 9, 29));
-            scoringDataDTO.setPassportSeries("1234");
-            scoringDataDTO.setPassportNumber("123456");
-            scoringDataDTO.setPassportIssueDate(LocalDate.of(2002, 9, 29));
-            scoringDataDTO.setPassportIssueBranch("Улица Пушкина - Дом Колотушкина");
-            scoringDataDTO.setMaritalStatus(MaritalStatus.MARRIED_MARRIED);
-            scoringDataDTO.setDependentAmount(1);
-            scoringDataDTO.setEmployment(employment1);
-            scoringDataDTO.setAccount("40817810099910004312");
-            scoringDataDTO.setIsInsuranceEnabled(false);
-            scoringDataDTO.setIsSalaryClient(true);
-
+            ScoringDataDTO scoringDataDTO = getScoringDataDTO(BigDecimal.valueOf(150000), 2, "Николай", "Козьяков", "Николаевич", Genders.NOT_BINARY, LocalDate.of(1980, 9, 29), "1234",
+                    "123456", LocalDate.of(2002, 9, 29), "Улица Пушкина - Дом Колотушкина", MaritalStatus.MARRIED_MARRIED, 1, employment1, "40817810099910004312", false, true);
 
             List<PaymentScheduleElement> paymentSchedule = new ArrayList<>();
 
-            PaymentScheduleElement paymentScheduleElement1 = new PaymentScheduleElement();
-            paymentScheduleElement1.setNumber(1);
-            paymentScheduleElement1.setDate(LocalDate.of(2022, 7, 6));
-            paymentScheduleElement1.setTotalPayment(BigDecimal.valueOf(101754.00000).setScale(5));
-            paymentScheduleElement1.setInterestPayment(BigDecimal.valueOf(1754.00000).setScale(5));
-            paymentScheduleElement1.setDebtPayment(BigDecimal.valueOf(101754.00000).setScale(5));
-            paymentScheduleElement1.setRemainingDebt(BigDecimal.valueOf(101754.00000).setScale(5));
+            PaymentScheduleElement paymentScheduleElement1 = getPaymentScheduleElement(1, LocalDate.of(2022, 7, 7), BigDecimal.valueOf(101754.00000).setScale(5),
+                    BigDecimal.valueOf(1754.00000).setScale(5), BigDecimal.valueOf(101754.00000).setScale(5), BigDecimal.valueOf(101754.00000).setScale(5));
 
-            PaymentScheduleElement paymentScheduleElement2 = new PaymentScheduleElement();
-            paymentScheduleElement2.setNumber(2);
-            paymentScheduleElement2.setDate(LocalDate.of(2022, 8, 6));
-            paymentScheduleElement2.setTotalPayment(BigDecimal.valueOf(203508.00000).setScale(5));
-            paymentScheduleElement2.setInterestPayment(BigDecimal.valueOf(1754.00000).setScale(5));
-            paymentScheduleElement2.setDebtPayment(BigDecimal.valueOf(101754.00000).setScale(5));
-            paymentScheduleElement2.setRemainingDebt(BigDecimal.valueOf(0.00000).setScale(5));
+            PaymentScheduleElement paymentScheduleElement2 = getPaymentScheduleElement(2, LocalDate.of(2022, 8, 7), BigDecimal.valueOf(203508.00000).setScale(5),
+                    BigDecimal.valueOf(1754.00000).setScale(5), BigDecimal.valueOf(101754.00000).setScale(5), BigDecimal.valueOf(0.00000).setScale(5));
 
             paymentSchedule.add(paymentScheduleElement1);
             paymentSchedule.add(paymentScheduleElement2);
 
-            CreditDTO creditDTO = new CreditDTO();
-            creditDTO.setAmount(BigDecimal.valueOf(200000));
-            creditDTO.setTerm(2);
-            creditDTO.setMonthlyPayment(BigDecimal.valueOf(101754.00000).setScale(5));
-            creditDTO.setRate(BigDecimal.valueOf(14));
-            creditDTO.setPsk(BigDecimal.valueOf(203508.00000).setScale(5));
-            creditDTO.setIsInsuranceEnabled(false);
-            creditDTO.setIsSalaryClient(true);
-            creditDTO.setPaymentSchedule(paymentSchedule);
+            CreditDTO creditDTO = getCreditDTO(BigDecimal.valueOf(200000), 2, BigDecimal.valueOf(101754.00000).setScale(5), BigDecimal.valueOf(14),
+                    BigDecimal.valueOf(203508.00000).setScale(5), false, true, paymentSchedule);
 
 
             Assertions.assertEquals(creditDTO, conveyorService.loanCalculation(scoringDataDTO));
         });
+    }
+
+    private CreditDTO getCreditDTO(BigDecimal amount, Integer term, BigDecimal monthlyPayment, BigDecimal rate, BigDecimal psk, Boolean isInsuranceEnabled, Boolean isSalaryClient, List<PaymentScheduleElement> paymentSchedule) {
+
+        CreditDTO creditDTO = new CreditDTO();
+        creditDTO.setAmount(amount);
+        creditDTO.setTerm(term);
+        creditDTO.setMonthlyPayment(monthlyPayment);
+        creditDTO.setRate(rate);
+        creditDTO.setPsk(psk);
+        creditDTO.setIsInsuranceEnabled(isInsuranceEnabled);
+        creditDTO.setIsSalaryClient(isSalaryClient);
+        creditDTO.setPaymentSchedule(paymentSchedule);
+
+        return creditDTO;
+    }
+
+    private PaymentScheduleElement getPaymentScheduleElement(Integer number, LocalDate date, BigDecimal totalPayment, BigDecimal interestPayment, BigDecimal debtPayment, BigDecimal remainingDebt) {
+        PaymentScheduleElement paymentScheduleElement = new PaymentScheduleElement();
+        paymentScheduleElement.setNumber(number);
+        paymentScheduleElement.setDate(date);
+        paymentScheduleElement.setTotalPayment(totalPayment);
+        paymentScheduleElement.setInterestPayment(interestPayment);
+        paymentScheduleElement.setDebtPayment(debtPayment);
+        paymentScheduleElement.setRemainingDebt(remainingDebt);
+        return paymentScheduleElement;
+    }
+
+    private EmploymentDTO getEmploymentDTO(EmploymentStatus employmentStatus, String INN, BigDecimal salary, Position position, Integer workExperienceTotal, Integer workExperienceCurrent) {
+
+        EmploymentDTO employment = new EmploymentDTO();
+        employment.setEmploymentStatus(employmentStatus);
+        employment.setEmployerINN(INN);
+        employment.setSalary(salary);
+        employment.setPosition(position);
+        employment.setWorkExperienceTotal(workExperienceTotal);
+        employment.setWorkExperienceCurrent(workExperienceCurrent);
+        return employment;
+    }
+
+    private ScoringDataDTO getScoringDataDTO(BigDecimal amount, Integer term, String firstName, String lastName, String middleName, Genders genders, LocalDate birthdate, String passportSeries, String passportNumber,
+                                             LocalDate passportIssueDate, String passportIssueBranch, MaritalStatus status, Integer dependentAmount, EmploymentDTO employment, String account, Boolean isInsuranceEnabled, Boolean isSalaryClient) {
+
+        ScoringDataDTO scoringDataDTO = new ScoringDataDTO();
+        scoringDataDTO.setAmount(amount);
+        scoringDataDTO.setTerm(term);
+        scoringDataDTO.setFirstName(firstName);
+        scoringDataDTO.setLastName(lastName);
+        scoringDataDTO.setMiddleName(middleName);
+        scoringDataDTO.setGender(genders);
+        scoringDataDTO.setBirthdate(birthdate);
+        scoringDataDTO.setPassportSeries(passportSeries);
+        scoringDataDTO.setPassportNumber(passportNumber);
+        scoringDataDTO.setPassportIssueDate(passportIssueDate);
+        scoringDataDTO.setPassportIssueBranch(passportIssueBranch);
+        scoringDataDTO.setMaritalStatus(status);
+        scoringDataDTO.setDependentAmount(dependentAmount);
+        scoringDataDTO.setEmployment(employment);
+        scoringDataDTO.setAccount(account);
+        scoringDataDTO.setIsInsuranceEnabled(isInsuranceEnabled);
+        scoringDataDTO.setIsSalaryClient(isSalaryClient);
+
+        return scoringDataDTO;
     }
 }
