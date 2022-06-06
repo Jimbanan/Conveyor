@@ -69,7 +69,7 @@ public class ConveyorServiceImpl implements ConveyorService {
 
         log.info("formationOfOffers() - Предлагаемая ставка: {}", rate);
 
-        BigDecimal monthlyPayment = calculations.getMonthlyPayment(rate, totalAmount);
+        BigDecimal monthlyPayment = calculations.getMonthlyPayment(rate, totalAmount, loanApplicationRequestDTO.getTerm());
 
         log.info("formationOfOffers() - Ежемесячная плата: {}", monthlyPayment);
 
@@ -172,7 +172,7 @@ public class ConveyorServiceImpl implements ConveyorService {
             throw new ScoringException("Current work experience less than 3 months - Denied");
         }
 
-        BigDecimal monthlyPayment = calculations.getMonthlyPayment(rate, amount);
+        BigDecimal monthlyPayment = calculations.getMonthlyPayment(rate, amount, scoringDataDTO.getTerm());
 
         return CreditDTO.builder()
                 .amount(amount)
@@ -186,7 +186,7 @@ public class ConveyorServiceImpl implements ConveyorService {
                 .build();
     }
 
-    private List<PaymentScheduleElement> getPaymentScheduleElement(Integer term, BigDecimal monthlyPayment, BigDecimal amount, BigDecimal totalAmount) {
+    public List<PaymentScheduleElement> getPaymentScheduleElement(Integer term, BigDecimal monthlyPayment, BigDecimal amount, BigDecimal totalAmount) {
         log.info("getPaymentScheduleElement() - term: {}, monthlyPayment: {}, amount: {}, totalAmount: {}", term, monthlyPayment, amount, totalAmount);
 
         List<PaymentScheduleElement> paymentScheduleElementList = new ArrayList<>();

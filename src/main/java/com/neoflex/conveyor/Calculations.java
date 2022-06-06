@@ -1,6 +1,5 @@
 package com.neoflex.conveyor;
 
-import lombok.extern.log4j.Log4j;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -22,12 +21,12 @@ public class Calculations {
         return monthlyInterest;
     }
 
-    public BigDecimal getMonthlyPayment(BigDecimal rate, BigDecimal totalAmount) {
+    public BigDecimal getMonthlyPayment(BigDecimal rate, BigDecimal totalAmount, Integer term) {
         log.info("getMonthlyPayment() - rate: {}, totalAmount: {}", rate, totalAmount);
 
         BigDecimal i = getMonthlyInterest(rate);
 
-        BigDecimal monthlyPayment = totalAmount.multiply(i.add(i.divide(i.add(BigDecimal.valueOf(1)).pow(6).subtract(BigDecimal.valueOf(1)), 5, RoundingMode.HALF_UP)));
+        BigDecimal monthlyPayment = totalAmount.multiply(i.add(i.divide(i.add(BigDecimal.valueOf(1)).pow(term).subtract(BigDecimal.valueOf(1)), 5, RoundingMode.HALF_UP)));
 
         log.info("getMonthlyPayment() - Ежемесячная оплата: {}", monthlyPayment);
 

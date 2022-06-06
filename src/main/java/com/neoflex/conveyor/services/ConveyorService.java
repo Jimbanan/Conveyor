@@ -1,10 +1,8 @@
 package com.neoflex.conveyor.services;
 
-import com.neoflex.conveyor.DTO.CreditDTO;
-import com.neoflex.conveyor.DTO.LoanApplicationRequestDTO;
-import com.neoflex.conveyor.DTO.LoanOfferDTO;
-import com.neoflex.conveyor.DTO.ScoringDataDTO;
+import com.neoflex.conveyor.DTO.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public interface ConveyorService {
@@ -15,4 +13,6 @@ public interface ConveyorService {
 
     CreditDTO loanCalculation(ScoringDataDTO scoringDataDTO);
 
-}
+    List<PaymentScheduleElement> getPaymentScheduleElement(Integer term, BigDecimal monthlyPayment, BigDecimal amount, BigDecimal totalAmount);
+
+    }
