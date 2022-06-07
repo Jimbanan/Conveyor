@@ -111,62 +111,22 @@ class ConveyorServiceImplTest {
         ReflectionTestUtils.setField(conveyorService, "BaseRate", BigDecimal.valueOf(20));
         ReflectionTestUtils.setField(conveyorService, "calculations", calculations);
 
-        LoanApplicationRequestDTO loanApplicationRequestDTO = new LoanApplicationRequestDTO();
+        LoanApplicationRequestDTO loanApplicationRequestDTO = getLoanApplicationRequestDTO(BigDecimal.valueOf(10000), 6, "Николай", "Козьяков", "Николаевич", "uservice371@mail.ru",
+                LocalDate.of(1991, 9, 26), "1234", "123456");
 
-        loanApplicationRequestDTO.setAmount(BigDecimal.valueOf(10000));
-        loanApplicationRequestDTO.setTerm(6);
-        loanApplicationRequestDTO.setFirstName("Николай");
-        loanApplicationRequestDTO.setLastName("Козьяков");
-        loanApplicationRequestDTO.setMiddleName("Николаевич");
-        loanApplicationRequestDTO.setEmail("uservice371@mail.ru");
-        loanApplicationRequestDTO.setBirthdate(LocalDate.of(1991, 9, 26));
-        loanApplicationRequestDTO.setPassportSeries("1234");
-        loanApplicationRequestDTO.setPassportNumber("123456");
-
-        LoanOfferDTO loanOfferDTO1 = new LoanOfferDTO();
-        loanOfferDTO1.setApplicationId(1L);
-        loanOfferDTO1.setRequestedAmount(BigDecimal.valueOf(10000));
-        loanOfferDTO1.setTotalAmount(BigDecimal.valueOf(10995.3900000).setScale(7));
-        loanOfferDTO1.setTerm(6);
-        loanOfferDTO1.setMonthlyPayment(BigDecimal.valueOf(1832.5650000).setScale(7));
-        loanOfferDTO1.setRate(BigDecimal.valueOf(16));
-        loanOfferDTO1.setIsInsuranceEnabled(true);
-        loanOfferDTO1.setIsSalaryClient(true);
+        LoanOfferDTO loanOfferDTO1 = getLoanOfferDTO(1L, BigDecimal.valueOf(10000), BigDecimal.valueOf(10995.3900000).setScale(7), 6, BigDecimal.valueOf(1832.5650000).setScale(7), BigDecimal.valueOf(16), true, true);
 
         Assertions.assertEquals(loanOfferDTO1, conveyorService.formationOfOffers(loanApplicationRequestDTO, true, true));
 
-        LoanOfferDTO loanOfferDTO2 = new LoanOfferDTO();
-        loanOfferDTO2.setApplicationId(1L);
-        loanOfferDTO2.setRequestedAmount(BigDecimal.valueOf(10000));
-        loanOfferDTO2.setTotalAmount(BigDecimal.valueOf(11026.8900000).setScale(7));
-        loanOfferDTO2.setTerm(6);
-        loanOfferDTO2.setMonthlyPayment(BigDecimal.valueOf(1837.8150000).setScale(7));
-        loanOfferDTO2.setRate(BigDecimal.valueOf(17));
-        loanOfferDTO2.setIsInsuranceEnabled(true);
-        loanOfferDTO2.setIsSalaryClient(false);
+        LoanOfferDTO loanOfferDTO2 = getLoanOfferDTO(1L, BigDecimal.valueOf(10000), BigDecimal.valueOf(11026.8900000).setScale(7), 6, BigDecimal.valueOf(1837.8150000).setScale(7), BigDecimal.valueOf(17), true, false);
 
         Assertions.assertEquals(loanOfferDTO2, conveyorService.formationOfOffers(loanApplicationRequestDTO, true, false));
-        LoanOfferDTO loanOfferDTO3 = new LoanOfferDTO();
-        loanOfferDTO3.setApplicationId(1L);
-        loanOfferDTO3.setRequestedAmount(BigDecimal.valueOf(10000));
-        loanOfferDTO3.setTotalAmount(BigDecimal.valueOf(10591.20000).setScale(5));
-        loanOfferDTO3.setTerm(6);
-        loanOfferDTO3.setMonthlyPayment(BigDecimal.valueOf(1765.20000).setScale(5));
-        loanOfferDTO3.setRate(BigDecimal.valueOf(20));
-        loanOfferDTO3.setIsInsuranceEnabled(false);
-        loanOfferDTO3.setIsSalaryClient(false);
+
+        LoanOfferDTO loanOfferDTO3 = getLoanOfferDTO(1L, BigDecimal.valueOf(10000), BigDecimal.valueOf(10591.20000).setScale(5), 6, BigDecimal.valueOf(1765.20000).setScale(5), BigDecimal.valueOf(20), false, false);
 
         Assertions.assertEquals(loanOfferDTO3, conveyorService.formationOfOffers(loanApplicationRequestDTO, false, false));
 
-        LoanOfferDTO loanOfferDTO4 = new LoanOfferDTO();
-        loanOfferDTO4.setApplicationId(1L);
-        loanOfferDTO4.setRequestedAmount(BigDecimal.valueOf(10000));
-        loanOfferDTO4.setTotalAmount(BigDecimal.valueOf(10561.20000).setScale(5));
-        loanOfferDTO4.setTerm(6);
-        loanOfferDTO4.setMonthlyPayment(BigDecimal.valueOf(1760.20000).setScale(5));
-        loanOfferDTO4.setRate(BigDecimal.valueOf(19));
-        loanOfferDTO4.setIsInsuranceEnabled(false);
-        loanOfferDTO4.setIsSalaryClient(true);
+        LoanOfferDTO loanOfferDTO4 = getLoanOfferDTO(1L, BigDecimal.valueOf(10000), BigDecimal.valueOf(10561.20000).setScale(5), 6, BigDecimal.valueOf(1760.20000).setScale(5), BigDecimal.valueOf(19), false, true);
 
         Assertions.assertEquals(loanOfferDTO4, conveyorService.formationOfOffers(loanApplicationRequestDTO, false, true));
 
@@ -179,25 +139,8 @@ class ConveyorServiceImplTest {
 
         EmploymentDTO employment1 = getEmploymentDTO(EmploymentStatus.BUSINESS_OWNER, "7727563778", BigDecimal.valueOf(10000), Position.MIDDLE_MANAGER, 30, 5);
 
-        ScoringDataDTO scoringDataDTO = new ScoringDataDTO();
-        scoringDataDTO.setAmount(BigDecimal.valueOf(200000));
-        scoringDataDTO.setTerm(2);
-        scoringDataDTO.setFirstName("Николай");
-        scoringDataDTO.setLastName("Козьяков");
-        scoringDataDTO.setMiddleName("Николаевич");
-        scoringDataDTO.setGender(Genders.MALE);
-        scoringDataDTO.setBirthdate(LocalDate.of(1980, 9, 29));
-        scoringDataDTO.setPassportSeries("1234");
-        scoringDataDTO.setPassportNumber("123456");
-        scoringDataDTO.setPassportIssueDate(LocalDate.of(2002, 9, 29));
-        scoringDataDTO.setPassportIssueBranch("Улица Пушкина - Дом Колотушкина");
-        scoringDataDTO.setMaritalStatus(MaritalStatus.MARRIED_MARRIED);
-        scoringDataDTO.setDependentAmount(1);
-        scoringDataDTO.setEmployment(employment1);
-        scoringDataDTO.setAccount("40817810099910004312");
-        scoringDataDTO.setIsInsuranceEnabled(false);
-        scoringDataDTO.setIsSalaryClient(true);
-
+        ScoringDataDTO scoringDataDTO = getScoringDataDTO(BigDecimal.valueOf(200000), 2, "Николай", "Козьяков", "Николаевич", Genders.MALE, LocalDate.of(1980, 9, 29),
+                "1234", "123456", LocalDate.of(2002, 9, 29), "Улица Пушкина - Дом Колотушкина", MaritalStatus.MARRIED_MARRIED, 1, employment1, "40817810099910004312", false, true);
 
         List<PaymentScheduleElement> paymentSchedule = new ArrayList<>();
 
@@ -217,29 +160,11 @@ class ConveyorServiceImplTest {
 
         EmploymentDTO employment2 = getEmploymentDTO(EmploymentStatus.SELF_EMPLOYED, "7727563778", BigDecimal.valueOf(10000), Position.TOP_MANAGER, 30, 5);
 
-
-        scoringDataDTO.setAmount(BigDecimal.valueOf(200000));
-        scoringDataDTO.setTerm(2);
-        scoringDataDTO.setFirstName("Зинаида");
-        scoringDataDTO.setLastName("Занаииииииида");
-        scoringDataDTO.setMiddleName("Зинаидовна");
-        scoringDataDTO.setGender(Genders.WOMAN);
-        scoringDataDTO.setBirthdate(LocalDate.of(1980, 9, 29));
-        scoringDataDTO.setPassportSeries("1234");
-        scoringDataDTO.setPassportNumber("123456");
-        scoringDataDTO.setPassportIssueDate(LocalDate.of(2002, 9, 29));
-        scoringDataDTO.setPassportIssueBranch("Улица Пушкина - Дом Колотушкина");
-        scoringDataDTO.setMaritalStatus(MaritalStatus.DIVORCED);
-        scoringDataDTO.setDependentAmount(5);
-        scoringDataDTO.setEmployment(employment2);
-        scoringDataDTO.setAccount("40817810099910004312");
-        scoringDataDTO.setIsInsuranceEnabled(true);
-        scoringDataDTO.setIsSalaryClient(true);
-
+        scoringDataDTO = getScoringDataDTO(BigDecimal.valueOf(200000), 2, "Зинаида", "Занаииииииида", "Зинаидовна", Genders.WOMAN, LocalDate.of(1980, 9, 29),
+                "1234", "123456", LocalDate.of(2002, 9, 29), "Улица Пушкина - Дом Колотушкина", MaritalStatus.DIVORCED, 5, employment2, "40817810099910004312", true, true);
 
         List<PaymentScheduleElement> paymentSchedule2 = new ArrayList<>();
 
-        //TODO - ДОДЕЛАТЬ
         paymentScheduleElement1.setNumber(1);
         paymentScheduleElement1.setDate(LocalDate.of(2022, 7, 7));
         paymentScheduleElement1.setTotalPayment(BigDecimal.valueOf(107895.9000000).setScale(7));
@@ -260,7 +185,6 @@ class ConveyorServiceImplTest {
         creditDTO = getCreditDTO(BigDecimal.valueOf(210000.00).setScale(2), 2, BigDecimal.valueOf(107895.9000000).setScale(7), BigDecimal.valueOf(22), BigDecimal.valueOf(215791.8000000).setScale(7),
                 true, true, paymentSchedule);
 
-
         Assertions.assertEquals(creditDTO, conveyorService.loanCalculation(scoringDataDTO));
     }
 
@@ -280,7 +204,6 @@ class ConveyorServiceImplTest {
         paymentSchedule.add(paymentScheduleElement1);
         paymentSchedule.add(paymentScheduleElement2);
 
-
         Assertions.assertEquals(paymentSchedule, conveyorService.getPaymentScheduleElement(2, BigDecimal.valueOf(101754.00000).setScale(5), BigDecimal.valueOf(200000), BigDecimal.valueOf(203508.00000).setScale(5)));
 
     }
@@ -293,25 +216,8 @@ class ConveyorServiceImplTest {
 
             EmploymentDTO employment1 = getEmploymentDTO(EmploymentStatus.UNEMPLOYED, "7727563778", BigDecimal.valueOf(10000), Position.MIDDLE_MANAGER, 30, 5);
 
-            ScoringDataDTO scoringDataDTO = new ScoringDataDTO();
-            scoringDataDTO.setAmount(BigDecimal.valueOf(200000));
-            scoringDataDTO.setTerm(2);
-            scoringDataDTO.setFirstName("Николай");
-            scoringDataDTO.setLastName("Козьяков");
-            scoringDataDTO.setMiddleName("Николаевич");
-            scoringDataDTO.setGender(Genders.MALE);
-            scoringDataDTO.setBirthdate(LocalDate.of(1980, 9, 29));
-            scoringDataDTO.setPassportSeries("1234");
-            scoringDataDTO.setPassportNumber("123456");
-            scoringDataDTO.setPassportIssueDate(LocalDate.of(2002, 9, 29));
-            scoringDataDTO.setPassportIssueBranch("Улица Пушкина - Дом Колотушкина");
-            scoringDataDTO.setMaritalStatus(MaritalStatus.MARRIED_MARRIED);
-            scoringDataDTO.setDependentAmount(1);
-            scoringDataDTO.setEmployment(employment1);
-            scoringDataDTO.setAccount("40817810099910004312");
-            scoringDataDTO.setIsInsuranceEnabled(false);
-            scoringDataDTO.setIsSalaryClient(true);
-
+            ScoringDataDTO scoringDataDTO = getScoringDataDTO(BigDecimal.valueOf(200000), 2, "Николай", "Козьяков", "Николаевич", Genders.MALE, LocalDate.of(1980, 9, 29),
+                    "1234", "123456", LocalDate.of(2002, 9, 29), "Улица Пушкина - Дом Колотушкина", MaritalStatus.MARRIED_MARRIED, 1, employment1, "40817810099910004312", false, true);
 
             List<PaymentScheduleElement> paymentSchedule = new ArrayList<>();
 
@@ -326,7 +232,6 @@ class ConveyorServiceImplTest {
 
             CreditDTO creditDTO = getCreditDTO(BigDecimal.valueOf(200000), 2, BigDecimal.valueOf(101754.00000).setScale(5), BigDecimal.valueOf(14), BigDecimal.valueOf(203508.00000).setScale(5),
                     false, true, paymentSchedule);
-
 
             Assertions.assertEquals(creditDTO, conveyorService.loanCalculation(scoringDataDTO));
         });
@@ -340,25 +245,8 @@ class ConveyorServiceImplTest {
 
             EmploymentDTO employment1 = getEmploymentDTO(EmploymentStatus.SELF_EMPLOYED, "7727563778", BigDecimal.valueOf(10000), Position.MIDDLE_MANAGER, 30, 5);
 
-            ScoringDataDTO scoringDataDTO = new ScoringDataDTO();
-            scoringDataDTO.setAmount(BigDecimal.valueOf(500000));
-            scoringDataDTO.setTerm(2);
-            scoringDataDTO.setFirstName("Николай");
-            scoringDataDTO.setLastName("Козьяков");
-            scoringDataDTO.setMiddleName("Николаевич");
-            scoringDataDTO.setGender(Genders.MALE);
-            scoringDataDTO.setBirthdate(LocalDate.of(1980, 9, 29));
-            scoringDataDTO.setPassportSeries("1234");
-            scoringDataDTO.setPassportNumber("123456");
-            scoringDataDTO.setPassportIssueDate(LocalDate.of(2002, 9, 29));
-            scoringDataDTO.setPassportIssueBranch("Улица Пушкина - Дом Колотушкина");
-            scoringDataDTO.setMaritalStatus(MaritalStatus.MARRIED_MARRIED);
-            scoringDataDTO.setDependentAmount(1);
-            scoringDataDTO.setEmployment(employment1);
-            scoringDataDTO.setAccount("40817810099910004312");
-            scoringDataDTO.setIsInsuranceEnabled(false);
-            scoringDataDTO.setIsSalaryClient(true);
-
+            ScoringDataDTO scoringDataDTO = getScoringDataDTO(BigDecimal.valueOf(500000), 2, "Николай", "Козьяков", "Николаевич", Genders.MALE, LocalDate.of(1980, 9, 29),
+                    "1234", "123456", LocalDate.of(2002, 9, 29), "Улица Пушкина - Дом Колотушкина", MaritalStatus.MARRIED_MARRIED, 1, employment1, "40817810099910004312", false, true);
 
             List<PaymentScheduleElement> paymentSchedule = new ArrayList<>();
 
@@ -374,7 +262,6 @@ class ConveyorServiceImplTest {
             CreditDTO creditDTO = getCreditDTO(BigDecimal.valueOf(200000), 2, BigDecimal.valueOf(101754.00000).setScale(5), BigDecimal.valueOf(14), BigDecimal.valueOf(203508.00000).setScale(5),
                     false, true, paymentSchedule);
 
-
             Assertions.assertEquals(creditDTO, conveyorService.loanCalculation(scoringDataDTO));
         });
     }
@@ -387,25 +274,8 @@ class ConveyorServiceImplTest {
 
             EmploymentDTO employment1 = getEmploymentDTO(EmploymentStatus.SELF_EMPLOYED, "7727563778", BigDecimal.valueOf(10000), Position.MIDDLE_MANAGER, 30, 5);
 
-            ScoringDataDTO scoringDataDTO = new ScoringDataDTO();
-            scoringDataDTO.setAmount(BigDecimal.valueOf(150000));
-            scoringDataDTO.setTerm(2);
-            scoringDataDTO.setFirstName("Николай");
-            scoringDataDTO.setLastName("Козьяков");
-            scoringDataDTO.setMiddleName("Николаевич");
-            scoringDataDTO.setGender(Genders.MALE);
-            scoringDataDTO.setBirthdate(LocalDate.of(2020, 9, 29));
-            scoringDataDTO.setPassportSeries("1234");
-            scoringDataDTO.setPassportNumber("123456");
-            scoringDataDTO.setPassportIssueDate(LocalDate.of(2002, 9, 29));
-            scoringDataDTO.setPassportIssueBranch("Улица Пушкина - Дом Колотушкина");
-            scoringDataDTO.setMaritalStatus(MaritalStatus.MARRIED_MARRIED);
-            scoringDataDTO.setDependentAmount(1);
-            scoringDataDTO.setEmployment(employment1);
-            scoringDataDTO.setAccount("40817810099910004312");
-            scoringDataDTO.setIsInsuranceEnabled(false);
-            scoringDataDTO.setIsSalaryClient(true);
-
+            ScoringDataDTO scoringDataDTO = getScoringDataDTO(BigDecimal.valueOf(150000), 2, "Николай", "Козьяков", "Николаевич", Genders.MALE, LocalDate.of(2020, 9, 29),
+                    "1234", "123456", LocalDate.of(2002, 9, 29), "Улица Пушкина - Дом Колотушкина", MaritalStatus.MARRIED_MARRIED, 1, employment1, "40817810099910004312", false, true);
 
             List<PaymentScheduleElement> paymentSchedule = new ArrayList<>();
 
@@ -433,25 +303,8 @@ class ConveyorServiceImplTest {
 
             EmploymentDTO employment1 = getEmploymentDTO(EmploymentStatus.SELF_EMPLOYED, "7727563778", BigDecimal.valueOf(10000), Position.MIDDLE_MANAGER, 30, 5);
 
-            ScoringDataDTO scoringDataDTO = new ScoringDataDTO();
-            scoringDataDTO.setAmount(BigDecimal.valueOf(150000));
-            scoringDataDTO.setTerm(2);
-            scoringDataDTO.setFirstName("Николай");
-            scoringDataDTO.setLastName("Козьяков");
-            scoringDataDTO.setMiddleName("Николаевич");
-            scoringDataDTO.setGender(Genders.MALE);
-            scoringDataDTO.setBirthdate(LocalDate.of(1900, 9, 29));
-            scoringDataDTO.setPassportSeries("1234");
-            scoringDataDTO.setPassportNumber("123456");
-            scoringDataDTO.setPassportIssueDate(LocalDate.of(2002, 9, 29));
-            scoringDataDTO.setPassportIssueBranch("Улица Пушкина - Дом Колотушкина");
-            scoringDataDTO.setMaritalStatus(MaritalStatus.MARRIED_MARRIED);
-            scoringDataDTO.setDependentAmount(1);
-            scoringDataDTO.setEmployment(employment1);
-            scoringDataDTO.setAccount("40817810099910004312");
-            scoringDataDTO.setIsInsuranceEnabled(false);
-            scoringDataDTO.setIsSalaryClient(true);
-
+            ScoringDataDTO scoringDataDTO = getScoringDataDTO(BigDecimal.valueOf(150000), 2, "Николай", "Козьяков", "Николаевич", Genders.MALE, LocalDate.of(1900, 9, 29),
+                    "1234", "123456", LocalDate.of(2002, 9, 29), "Улица Пушкина - Дом Колотушкина", MaritalStatus.MARRIED_MARRIED, 1, employment1, "40817810099910004312", false, true);
 
             List<PaymentScheduleElement> paymentSchedule = new ArrayList<>();
 
@@ -467,7 +320,6 @@ class ConveyorServiceImplTest {
             CreditDTO creditDTO = getCreditDTO(BigDecimal.valueOf(200000), 2, BigDecimal.valueOf(101754.00000).setScale(5), BigDecimal.valueOf(14),
                     BigDecimal.valueOf(203508.00000).setScale(5), false, true, paymentSchedule);
 
-
             Assertions.assertEquals(creditDTO, conveyorService.loanCalculation(scoringDataDTO));
         });
     }
@@ -480,25 +332,8 @@ class ConveyorServiceImplTest {
 
             EmploymentDTO employment1 = getEmploymentDTO(EmploymentStatus.SELF_EMPLOYED, "7727563778", BigDecimal.valueOf(10000), Position.MIDDLE_MANAGER, 1, 1);
 
-            ScoringDataDTO scoringDataDTO = new ScoringDataDTO();
-            scoringDataDTO.setAmount(BigDecimal.valueOf(150000));
-            scoringDataDTO.setTerm(2);
-            scoringDataDTO.setFirstName("Николай");
-            scoringDataDTO.setLastName("Козьяков");
-            scoringDataDTO.setMiddleName("Николаевич");
-            scoringDataDTO.setGender(Genders.NOT_BINARY);
-            scoringDataDTO.setBirthdate(LocalDate.of(1980, 9, 29));
-            scoringDataDTO.setPassportSeries("1234");
-            scoringDataDTO.setPassportNumber("123456");
-            scoringDataDTO.setPassportIssueDate(LocalDate.of(2002, 9, 29));
-            scoringDataDTO.setPassportIssueBranch("Улица Пушкина - Дом Колотушкина");
-            scoringDataDTO.setMaritalStatus(MaritalStatus.MARRIED_MARRIED);
-            scoringDataDTO.setDependentAmount(1);
-            scoringDataDTO.setEmployment(employment1);
-            scoringDataDTO.setAccount("40817810099910004312");
-            scoringDataDTO.setIsInsuranceEnabled(false);
-            scoringDataDTO.setIsSalaryClient(true);
-
+            ScoringDataDTO scoringDataDTO = getScoringDataDTO(BigDecimal.valueOf(150000), 2, "Николай", "Козьяков", "Николаевич", Genders.NOT_BINARY, LocalDate.of(1980, 9, 29),
+                    "1234", "123456", LocalDate.of(2002, 9, 29), "Улица Пушкина - Дом Колотушкина", MaritalStatus.MARRIED_MARRIED, 1, employment1, "40817810099910004312", false, true);
 
             List<PaymentScheduleElement> paymentSchedule = new ArrayList<>();
 
@@ -513,7 +348,6 @@ class ConveyorServiceImplTest {
 
             CreditDTO creditDTO = getCreditDTO((BigDecimal.valueOf(200000)), 2, BigDecimal.valueOf(101754.00000).setScale(5), BigDecimal.valueOf(14),
                     BigDecimal.valueOf(203508.00000).setScale(5), false, true, paymentSchedule);
-
 
             Assertions.assertEquals(creditDTO, conveyorService.loanCalculation(scoringDataDTO));
         });
@@ -543,7 +377,6 @@ class ConveyorServiceImplTest {
 
             CreditDTO creditDTO = getCreditDTO(BigDecimal.valueOf(200000), 2, BigDecimal.valueOf(101754.00000).setScale(5), BigDecimal.valueOf(14),
                     BigDecimal.valueOf(203508.00000).setScale(5), false, true, paymentSchedule);
-
 
             Assertions.assertEquals(creditDTO, conveyorService.loanCalculation(scoringDataDTO));
         });
@@ -611,4 +444,38 @@ class ConveyorServiceImplTest {
 
         return scoringDataDTO;
     }
+
+    private LoanOfferDTO getLoanOfferDTO(Long applicationId, BigDecimal requestedAmount, BigDecimal totalAmount, Integer term, BigDecimal monthlyPayment, BigDecimal rate, Boolean isInsuranceEnabled, Boolean isSalaryClient) {
+
+        LoanOfferDTO loanOfferDTO = new LoanOfferDTO();
+        loanOfferDTO.setApplicationId(applicationId);
+        loanOfferDTO.setRequestedAmount(requestedAmount);
+        loanOfferDTO.setTotalAmount(totalAmount);
+        loanOfferDTO.setTerm(term);
+        loanOfferDTO.setMonthlyPayment(monthlyPayment);
+        loanOfferDTO.setRate(rate);
+        loanOfferDTO.setIsInsuranceEnabled(isInsuranceEnabled);
+        loanOfferDTO.setIsSalaryClient(isSalaryClient);
+
+        return loanOfferDTO;
+
+    }
+
+    private LoanApplicationRequestDTO getLoanApplicationRequestDTO(BigDecimal amount, Integer term, String firstName, String lastName, String middleName, String email, LocalDate birthdate, String passportSeries, String passportNumber) {
+
+        LoanApplicationRequestDTO loanApplicationRequestDTO = new LoanApplicationRequestDTO();
+
+        loanApplicationRequestDTO.setAmount(amount);
+        loanApplicationRequestDTO.setTerm(term);
+        loanApplicationRequestDTO.setFirstName(firstName);
+        loanApplicationRequestDTO.setLastName(lastName);
+        loanApplicationRequestDTO.setMiddleName(middleName);
+        loanApplicationRequestDTO.setEmail(email);
+        loanApplicationRequestDTO.setBirthdate(birthdate);
+        loanApplicationRequestDTO.setPassportSeries(passportSeries);
+        loanApplicationRequestDTO.setPassportNumber(passportNumber);
+
+        return loanApplicationRequestDTO;
+    }
+
 }
