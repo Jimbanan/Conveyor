@@ -120,25 +120,17 @@ class ConveyorServiceImplTest {
 
         List<PaymentScheduleElement> paymentSchedule2 = new ArrayList<>();
 
-        paymentScheduleElement1.setNumber(1);
-        paymentScheduleElement1.setDate(LocalDate.now().plusMonths(1));
-        paymentScheduleElement1.setTotalPayment(BigDecimal.valueOf(107895.9000000).setScale(7));
-        paymentScheduleElement1.setInterestPayment(BigDecimal.valueOf(2895.9000000).setScale(7));
-        paymentScheduleElement1.setDebtPayment(BigDecimal.valueOf(107895.9000000).setScale(7));
-        paymentScheduleElement1.setRemainingDebt(BigDecimal.valueOf(107895.9000000).setScale(7));
+        paymentScheduleElement1 = getPaymentScheduleElement(1, LocalDate.now().plusMonths(1), BigDecimal.valueOf(107895.9000000).setScale(7), BigDecimal.valueOf(2895.9000000).setScale(7),
+                BigDecimal.valueOf(107895.9000000).setScale(7), BigDecimal.valueOf(107895.9000000).setScale(7));
 
-        paymentScheduleElement2.setNumber(2);
-        paymentScheduleElement2.setDate(LocalDate.now().plusMonths(2));
-        paymentScheduleElement2.setTotalPayment(BigDecimal.valueOf(215791.8000000).setScale(7));
-        paymentScheduleElement2.setInterestPayment(BigDecimal.valueOf(2895.9000000).setScale(7));
-        paymentScheduleElement2.setDebtPayment(BigDecimal.valueOf(107895.9000000).setScale(7));
-        paymentScheduleElement2.setRemainingDebt(BigDecimal.valueOf(0.00000).setScale(7));
+        paymentScheduleElement2 = getPaymentScheduleElement(2, LocalDate.now().plusMonths(2), BigDecimal.valueOf(215791.8000000).setScale(7), BigDecimal.valueOf(2895.9000000).setScale(7),
+                BigDecimal.valueOf(107895.9000000).setScale(7), BigDecimal.valueOf(0.00000).setScale(7));
 
         paymentSchedule2.add(paymentScheduleElement1);
         paymentSchedule2.add(paymentScheduleElement2);
 
         creditDTO = getCreditDTO(BigDecimal.valueOf(210000.00).setScale(2), 2, BigDecimal.valueOf(107895.9000000).setScale(7), BigDecimal.valueOf(22), BigDecimal.valueOf(215791.8000000).setScale(7),
-                true, true, paymentSchedule);
+                true, true, paymentSchedule2);
 
         Assertions.assertEquals(creditDTO, conveyorService.loanCalculation(scoringDataDTO));
     }
