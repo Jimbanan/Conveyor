@@ -19,7 +19,7 @@ public class Employment_status {
     @Column
     private String employment_status;
 
-    //------------------------------------FOREIGN ENTITIES
-    @OneToOne(optional = false, mappedBy = "employmentStatus")
-    public Employment employment;
+//    //------------------------------------FOREIGN ENTITIES
+//    @OneToOne(optional = false, mappedBy = "employmentStatus")
+//    public Employment employment;
 }

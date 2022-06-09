@@ -8,7 +8,12 @@ import com.neoflex.conveyor.services.ConveyorServiceImpl;
 import com.neoflex.conveyor.services.DealServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import javax.validation.Valid;
 import java.util.Comparator;
@@ -33,7 +38,15 @@ public class DealController {
 
         dealService.addClient(loanApplicationRequestDTO);
 
-        return null;
+
+        final String uri = "http://localhost:8080/conveyor/offers";
+
+        RestTemplate restTemplate = new RestTemplate();
+        List<LoanOfferDTO> loanOfferList = restTemplate.postForObject(uri, loanApplicationRequestDTO, List.class);
+
+        System.out.println(loanOfferList);
+
+        return loanOfferList;
     }
 
 //    @PutMapping("/offer")

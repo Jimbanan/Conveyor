@@ -19,7 +19,7 @@ public class Position {
     @Column
     private String position;
 
-    //------------------------------------FOREIGN ENTITIES
-    @OneToOne(optional = false, mappedBy = "position")
-    public Employment employment;
+//    //------------------------------------FOREIGN ENTITIES
+//    @OneToOne(optional = false, mappedBy = "position")
+//    public Employment employment;
 }

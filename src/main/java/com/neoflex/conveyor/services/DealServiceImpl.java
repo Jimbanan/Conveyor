@@ -1,6 +1,8 @@
 package com.neoflex.conveyor.services;
 
 import com.neoflex.conveyor.dto.LoanApplicationRequestDTO;
+import com.neoflex.conveyor.models.application.Application;
+import com.neoflex.conveyor.models.application.ApplicationRepository;
 import com.neoflex.conveyor.models.client.Client;
 import com.neoflex.conveyor.models.client.ClientRepository;
 import com.neoflex.conveyor.models.pasport.Passport;
@@ -18,6 +20,9 @@ public class DealServiceImpl implements DealService {
     @Autowired
     private PassportRepository passportRepository;
 
+    @Autowired
+    private ApplicationRepository applicationRepository;
+
     public void addClient(LoanApplicationRequestDTO loanApplicationRequestDTO) {
 
 
@@ -29,19 +34,18 @@ public class DealServiceImpl implements DealService {
                 loanApplicationRequestDTO.getMiddleName(), loanApplicationRequestDTO.getBirthdate(), loanApplicationRequestDTO.getEmail(),
                 passport);
 
-//        addPassport(loanApplicationRequestDTO.getPassportSeries(), loanApplicationRequestDTO.getPassportNumber());
 
         clientRepository.save(client);
         System.out.println(client.getId());
 
+
+
+
+        Application application = new Application(client);
+        applicationRepository.save(application);
+
     }
 
-    private Long addPassport(String passportSeries, String passportNumber) {
 
-        Passport passport = new Passport(passportSeries, passportNumber);
-
-        passportRepository.save(passport);
-        return passport.getId();
-    }
 
 }

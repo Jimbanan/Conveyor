@@ -22,14 +22,14 @@ public class Application {
     @OneToOne(optional = false)
     @JoinColumn(name = "client_id", unique = true, nullable = false, updatable = false)
     private Client client; // (Клиент)
-
-    @OneToOne(optional = false)
-    @JoinColumn(name = "credit_id", unique = true, nullable = false, updatable = false)
-    private Credit credit; // (Кредит)
-
-    @OneToOne(optional = false)
-    @JoinColumn(name = "status_id", unique = true, nullable = false, updatable = false)
-    private Status status; // (Статус)
+//
+//    @OneToOne(optional = false)
+//    @JoinColumn(name = "credit_id", unique = true, nullable = false, updatable = false)
+//    private Credit credit; // (Кредит)
+//
+//    @OneToOne(optional = false)
+//    @JoinColumn(name = "status_id", unique = true, nullable = false, updatable = false)
+//    private Status status; // (Статус)
 
     @Column
     private LocalDate creation_date; // (Дата создания)
@@ -45,5 +45,8 @@ public class Application {
 
     //status_history (История изменения статусов)
 
+    public Application(Client client) {
+        this.client = client;
+    }
 
 }

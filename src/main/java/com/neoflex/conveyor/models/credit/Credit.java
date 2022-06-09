@@ -36,15 +36,15 @@ public class Credit {
 
 //    private List<PaymentScheduleElement> payment_schedule; (График платежей)
 
-    @OneToOne(optional = false)
-    @JoinColumn(name = "addServices_id", unique = true, nullable = false, updatable = false)
-    private Add_services addServices;// (Пол)
-
-    @OneToOne(optional = false)
-    @JoinColumn(name = "credit_status_id", unique = true, nullable = false, updatable = false)
-    private Credit_status credit_status; //(Статус кредита)
-
-    //------------------------------------FOREIGN ENTITIES
-    @OneToOne(optional = false, mappedBy = "credit")
-    public Application application;
+//    @OneToOne(optional = false)
+//    @JoinColumn(name = "addServices_id", unique = true, nullable = false, updatable = false)
+//    private Add_services addServices;// (Пол)
+//
+//    @OneToOne(optional = false)
+//    @JoinColumn(name = "credit_status_id", unique = true, nullable = false, updatable = false)
+//    private Credit_status credit_status; //(Статус кредита)
+//
+//    //------------------------------------FOREIGN ENTITIES
+//    @OneToOne(optional = false, mappedBy = "credit")
+//    public Application application;
 }

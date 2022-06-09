@@ -19,7 +19,7 @@ public class Credit_status {
     @Column
     private String credit_status;
 
-    //------------------------------------FOREIGN ENTITIES
-    @OneToOne(optional = false, mappedBy = "credit_status")
-    public Credit credit;
+//    //------------------------------------FOREIGN ENTITIES
+//    @OneToOne(optional = false, mappedBy = "credit_status")
+//    public Credit credit;
 }

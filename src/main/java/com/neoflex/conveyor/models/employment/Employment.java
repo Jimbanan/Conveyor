@@ -19,16 +19,16 @@ public class Employment {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @OneToOne(optional = false)
-    @JoinColumn(name = "employmentStatus_id", unique = true, nullable = false, updatable = false)
-    private Employment_status employmentStatus; // (Рабочий статус)
+//    @OneToOne(optional = false)
+//    @JoinColumn(name = "employmentStatus_id", unique = true, nullable = false, updatable = false)
+//    private Employment_status employmentStatus; // (Рабочий статус)
 
     @Column
     private BigDecimal salary;// (зарплата)
 
-    @OneToOne(optional = false)
-    @JoinColumn(name = "position_id", unique = true, nullable = false, updatable = false)
-    private Position position;// (должность)
+//    @OneToOne(optional = false)
+//    @JoinColumn(name = "position_id", unique = true, nullable = false, updatable = false)
+//    private Position position;// (должность)
 
     @Column
     private Integer workExperienceTotal;// (общий опыт работы)
@@ -36,8 +36,8 @@ public class Employment {
     @Column
     private Integer workExperienceCurrent;// (опыт работы на текущем месте)
 
-    //------------------------------------FOREIGN ENTITIES
-    @OneToOne(optional = false, mappedBy = "passport")
-    public Client client;
+//    //------------------------------------FOREIGN ENTITIES
+//    @OneToOne(optional = false, mappedBy = "employment")
+//    public Client client;
 
 }
