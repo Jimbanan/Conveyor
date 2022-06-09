@@ -5,16 +5,20 @@ import com.neoflex.conveyor.enums.EmploymentStatus;
 import com.neoflex.conveyor.enums.Genders;
 import com.neoflex.conveyor.enums.MaritalStatus;
 import com.neoflex.conveyor.enums.Position;
-import lombok.Getter;
-import lombok.Setter;
+import com.neoflex.conveyor.models.application.Application;
+import com.neoflex.conveyor.models.employment.Employment;
+import com.neoflex.conveyor.models.gender.Gender;
+import com.neoflex.conveyor.models.marital_status.Marital_status;
+import com.neoflex.conveyor.models.pasport.Passport;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Entity
-@Getter
-@Setter
+@Data
+@NoArgsConstructor
 @Table(name = "client")
 public class Client {
 
@@ -22,30 +26,53 @@ public class Client {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @Column
     private String lastName;// (Фамилия)
-    private String firstName;// (Имя)
-    private String middleName;// (Отчество)
-    private LocalDate birthdate;// (Дата рождения)
-    private String email;// (Email адрес)
-    private Genders gender;// (Пол)
-    private MaritalStatus maritalStatus;// (Семейное положение)
 
+    @Column
+    private String firstName;// (Имя)
+
+    @Column
+    private String middleName;// (Отчество)
+
+    @Column
+    private LocalDate birthdate;// (Дата рождения)
+
+    @Column
+    private String email;// (Email адрес)
+
+    @OneToOne(optional = false)
+    @JoinColumn(name = "gender_id", unique = true, nullable = false, updatable = false)
+    private Gender gender;// (Пол)
+
+    @OneToOne(optional = false)
+    @JoinColumn(name = "maritalStatus_id", unique = true, nullable = false, updatable = false)
+    private Marital_status maritalStatus;// (Семейное положение)
+
+    @Column
     private Integer dependentAmount;// (Количество иждивенцев)
 
-     //    passport (Паспорт)
+    @OneToOne(optional = false)
+    @JoinColumn(name = "passport_id", unique = true, nullable = false, updatable = false)
+    private Passport passport;
 
-    private String passportSeries;// (серия)
-    private String passportNumber;// (номер)
-    private LocalDate passportIssueDate;// (дата выдачи)
-    private String passportIssueBranch;// (отделение)
-//    private EmploymentDTO employment;// (Работа)
-    private EmploymentStatus employmentStatus; // (Рабочий статус)
+    @OneToOne(optional = false)
+    @JoinColumn(name = "employment_id", unique = true, nullable = false, updatable = false)
+    private Employment employment;// (Работа)
 
-    private BigDecimal salary;// (зарплата)
-    private Position position;// (должность)
-
-    private Integer workExperienceTotal;// (общий опыт работы)
-    private Integer workExperienceCurrent;// (опыт работы на текущем месте)
+    @Column
     private String account;// (Счет клиента)
-//
+
+    public Client(String lastName, String firstName, String middleName, LocalDate birthdate, String email, Passport passport) {
+        this.lastName = lastName;
+        this.firstName = firstName;
+        this.middleName = middleName;
+        this.birthdate = birthdate;
+        this.email = email;
+        this.passport = passport;
+    }
+
+    //------------------------------------FOREIGN ENTITIES
+    @OneToOne(optional = false, mappedBy = "client")
+    public Application application;
 }

@@ -1,5 +1,6 @@
 package com.neoflex.conveyor.models.marital_status;
 
+import com.neoflex.conveyor.models.client.Client;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -13,6 +14,11 @@ public class Marital_status {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @Column
     private String marital_status;
+
+    //------------------------------------FOREIGN ENTITIES
+    @OneToOne(optional = false, mappedBy = "maritalStatus")
+    public Client client;
 
 }
