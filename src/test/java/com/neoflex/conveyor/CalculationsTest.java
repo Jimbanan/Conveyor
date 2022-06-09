@@ -1,14 +1,7 @@
 package com.neoflex.conveyor;
 
-import com.neoflex.conveyor.services.ConveyorServiceImpl;
-import org.junit.Before;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Spy;
-import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.test.util.ReflectionTestUtils;
-
 import java.math.BigDecimal;
 
 class CalculationsTest {
