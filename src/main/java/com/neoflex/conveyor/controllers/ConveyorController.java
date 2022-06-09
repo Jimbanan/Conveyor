@@ -1,9 +1,9 @@
 package com.neoflex.conveyor.controllers;
 
-import com.neoflex.conveyor.DTO.CreditDTO;
-import com.neoflex.conveyor.DTO.LoanApplicationRequestDTO;
-import com.neoflex.conveyor.DTO.LoanOfferDTO;
-import com.neoflex.conveyor.DTO.ScoringDataDTO;
+import com.neoflex.conveyor.dto.CreditDTO;
+import com.neoflex.conveyor.dto.LoanApplicationRequestDTO;
+import com.neoflex.conveyor.dto.LoanOfferDTO;
+import com.neoflex.conveyor.dto.ScoringDataDTO;
 import com.neoflex.conveyor.services.ConveyorServiceImpl;
 //import io.swagger.annotations.Api;
 //import io.swagger.annotations.ApiOperation;

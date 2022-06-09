@@ -1,4 +1,4 @@
-package com.neoflex.conveyor.DTO;
+package com.neoflex.conveyor.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;

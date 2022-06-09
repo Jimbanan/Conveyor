@@ -1,7 +1,7 @@
 package com.neoflex.conveyor.services;
 
 import com.neoflex.conveyor.Calculations;
-import com.neoflex.conveyor.DTO.*;
+import com.neoflex.conveyor.dto.*;
 import com.neoflex.conveyor.Exceptions.ScoringException;
 import com.neoflex.conveyor.enums.EmploymentStatus;
 import com.neoflex.conveyor.enums.Genders;

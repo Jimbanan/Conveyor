@@ -1,6 +1,6 @@
 package com.neoflex.conveyor.services;
 
-import com.neoflex.conveyor.DTO.*;
+import com.neoflex.conveyor.dto.*;
 
 import java.math.BigDecimal;
 import java.util.List;

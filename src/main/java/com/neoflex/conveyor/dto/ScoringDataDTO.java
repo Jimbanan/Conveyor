@@ -1,4 +1,4 @@
-package com.neoflex.conveyor.DTO;
+package com.neoflex.conveyor.dto;
 
 import com.neoflex.conveyor.enums.Genders;
 import com.neoflex.conveyor.enums.MaritalStatus;
