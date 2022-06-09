@@ -1,6 +1,7 @@
 package com.neoflex.conveyor.services;
 
 import com.neoflex.conveyor.dto.LoanApplicationRequestDTO;
+import com.neoflex.conveyor.dto.LoanOfferDTO;
 import com.neoflex.conveyor.models.application.Application;
 import com.neoflex.conveyor.models.application.ApplicationRepository;
 import com.neoflex.conveyor.models.client.Client;
@@ -17,6 +18,7 @@ public class DealServiceImpl implements DealService {
 
     @Autowired
     private ClientRepository clientRepository;
+
     @Autowired
     private PassportRepository passportRepository;
 
@@ -25,27 +27,42 @@ public class DealServiceImpl implements DealService {
 
     public void addClient(LoanApplicationRequestDTO loanApplicationRequestDTO) {
 
+        Passport passport = savePassport(loanApplicationRequestDTO);
+
+        Client client = saveClient(loanApplicationRequestDTO, passport);
+
+        saveApplication(client);
+
+    }
+
+    @Override
+    public void addOffer(LoanOfferDTO loanOfferDTO) {
+
+
+
+    }
+
+    private Passport savePassport(LoanApplicationRequestDTO loanApplicationRequestDTO) {
 
         Passport passport = new Passport(loanApplicationRequestDTO.getPassportSeries(), loanApplicationRequestDTO.getPassportNumber());
 
         passportRepository.save(passport);
+        return passport;
+    }
+
+    private Client saveClient(LoanApplicationRequestDTO loanApplicationRequestDTO, Passport passport) {
 
         Client client = new Client(loanApplicationRequestDTO.getLastName(), loanApplicationRequestDTO.getFirstName(),
                 loanApplicationRequestDTO.getMiddleName(), loanApplicationRequestDTO.getBirthdate(), loanApplicationRequestDTO.getEmail(),
                 passport);
 
-
         clientRepository.save(client);
-        System.out.println(client.getId());
-
-
-
-
-        Application application = new Application(client);
-        applicationRepository.save(application);
-
+        return client;
     }
 
-
+    private void saveApplication(Client client) {
+        Application application = new Application(client);
+        applicationRepository.save(application);
+    }
 
 }

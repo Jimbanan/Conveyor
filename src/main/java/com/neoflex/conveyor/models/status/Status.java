@@ -19,7 +19,7 @@ public class Status {
     @Column
     private String status;
 
-//    //------------------------------------FOREIGN ENTITIES
-//    @OneToOne(optional = false, mappedBy = "status")
-//    public Application application;
+    //------------------------------------FOREIGN ENTITIES
+    @OneToOne(optional = false, mappedBy = "status")
+    public Application application;
 }

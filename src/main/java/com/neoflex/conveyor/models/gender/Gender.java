@@ -19,7 +19,7 @@ public class Gender {
     @Column
     private String gender;
 
-//    //------------------------------------FOREIGN ENTITIES
-//    @OneToOne(optional = false, mappedBy = "gender")
-//    public Client client;
+    //------------------------------------FOREIGN ENTITIES
+    @OneToOne(optional = false, mappedBy = "gender")
+    public Client client;
 }

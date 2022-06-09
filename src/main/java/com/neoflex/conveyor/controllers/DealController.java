@@ -26,20 +26,12 @@ public class DealController {
     @Autowired
     DealServiceImpl dealService;
 
-//    @GetMapping("/test")
-//    public Iterable<Client> test() {
-//        Iterable<Client> clients = clientRepository.findAll();
-//        return clients;
-//    }
-
+    private final String uri = "http://localhost:8080/conveyor/offers";
 
     @PostMapping("/application")
     public List<LoanOfferDTO> offersDeal(@Valid @RequestBody LoanApplicationRequestDTO loanApplicationRequestDTO) {
 
         dealService.addClient(loanApplicationRequestDTO);
-
-
-        final String uri = "http://localhost:8080/conveyor/offers";
 
         RestTemplate restTemplate = new RestTemplate();
         List<LoanOfferDTO> loanOfferList = restTemplate.postForObject(uri, loanApplicationRequestDTO, List.class);
@@ -49,11 +41,12 @@ public class DealController {
         return loanOfferList;
     }
 
-//    @PutMapping("/offer")
-//    public void offers(@Valid @RequestBody LoanOfferDTO loanOfferDTO) {
-//
-//
-//    }
+    @PutMapping("/offer")
+    public void offers(@RequestBody LoanOfferDTO loanOfferDTO) {
+
+        dealService.addOffer(loanOfferDTO);
+
+    }
 
 //    @PutMapping("/calculate/{applicationId}")
 //    public List<LoanOfferDTO> offers(@Valid @RequestBody LoanApplicationRequestDTO loanApplicationRequestDTO) {

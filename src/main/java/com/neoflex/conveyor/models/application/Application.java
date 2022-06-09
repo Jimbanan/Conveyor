@@ -20,16 +20,16 @@ public class Application {
     private Long id;
 
     @OneToOne(optional = false)
-    @JoinColumn(name = "client_id", unique = true, nullable = false, updatable = false)
+    @JoinColumn(name = "client_id", unique = true, updatable = false)
     private Client client; // (Клиент)
-//
-//    @OneToOne(optional = false)
-//    @JoinColumn(name = "credit_id", unique = true, nullable = false, updatable = false)
-//    private Credit credit; // (Кредит)
-//
-//    @OneToOne(optional = false)
-//    @JoinColumn(name = "status_id", unique = true, nullable = false, updatable = false)
-//    private Status status; // (Статус)
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "credit_id", unique = true, updatable = false)
+    private Credit credit; // (Кредит)
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "status_id", unique = true, updatable = false)
+    private Status status; // (Статус)
 
     @Column
     private LocalDate creation_date; // (Дата создания)
@@ -43,7 +43,7 @@ public class Application {
     @Column
     private String ses_code; // (Код ПЭП (Простая Электронная Подпись))
 
-    //status_history (История изменения статусов)
+    //List<ApplicationStatusHistoryDTO> status_history (История изменения статусов)
 
     public Application(Client client) {
         this.client = client;

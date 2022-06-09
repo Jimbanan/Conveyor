@@ -42,9 +42,9 @@ public class Client {
     @Column
     private String email;// (Email адрес)
 
-//    @OneToOne(optional = false)
-//    @JoinColumn(name = "gender_id", unique = true, nullable = false, updatable = false)
-//    private Gender gender;// (Пол)
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "gender_id", unique = true, updatable = false)
+    private Gender gender;// (Пол)
 
 //    @OneToOne(optional = false)
 //    @JoinColumn(name = "marital_status_id", unique = true, nullable = false, updatable = false)
