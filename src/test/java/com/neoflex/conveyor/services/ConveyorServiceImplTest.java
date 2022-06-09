@@ -28,6 +28,8 @@ class ConveyorServiceImplTest {
     @Spy
     Calculations calculations = new Calculations();
 
+    private Long id = 1L;
+
     @Test
     void getOffers() {
 
@@ -35,19 +37,19 @@ class ConveyorServiceImplTest {
 
         List<LoanOfferDTO> loanOfferList = new ArrayList<>();
 
-        LoanOfferDTO loanOfferDTO1 = getLoanOfferDTO(1L, BigDecimal.valueOf(10000), BigDecimal.valueOf(10995.3900000).setScale(7), 6, BigDecimal.valueOf(1832.5650000).setScale(7), BigDecimal.valueOf(16), true, true);
+        LoanOfferDTO loanOfferDTO1 = getLoanOfferDTO(id++, BigDecimal.valueOf(10000), BigDecimal.valueOf(10995.3900000).setScale(7), 6, BigDecimal.valueOf(1832.5650000).setScale(7), BigDecimal.valueOf(16), true, true);
 
         loanOfferList.add(loanOfferDTO1);
 
-        LoanOfferDTO loanOfferDTO2 = getLoanOfferDTO(1L, BigDecimal.valueOf(10000), BigDecimal.valueOf(11026.8900000).setScale(7), 6, BigDecimal.valueOf(1837.8150000).setScale(7), BigDecimal.valueOf(17), true, false);
+        LoanOfferDTO loanOfferDTO2 = getLoanOfferDTO(id++, BigDecimal.valueOf(10000), BigDecimal.valueOf(11026.8900000).setScale(7), 6, BigDecimal.valueOf(1837.8150000).setScale(7), BigDecimal.valueOf(17), true, false);
 
         loanOfferList.add(loanOfferDTO2);
 
-        LoanOfferDTO loanOfferDTO3 = getLoanOfferDTO(1L, BigDecimal.valueOf(10000), BigDecimal.valueOf(10591.20000).setScale(5), 6, BigDecimal.valueOf(1765.20000).setScale(5), BigDecimal.valueOf(20), false, false);
+        LoanOfferDTO loanOfferDTO3 = getLoanOfferDTO(id++, BigDecimal.valueOf(10000), BigDecimal.valueOf(10591.20000).setScale(5), 6, BigDecimal.valueOf(1765.20000).setScale(5), BigDecimal.valueOf(20), false, false);
 
         loanOfferList.add(loanOfferDTO3);
 
-        LoanOfferDTO loanOfferDTO4 = getLoanOfferDTO(1L, BigDecimal.valueOf(10000), BigDecimal.valueOf(10561.20000).setScale(5), 6, BigDecimal.valueOf(1760.20000).setScale(5), BigDecimal.valueOf(19), false, true);
+        LoanOfferDTO loanOfferDTO4 = getLoanOfferDTO(id++, BigDecimal.valueOf(10000), BigDecimal.valueOf(10561.20000).setScale(5), 6, BigDecimal.valueOf(1760.20000).setScale(5), BigDecimal.valueOf(19), false, true);
 
         loanOfferList.add(loanOfferDTO4);
 
@@ -69,19 +71,19 @@ class ConveyorServiceImplTest {
         LoanApplicationRequestDTO loanApplicationRequestDTO = getLoanApplicationRequestDTO(BigDecimal.valueOf(10000), 6, "Николай", "Козьяков", "Николаевич", "uservice371@mail.ru",
                 LocalDate.of(1991, 9, 26), "1234", "123456");
 
-        LoanOfferDTO loanOfferDTO1 = getLoanOfferDTO(1L, BigDecimal.valueOf(10000), BigDecimal.valueOf(10995.3900000).setScale(7), 6, BigDecimal.valueOf(1832.5650000).setScale(7), BigDecimal.valueOf(16), true, true);
+        LoanOfferDTO loanOfferDTO1 = getLoanOfferDTO(id++, BigDecimal.valueOf(10000), BigDecimal.valueOf(10995.3900000).setScale(7), 6, BigDecimal.valueOf(1832.5650000).setScale(7), BigDecimal.valueOf(16), true, true);
 
         Assertions.assertEquals(loanOfferDTO1, conveyorService.formationOfOffers(loanApplicationRequestDTO, true, true));
 
-        LoanOfferDTO loanOfferDTO2 = getLoanOfferDTO(1L, BigDecimal.valueOf(10000), BigDecimal.valueOf(11026.8900000).setScale(7), 6, BigDecimal.valueOf(1837.8150000).setScale(7), BigDecimal.valueOf(17), true, false);
+        LoanOfferDTO loanOfferDTO2 = getLoanOfferDTO(id++, BigDecimal.valueOf(10000), BigDecimal.valueOf(11026.8900000).setScale(7), 6, BigDecimal.valueOf(1837.8150000).setScale(7), BigDecimal.valueOf(17), true, false);
 
         Assertions.assertEquals(loanOfferDTO2, conveyorService.formationOfOffers(loanApplicationRequestDTO, true, false));
 
-        LoanOfferDTO loanOfferDTO3 = getLoanOfferDTO(1L, BigDecimal.valueOf(10000), BigDecimal.valueOf(10591.20000).setScale(5), 6, BigDecimal.valueOf(1765.20000).setScale(5), BigDecimal.valueOf(20), false, false);
+        LoanOfferDTO loanOfferDTO3 = getLoanOfferDTO(id++, BigDecimal.valueOf(10000), BigDecimal.valueOf(10591.20000).setScale(5), 6, BigDecimal.valueOf(1765.20000).setScale(5), BigDecimal.valueOf(20), false, false);
 
         Assertions.assertEquals(loanOfferDTO3, conveyorService.formationOfOffers(loanApplicationRequestDTO, false, false));
 
-        LoanOfferDTO loanOfferDTO4 = getLoanOfferDTO(1L, BigDecimal.valueOf(10000), BigDecimal.valueOf(10561.20000).setScale(5), 6, BigDecimal.valueOf(1760.20000).setScale(5), BigDecimal.valueOf(19), false, true);
+        LoanOfferDTO loanOfferDTO4 = getLoanOfferDTO(id++, BigDecimal.valueOf(10000), BigDecimal.valueOf(10561.20000).setScale(5), 6, BigDecimal.valueOf(1760.20000).setScale(5), BigDecimal.valueOf(19), false, true);
 
         Assertions.assertEquals(loanOfferDTO4, conveyorService.formationOfOffers(loanApplicationRequestDTO, false, true));
 
@@ -102,7 +104,7 @@ class ConveyorServiceImplTest {
         PaymentScheduleElement paymentScheduleElement1 = getPaymentScheduleElement(1, LocalDate.now().plusMonths(1), BigDecimal.valueOf(101754.00000).setScale(5),
                 BigDecimal.valueOf(1754.00000).setScale(5), BigDecimal.valueOf(101754.00000).setScale(5), BigDecimal.valueOf(101754.00000).setScale(5));
 
-        PaymentScheduleElement paymentScheduleElement2 = getPaymentScheduleElement(2,LocalDate.now().plusMonths(2), BigDecimal.valueOf(203508.00000).setScale(5),
+        PaymentScheduleElement paymentScheduleElement2 = getPaymentScheduleElement(2, LocalDate.now().plusMonths(2), BigDecimal.valueOf(203508.00000).setScale(5),
                 BigDecimal.valueOf(1754.00000).setScale(5), BigDecimal.valueOf(101754.00000).setScale(5), BigDecimal.valueOf(0.00000).setScale(5));
 
         paymentSchedule.add(paymentScheduleElement1);
@@ -171,7 +173,7 @@ class ConveyorServiceImplTest {
             PaymentScheduleElement paymentScheduleElement1 = getPaymentScheduleElement(1, LocalDate.now().plusMonths(1), BigDecimal.valueOf(101754.00000).setScale(5),
                     BigDecimal.valueOf(1754.00000).setScale(5), BigDecimal.valueOf(101754.00000).setScale(5), BigDecimal.valueOf(101754.00000).setScale(5));
 
-            PaymentScheduleElement paymentScheduleElement2 = getPaymentScheduleElement(2,LocalDate.now().plusMonths(2), BigDecimal.valueOf(203508.00000).setScale(5),
+            PaymentScheduleElement paymentScheduleElement2 = getPaymentScheduleElement(2, LocalDate.now().plusMonths(2), BigDecimal.valueOf(203508.00000).setScale(5),
                     BigDecimal.valueOf(1754.00000).setScale(5), BigDecimal.valueOf(101754.00000).setScale(5), BigDecimal.valueOf(0.00000).setScale(5));
 
             paymentSchedule.add(paymentScheduleElement1);
