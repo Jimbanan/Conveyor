@@ -15,8 +15,8 @@ import com.neoflex.conveyor.models.credit.Credit;
 import com.neoflex.conveyor.models.credit.CreditRepository;
 import com.neoflex.conveyor.models.employment.Employment;
 import com.neoflex.conveyor.models.employment.EmploymentRepository;
-import com.neoflex.conveyor.models.pasport.Passport;
-import com.neoflex.conveyor.models.pasport.PassportRepository;
+import com.neoflex.conveyor.models.passport.Passport;
+import com.neoflex.conveyor.models.passport.PassportRepository;
 import com.neoflex.conveyor.models.paymentSchedule.PaymentSchedule;
 import com.neoflex.conveyor.models.paymentSchedule.PaymentScheduleRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -61,6 +61,7 @@ public class DealServiceImpl implements DealService {
 
     @Override
     public Long addClient(LoanApplicationRequestDTO loanApplicationRequestDTO) {
+        log.info("addClient() - Long: {}", saveApplication(saveClient(loanApplicationRequestDTO, savePassport(loanApplicationRequestDTO)), Status.PREAPPROVAL));
         return saveApplication(saveClient(loanApplicationRequestDTO, savePassport(loanApplicationRequestDTO)), Status.PREAPPROVAL);
     }
 
@@ -71,6 +72,7 @@ public class DealServiceImpl implements DealService {
         application.setAppliedOffer(loanOfferDTO.getApplicationId());
         application.setSign_date(LocalDate.now());
         applicationRepository.save(application);
+        log.info("addOffer() - void: Информация о выбранном офере добавлена в базу данных");
     }
 
     @Override
@@ -84,8 +86,8 @@ public class DealServiceImpl implements DealService {
         application.getClient().getPassport().setPassportIssueBranch(finishRegistrationRequestDTO.getPassportIssueBrach());
         application.getClient().setEmployment(saveEmployment(finishRegistrationRequestDTO));
         application.getClient().setAccount(finishRegistrationRequestDTO.getAccount());
-
         updateApplication(application);
+        log.info("createScoringDataDTO() - ScoringDataDTO: Информация о Application обновлена в БД");
 
         return ScoringDataDTO.builder()
                 .amount(application.getCredit().getAmount())
@@ -106,12 +108,12 @@ public class DealServiceImpl implements DealService {
                 .isInsuranceEnabled(application.getCredit().getAddServices().getIs_insurance_enabled())
                 .isSalaryClient(application.getCredit().getAddServices().getIs_salary_client())
                 .build();
-
     }
 
     @Override
     public void updateCredit(CreditDTO creditDTO, Long applicationId) {
         List<PaymentSchedule> paymentSchedules = new ArrayList<>();
+        log.info("updateCredit() - void:  List<PaymentSchedule> paymentSchedules - Создан");
 
         for (int i = 0; i < creditDTO.getPaymentSchedule().size(); i++) {
             PaymentSchedule paymentSchedule = new PaymentSchedule();
@@ -123,6 +125,7 @@ public class DealServiceImpl implements DealService {
             paymentSchedule.setRemainingDebt(creditDTO.getPaymentSchedule().get(i).getRemainingDebt());
             paymentSchedules.add(paymentScheduleRepository.save(paymentSchedule));
         }
+        log.info("updateCredit() - void:  List<PaymentSchedule> paymentSchedules - Заполнен и добавлен в БД");
 
         Application application = getApplication(applicationId);
         application.setStatus(Status.APPROVED);
@@ -135,29 +138,36 @@ public class DealServiceImpl implements DealService {
         application.getCredit().getAddServices().setIs_salary_client(creditDTO.getIsSalaryClient());
         application.getCredit().setPayment_schedule(paymentSchedules);
         updateApplication(application, Status.APPROVED);
+        log.info("updateCredit() - void: Информация о Application обновлена в БД");
+
     }
 
     private Application getApplication(Long applicationId) {
+        log.info("getApplication() - Application: запрос для application.id = {}", applicationId);
         return applicationRepository.findById(applicationId).orElseThrow(()
                 -> new NoSuchElementException("with id='" + applicationId + "' does not exist"));
     }
 
     @Transactional
     public void updateApplication(Application application, Status status) {
-
         List<ApplicationStatusHistory> list = new ArrayList<>();
         list.add(addApplicationStatusHistory(status));
 
         application.getStatus_history().add(list.get(0));
+        log.info("updateApplication() - void: Информация о application.status_history добавлена");
+
         applicationRepository.save(application);
+        log.info("updateApplication() - void: Информация о Application обновлена в БД");
     }
 
     private void updateApplication(Application application) {
         applicationRepository.save(application);
+        log.info("updateApplication() - void: Информация о Application обновлена в БД");
     }
 
     private Passport savePassport(LoanApplicationRequestDTO loanApplicationRequestDTO) {
         Passport passport = new Passport(loanApplicationRequestDTO.getPassportSeries(), loanApplicationRequestDTO.getPassportNumber());
+        log.info("savePassport() - Passport: Информация о Passport добавлена в БД");
         return passportRepository.save(passport);
     }
 
@@ -169,6 +179,7 @@ public class DealServiceImpl implements DealService {
         client.setBirthdate(loanApplicationRequestDTO.getBirthdate());
         client.setEmail(loanApplicationRequestDTO.getEmail());
         client.setPassport(passport);
+        log.info("saveClient() - Client: Информация о Client добавлена в БД");
         return clientRepository.save(client);
     }
 
@@ -180,6 +191,7 @@ public class DealServiceImpl implements DealService {
         employment.setPosition(finishRegistrationRequestDTO.getEmployment().getPosition());
         employment.setWorkExperienceTotal(finishRegistrationRequestDTO.getEmployment().getWorkExperienceTotal());
         employment.setWorkExperienceCurrent(finishRegistrationRequestDTO.getEmployment().getWorkExperienceCurrent());
+        log.info("saveEmployment() - Employment: Информация о Employment добавлена в БД");
         return employmentRepository.save(employment);
     }
 
@@ -187,6 +199,7 @@ public class DealServiceImpl implements DealService {
         ApplicationStatusHistory applicationStatusHistory = new ApplicationStatusHistory();
         applicationStatusHistory.setStatus(status);
         applicationStatusHistory.setTime(LocalDateTime.now());
+        log.info("addApplicationStatusHistory() - ApplicationStatusHistory: Информация о ApplicationStatusHistory добавлена в БД");
         return applicationStatusHistoryRepository.save(applicationStatusHistory);
     }
 
@@ -196,6 +209,7 @@ public class DealServiceImpl implements DealService {
         application.setStatus(status);
         application.setStatus_history(Arrays.asList(addApplicationStatusHistory(status)));
         applicationRepository.save(application);
+        log.info("saveApplication() - Long: Информация о Application добавлена в БД");
         return application.getId();
     }
 
@@ -203,6 +217,7 @@ public class DealServiceImpl implements DealService {
         Add_services addServices = new Add_services();
         addServices.setIs_insurance_enabled(loanOfferDTO.getIsInsuranceEnabled());
         addServices.setIs_salary_client(loanOfferDTO.getIsSalaryClient());
+        log.info("addAddServices() - Add_services: Информация о Add_services добавлена в БД");
         return addServesRepository.save(addServices);
     }
 
@@ -215,6 +230,7 @@ public class DealServiceImpl implements DealService {
         credit.setPsk(loanOfferDTO.getTotalAmount());
         credit.setAddServices(addServices);
         credit.setCredit_status(Credit_status.CALCULATED);
+        log.info("addCredit() - Credit: Информация о Credit добавлена в БД");
         return creditRepository.save(credit);
     }
 }

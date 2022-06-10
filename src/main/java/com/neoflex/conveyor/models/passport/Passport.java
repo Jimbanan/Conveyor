@@ -1,4 +1,4 @@
-package com.neoflex.conveyor.models.pasport;
+package com.neoflex.conveyor.models.passport;
 
 import com.neoflex.conveyor.models.client.Client;
 import lombok.Data;

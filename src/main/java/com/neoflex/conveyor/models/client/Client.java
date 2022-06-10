@@ -4,7 +4,7 @@ import com.neoflex.conveyor.enums.Genders;
 import com.neoflex.conveyor.enums.MaritalStatus;
 import com.neoflex.conveyor.models.application.Application;
 import com.neoflex.conveyor.models.employment.Employment;
-import com.neoflex.conveyor.models.pasport.Passport;
+import com.neoflex.conveyor.models.passport.Passport;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
