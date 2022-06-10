@@ -26,10 +26,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 @Service
 @Slf4j
@@ -128,6 +125,7 @@ public class DealServiceImpl implements DealService {
         }
 
         Application application = getApplication(applicationId);
+        application.setStatus(Status.APPROVED);
         application.getCredit().setAmount(creditDTO.getAmount());
         application.getCredit().setTerm(creditDTO.getTerm());
         application.getCredit().setMonthlyPayment(creditDTO.getMonthlyPayment());
@@ -136,12 +134,22 @@ public class DealServiceImpl implements DealService {
         application.getCredit().getAddServices().setIs_insurance_enabled(creditDTO.getIsInsuranceEnabled());
         application.getCredit().getAddServices().setIs_salary_client(creditDTO.getIsSalaryClient());
         application.getCredit().setPayment_schedule(paymentSchedules);
-        updateApplication(application);
+        updateApplication(application, Status.APPROVED);
     }
 
     private Application getApplication(Long applicationId) {
         return applicationRepository.findById(applicationId).orElseThrow(()
                 -> new NoSuchElementException("with id='" + applicationId + "' does not exist"));
+    }
+
+    @Transactional
+    public void updateApplication(Application application, Status status) {
+
+        List<ApplicationStatusHistory> list = new ArrayList<>();
+        list.add(addApplicationStatusHistory(status));
+
+        application.getStatus_history().add(list.get(0));
+        applicationRepository.save(application);
     }
 
     private void updateApplication(Application application) {
@@ -208,10 +216,5 @@ public class DealServiceImpl implements DealService {
         credit.setAddServices(addServices);
         credit.setCredit_status(Credit_status.CALCULATED);
         return creditRepository.save(credit);
-    }
-
-    @Transactional
-    public List<Application> getApplication() {
-        return applicationRepository.findAll();
     }
 }

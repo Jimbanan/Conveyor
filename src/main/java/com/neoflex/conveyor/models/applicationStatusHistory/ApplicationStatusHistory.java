@@ -1,7 +1,6 @@
 package com.neoflex.conveyor.models.applicationStatusHistory;
 
 import com.neoflex.conveyor.enums.Status;
-import com.neoflex.conveyor.models.application.Application;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -24,12 +23,5 @@ public class ApplicationStatusHistory {
 
     @Column
     private LocalDateTime time;
-
-    //------------------------------------FOREIGN ENTITIES
-//    //TODO @OneToMany
-//    @OneToOne(optional = false, mappedBy = "status_history")
-//    public Application application;
-
-
 
 }
