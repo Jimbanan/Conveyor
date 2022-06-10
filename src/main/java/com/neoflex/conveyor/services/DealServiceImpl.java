@@ -2,10 +2,16 @@ package com.neoflex.conveyor.services;
 
 import com.neoflex.conveyor.dto.LoanApplicationRequestDTO;
 import com.neoflex.conveyor.dto.LoanOfferDTO;
+import com.neoflex.conveyor.models.add_services.Add_serivesRepository;
+import com.neoflex.conveyor.models.add_services.Add_services;
 import com.neoflex.conveyor.models.application.Application;
 import com.neoflex.conveyor.models.application.ApplicationRepository;
 import com.neoflex.conveyor.models.client.Client;
 import com.neoflex.conveyor.models.client.ClientRepository;
+import com.neoflex.conveyor.models.credit.Credit;
+import com.neoflex.conveyor.models.credit.CreditRepository;
+import com.neoflex.conveyor.models.credit_status.Credit_status;
+import com.neoflex.conveyor.models.credit_status.Credit_statusRepository;
 import com.neoflex.conveyor.models.pasport.Passport;
 import com.neoflex.conveyor.models.pasport.PassportRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +31,15 @@ public class DealServiceImpl implements DealService {
     @Autowired
     private ApplicationRepository applicationRepository;
 
+    @Autowired
+    private CreditRepository creditRepository;
+
+    @Autowired
+    private Add_serivesRepository addSerivesRepository;
+
+    @Autowired
+    private Credit_statusRepository creditStatusRepository;
+
     public void addClient(LoanApplicationRequestDTO loanApplicationRequestDTO) {
 
         Passport passport = savePassport(loanApplicationRequestDTO);
@@ -38,7 +53,34 @@ public class DealServiceImpl implements DealService {
     @Override
     public void addOffer(LoanOfferDTO loanOfferDTO) {
 
+        Add_services addServices = new Add_services();
+        addServices.setIs_insurance_enabled(loanOfferDTO.getIsInsuranceEnabled());
+        addServices.setIs_salary_client(loanOfferDTO.getIsSalaryClient());
 
+        addSerivesRepository.save(addServices);
+
+
+        Credit_status creditStatus = new Credit_status();
+        creditStatus.setCredit_status("CALCULATED");
+        creditStatusRepository.save(creditStatus);
+
+
+        Credit credit = new Credit();
+
+        credit.setAmount(loanOfferDTO.getRequestedAmount());
+        credit.setTerm(loanOfferDTO.getTerm());
+        credit.setMonthlyPayment(loanOfferDTO.getMonthlyPayment());
+        credit.setRate(loanOfferDTO.getRate());
+        credit.setPsk(loanOfferDTO.getTotalAmount());
+        credit.setAddServices(addServices);
+        credit.setCredit_status(creditStatus);
+
+        creditRepository.save(credit);
+
+
+
+
+//        applicationRepository.findById()
 
     }
 
