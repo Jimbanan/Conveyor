@@ -45,7 +45,7 @@ public class DealController {
         String uri_Calculate = "http://localhost:8080/conveyor/calculation";
         CreditDTO creditDTO = restTemplate.postForObject(uri_Calculate, scoringDataDTO, CreditDTO.class);
 
-        System.out.println(creditDTO);
+        dealService.updateCredit(creditDTO, applicationId);
     }
 
 

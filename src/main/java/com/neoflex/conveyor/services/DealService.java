@@ -1,9 +1,6 @@
 package com.neoflex.conveyor.services;
 
-import com.neoflex.conveyor.dto.FinishRegistrationRequestDTO;
-import com.neoflex.conveyor.dto.LoanApplicationRequestDTO;
-import com.neoflex.conveyor.dto.LoanOfferDTO;
-import com.neoflex.conveyor.dto.ScoringDataDTO;
+import com.neoflex.conveyor.dto.*;
 
 public interface DealService {
 
@@ -13,4 +10,5 @@ public interface DealService {
 
     ScoringDataDTO createScoringDataDTO(FinishRegistrationRequestDTO finishRegistrationRequestDTO, Long applicationId);
 
+    void updateCredit(CreditDTO creditDTO, Long applicationId);
 }

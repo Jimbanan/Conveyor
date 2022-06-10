@@ -1,9 +1,6 @@
 package com.neoflex.conveyor.services;
 
-import com.neoflex.conveyor.dto.FinishRegistrationRequestDTO;
-import com.neoflex.conveyor.dto.LoanApplicationRequestDTO;
-import com.neoflex.conveyor.dto.LoanOfferDTO;
-import com.neoflex.conveyor.dto.ScoringDataDTO;
+import com.neoflex.conveyor.dto.*;
 import com.neoflex.conveyor.enums.Credit_status;
 import com.neoflex.conveyor.enums.Status;
 import com.neoflex.conveyor.models.add_services.Add_serivesRepository;
@@ -20,12 +17,18 @@ import com.neoflex.conveyor.models.employment.Employment;
 import com.neoflex.conveyor.models.employment.EmploymentRepository;
 import com.neoflex.conveyor.models.pasport.Passport;
 import com.neoflex.conveyor.models.pasport.PassportRepository;
+import com.neoflex.conveyor.models.paymentSchedule.PaymentSchedule;
+import com.neoflex.conveyor.models.paymentSchedule.PaymentScheduleRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 @Service
@@ -39,6 +42,7 @@ public class DealServiceImpl implements DealService {
     private final Add_serivesRepository addServesRepository;
     private final EmploymentRepository employmentRepository;
     private final ApplicationStatusHistoryRepository applicationStatusHistoryRepository;
+    private final PaymentScheduleRepository paymentScheduleRepository;
 
     public DealServiceImpl(@Autowired ClientRepository clientRepository,
                            @Autowired PassportRepository passportRepository,
@@ -46,7 +50,8 @@ public class DealServiceImpl implements DealService {
                            @Autowired CreditRepository creditRepository,
                            @Autowired Add_serivesRepository addServesRepository,
                            @Autowired EmploymentRepository employmentRepository,
-                           @Autowired ApplicationStatusHistoryRepository applicationStatusHistoryRepository) {
+                           @Autowired ApplicationStatusHistoryRepository applicationStatusHistoryRepository,
+                           @Autowired PaymentScheduleRepository paymentScheduleRepository) {
         this.clientRepository = clientRepository;
         this.passportRepository = passportRepository;
         this.applicationRepository = applicationRepository;
@@ -54,11 +59,12 @@ public class DealServiceImpl implements DealService {
         this.addServesRepository = addServesRepository;
         this.employmentRepository = employmentRepository;
         this.applicationStatusHistoryRepository = applicationStatusHistoryRepository;
+        this.paymentScheduleRepository = paymentScheduleRepository;
     }
 
     @Override
     public Long addClient(LoanApplicationRequestDTO loanApplicationRequestDTO) {
-        return saveApplication(saveClient(loanApplicationRequestDTO, savePassport(loanApplicationRequestDTO)));
+        return saveApplication(saveClient(loanApplicationRequestDTO, savePassport(loanApplicationRequestDTO)), Status.PREAPPROVAL);
     }
 
     @Override
@@ -106,6 +112,33 @@ public class DealServiceImpl implements DealService {
 
     }
 
+    @Override
+    public void updateCredit(CreditDTO creditDTO, Long applicationId) {
+        List<PaymentSchedule> paymentSchedules = new ArrayList<>();
+
+        for (int i = 0; i < creditDTO.getPaymentSchedule().size(); i++) {
+            PaymentSchedule paymentSchedule = new PaymentSchedule();
+            paymentSchedule.setNumber(creditDTO.getPaymentSchedule().get(i).getNumber());
+            paymentSchedule.setDate(creditDTO.getPaymentSchedule().get(i).getDate());
+            paymentSchedule.setTotalPayment(creditDTO.getPaymentSchedule().get(i).getTotalPayment());
+            paymentSchedule.setInterestPayment(creditDTO.getPaymentSchedule().get(i).getInterestPayment());
+            paymentSchedule.setDebtPayment(creditDTO.getPaymentSchedule().get(i).getDebtPayment());
+            paymentSchedule.setRemainingDebt(creditDTO.getPaymentSchedule().get(i).getRemainingDebt());
+            paymentSchedules.add(paymentScheduleRepository.save(paymentSchedule));
+        }
+
+        Application application = getApplication(applicationId);
+        application.getCredit().setAmount(creditDTO.getAmount());
+        application.getCredit().setTerm(creditDTO.getTerm());
+        application.getCredit().setMonthlyPayment(creditDTO.getMonthlyPayment());
+        application.getCredit().setRate(creditDTO.getRate());
+        application.getCredit().setPsk(creditDTO.getPsk());
+        application.getCredit().getAddServices().setIs_insurance_enabled(creditDTO.getIsInsuranceEnabled());
+        application.getCredit().getAddServices().setIs_salary_client(creditDTO.getIsSalaryClient());
+        application.getCredit().setPayment_schedule(paymentSchedules);
+        updateApplication(application);
+    }
+
     private Application getApplication(Long applicationId) {
         return applicationRepository.findById(applicationId).orElseThrow(()
                 -> new NoSuchElementException("with id='" + applicationId + "' does not exist"));
@@ -149,11 +182,11 @@ public class DealServiceImpl implements DealService {
         return applicationStatusHistoryRepository.save(applicationStatusHistory);
     }
 
-    private Long saveApplication(Client client) {
+    private Long saveApplication(Client client, Status status) {
         Application application = new Application(client);
         application.setCreation_date(LocalDate.now());
-        application.setStatus(Status.PREAPPROVAL);
-        application.setStatus_history(addApplicationStatusHistory(Status.PREAPPROVAL));
+        application.setStatus(status);
+        application.setStatus_history(Arrays.asList(addApplicationStatusHistory(status)));
         applicationRepository.save(application);
         return application.getId();
     }
@@ -175,5 +208,10 @@ public class DealServiceImpl implements DealService {
         credit.setAddServices(addServices);
         credit.setCredit_status(Credit_status.CALCULATED);
         return creditRepository.save(credit);
+    }
+
+    @Transactional
+    public List<Application> getApplication() {
+        return applicationRepository.findAll();
     }
 }

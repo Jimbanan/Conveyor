@@ -1,13 +1,17 @@
 package com.neoflex.conveyor.models.credit;
 
+import com.neoflex.conveyor.dto.PaymentScheduleElement;
 import com.neoflex.conveyor.enums.Credit_status;
 import com.neoflex.conveyor.models.add_services.Add_services;
 import com.neoflex.conveyor.models.application.Application;
+import com.neoflex.conveyor.models.applicationStatusHistory.ApplicationStatusHistory;
+import com.neoflex.conveyor.models.paymentSchedule.PaymentSchedule;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.List;
 
 @Entity
 @Data
@@ -34,11 +38,19 @@ public class Credit {
     @Column
     private BigDecimal psk; // (Полная стоимость кредита)
 
-//    private List<PaymentScheduleElement> payment_schedule; (График платежей)
+//    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+//    @JoinColumn(name = "paymentSchedule_id")
+//    private List<PaymentSchedule> payment_schedule; //(График платежей)
+
+
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "addServices_id", unique = true, updatable = false)
     private Add_services addServices;// (доп услуги)
+
+    @OneToMany()
+    @JoinColumn(name = "paymentSchedules_id")
+    private List<PaymentSchedule> payment_schedule; //(График платежей)
 
     @Column
     @Enumerated(EnumType.STRING)

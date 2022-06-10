@@ -8,7 +8,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.transaction.Transactional;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Data
@@ -44,9 +47,9 @@ public class Application {
     @Column
     private String ses_code; // (Код ПЭП (Простая Электронная Подпись))
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "applicationStatusHistory_id", unique = true)
-    private ApplicationStatusHistory status_history; //(История изменения статусов)
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "application_id")
+    private List<ApplicationStatusHistory> status_history; //(История изменения статусов)
 
     public Application(Client client) {
         this.client = client;

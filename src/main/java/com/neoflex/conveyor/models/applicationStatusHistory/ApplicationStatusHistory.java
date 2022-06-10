@@ -26,8 +26,10 @@ public class ApplicationStatusHistory {
     private LocalDateTime time;
 
     //------------------------------------FOREIGN ENTITIES
-    //TODO @OneToMany
-    @OneToOne(optional = false, mappedBy = "status_history")
-    public Application application;
+//    //TODO @OneToMany
+//    @OneToOne(optional = false, mappedBy = "status_history")
+//    public Application application;
+
+
 
 }
