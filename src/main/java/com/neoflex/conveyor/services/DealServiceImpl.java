@@ -19,7 +19,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Array;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -88,7 +90,12 @@ public class DealServiceImpl implements DealService {
         ArrayList<Application> applications = new ArrayList<>();
         application.ifPresent(applications::add);
 
-        System.out.println(applications);
+        System.out.println(applications.get(0).getId());
+
+        applications.get(0).setCredit(credit);
+        applications.get(0).setAppliedOffer(loanOfferDTO.getApplicationId());
+        applications.get(0).setSign_date(LocalDate.now());
+        applicationRepository.save(applications.get(0));
 
     }
 
@@ -112,6 +119,7 @@ public class DealServiceImpl implements DealService {
 
     private Long saveApplication(Client client) {
         Application application = new Application(client);
+        application.setCreation_date(LocalDate.now());
         applicationRepository.save(application);
         return application.getId();
     }

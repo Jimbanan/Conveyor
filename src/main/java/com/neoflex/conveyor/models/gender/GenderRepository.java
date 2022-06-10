@@ -1,6 +1,9 @@
 package com.neoflex.conveyor.models.gender;
 
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 
-public interface GenderRepository extends CrudRepository<Gender, Long> {
+@Repository
+public interface GenderRepository extends JpaRepository<Gender, Long> {
 }

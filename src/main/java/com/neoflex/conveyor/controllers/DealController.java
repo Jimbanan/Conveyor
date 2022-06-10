@@ -37,6 +37,8 @@ public class DealController {
 
         dealService.addOffer(loanOfferDTO);
 
+//        dealService.test();
+
     }
 
 //    @PutMapping("/calculate/{applicationId}")

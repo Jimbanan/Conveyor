@@ -1,10 +1,5 @@
 package com.neoflex.conveyor.models.client;
 
-import com.neoflex.conveyor.dto.EmploymentDTO;
-import com.neoflex.conveyor.enums.EmploymentStatus;
-import com.neoflex.conveyor.enums.Genders;
-import com.neoflex.conveyor.enums.MaritalStatus;
-import com.neoflex.conveyor.enums.Position;
 import com.neoflex.conveyor.models.application.Application;
 import com.neoflex.conveyor.models.employment.Employment;
 import com.neoflex.conveyor.models.gender.Gender;

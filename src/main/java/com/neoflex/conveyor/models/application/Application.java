@@ -20,15 +20,15 @@ public class Application {
     private Long id;
 
     @OneToOne(optional = false)
-    @JoinColumn(name = "client_id", unique = true, updatable = false)
+    @JoinColumn(name = "client_id", unique = true)
     private Client client; // (Клиент)
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "credit_id", unique = true, updatable = false)
+    @JoinColumn(name = "credit_id", unique = true)
     private Credit credit; // (Кредит)
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "status_id", unique = true, updatable = false)
+    @JoinColumn(name = "status_id", unique = true)
     private Status status; // (Статус)
 
     @Column

@@ -1,6 +1,9 @@
 package com.neoflex.conveyor.models.employment_status;
 
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 
-public interface Employment_statusRepository extends CrudRepository<Employment_status, Long> {
+@Repository
+public interface Employment_statusRepository extends JpaRepository<Employment_status, Long> {
 }
