@@ -15,7 +15,6 @@ import java.math.BigDecimal;
 @Schema(description = "Сущность предложенного офера")
 public class LoanOfferDTO {
 
-    //TODO - Сделать генерацию id в соответствии с id application
     private Long applicationId; //Идентификатор
     private BigDecimal requestedAmount; //Запрошенная сумма
     private BigDecimal totalAmount; //Итого

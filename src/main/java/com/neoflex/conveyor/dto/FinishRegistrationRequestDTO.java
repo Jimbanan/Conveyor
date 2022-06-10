@@ -2,6 +2,7 @@ package com.neoflex.conveyor.dto;
 
 import com.neoflex.conveyor.enums.Genders;
 import com.neoflex.conveyor.enums.MaritalStatus;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,7 +14,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 
-//TODO Поменять название сущности
+@Schema(description = "Сущность итоговых данных пользователя")
 public class FinishRegistrationRequestDTO {
 
     private Genders genders;
