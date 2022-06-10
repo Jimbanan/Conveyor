@@ -62,11 +62,13 @@ public class DealServiceImpl implements DealService {
     @Override
     public Long addClient(LoanApplicationRequestDTO loanApplicationRequestDTO) {
         log.info("addClient() - Long: {}", saveApplication(saveClient(loanApplicationRequestDTO, savePassport(loanApplicationRequestDTO)), Status.PREAPPROVAL));
-        return saveApplication(saveClient(loanApplicationRequestDTO, savePassport(loanApplicationRequestDTO)), Status.PREAPPROVAL);
+        Application application = saveApplication(saveClient(loanApplicationRequestDTO, savePassport(loanApplicationRequestDTO)), Status.PREAPPROVAL);
+        return application.getId();
     }
 
     @Override
     public void addOffer(LoanOfferDTO loanOfferDTO) {
+
         Application application = getApplication(loanOfferDTO.getApplicationId());
         application.setCredit(addCredit(loanOfferDTO, addAddServices(loanOfferDTO)));
         application.setAppliedOffer(loanOfferDTO.getApplicationId());
@@ -116,14 +118,14 @@ public class DealServiceImpl implements DealService {
         log.info("updateCredit() - void:  List<PaymentSchedule> paymentSchedules - Создан");
 
         for (int i = 0; i < creditDTO.getPaymentSchedule().size(); i++) {
-            PaymentSchedule paymentSchedule = new PaymentSchedule();
-            paymentSchedule.setNumber(creditDTO.getPaymentSchedule().get(i).getNumber());
-            paymentSchedule.setDate(creditDTO.getPaymentSchedule().get(i).getDate());
-            paymentSchedule.setTotalPayment(creditDTO.getPaymentSchedule().get(i).getTotalPayment());
-            paymentSchedule.setInterestPayment(creditDTO.getPaymentSchedule().get(i).getInterestPayment());
-            paymentSchedule.setDebtPayment(creditDTO.getPaymentSchedule().get(i).getDebtPayment());
-            paymentSchedule.setRemainingDebt(creditDTO.getPaymentSchedule().get(i).getRemainingDebt());
-            paymentSchedules.add(paymentScheduleRepository.save(paymentSchedule));
+            paymentSchedules.add(paymentScheduleRepository.save(PaymentSchedule.builder()
+                    .number(creditDTO.getPaymentSchedule().get(i).getNumber())
+                    .date(creditDTO.getPaymentSchedule().get(i).getDate())
+                    .totalPayment(creditDTO.getPaymentSchedule().get(i).getTotalPayment())
+                    .interestPayment(creditDTO.getPaymentSchedule().get(i).getInterestPayment())
+                    .debtPayment(creditDTO.getPaymentSchedule().get(i).getDebtPayment())
+                    .remainingDebt(creditDTO.getPaymentSchedule().get(i).getRemainingDebt())
+                    .build()));
         }
         log.info("updateCredit() - void:  List<PaymentSchedule> paymentSchedules - Заполнен и добавлен в БД");
 
@@ -172,65 +174,65 @@ public class DealServiceImpl implements DealService {
     }
 
     private Client saveClient(LoanApplicationRequestDTO loanApplicationRequestDTO, Passport passport) {
-        Client client = new Client();
-        client.setLastName(loanApplicationRequestDTO.getLastName());
-        client.setFirstName(loanApplicationRequestDTO.getFirstName());
-        client.setMiddleName(loanApplicationRequestDTO.getMiddleName());
-        client.setBirthdate(loanApplicationRequestDTO.getBirthdate());
-        client.setEmail(loanApplicationRequestDTO.getEmail());
-        client.setPassport(passport);
         log.info("saveClient() - Client: Информация о Client добавлена в БД");
-        return clientRepository.save(client);
+        return clientRepository.save(Client.builder()
+                .lastName(loanApplicationRequestDTO.getLastName())
+                .firstName(loanApplicationRequestDTO.getFirstName())
+                .middleName(loanApplicationRequestDTO.getMiddleName())
+                .birthdate(loanApplicationRequestDTO.getBirthdate())
+                .email(loanApplicationRequestDTO.getEmail())
+                .passport(passport)
+                .build());
     }
 
     private Employment saveEmployment(FinishRegistrationRequestDTO finishRegistrationRequestDTO) {
-        Employment employment = new Employment();
-        employment.setEmploymentStatus(finishRegistrationRequestDTO.getEmployment().getEmploymentStatus());
-        employment.setEmployerINN(finishRegistrationRequestDTO.getEmployment().getEmployerINN());
-        employment.setSalary(finishRegistrationRequestDTO.getEmployment().getSalary());
-        employment.setPosition(finishRegistrationRequestDTO.getEmployment().getPosition());
-        employment.setWorkExperienceTotal(finishRegistrationRequestDTO.getEmployment().getWorkExperienceTotal());
-        employment.setWorkExperienceCurrent(finishRegistrationRequestDTO.getEmployment().getWorkExperienceCurrent());
         log.info("saveEmployment() - Employment: Информация о Employment добавлена в БД");
-        return employmentRepository.save(employment);
+        return employmentRepository.save(Employment.builder()
+                .employmentStatus(finishRegistrationRequestDTO.getEmployment().getEmploymentStatus())
+                .EmployerINN(finishRegistrationRequestDTO.getEmployment().getEmployerINN())
+                .salary(finishRegistrationRequestDTO.getEmployment().getSalary())
+                .position(finishRegistrationRequestDTO.getEmployment().getPosition())
+                .workExperienceTotal(finishRegistrationRequestDTO.getEmployment().getWorkExperienceTotal())
+                .workExperienceCurrent(finishRegistrationRequestDTO.getEmployment().getWorkExperienceCurrent())
+                .build());
     }
 
     private ApplicationStatusHistory addApplicationStatusHistory(Status status) {
-        ApplicationStatusHistory applicationStatusHistory = new ApplicationStatusHistory();
-        applicationStatusHistory.setStatus(status);
-        applicationStatusHistory.setTime(LocalDateTime.now());
         log.info("addApplicationStatusHistory() - ApplicationStatusHistory: Информация о ApplicationStatusHistory добавлена в БД");
-        return applicationStatusHistoryRepository.save(applicationStatusHistory);
+        return applicationStatusHistoryRepository.save(ApplicationStatusHistory.builder()
+                .status(status)
+                .time(LocalDateTime.now())
+                .build());
     }
 
-    private Long saveApplication(Client client, Status status) {
-        Application application = new Application(client);
-        application.setCreation_date(LocalDate.now());
-        application.setStatus(status);
-        application.setStatus_history(Arrays.asList(addApplicationStatusHistory(status)));
-        applicationRepository.save(application);
+    private Application saveApplication(Client client, Status status) {
         log.info("saveApplication() - Long: Информация о Application добавлена в БД");
-        return application.getId();
+        return applicationRepository.save(Application.builder()
+                .client(client)
+                .creation_date(LocalDate.now())
+                .status(status)
+                .status_history(Arrays.asList(addApplicationStatusHistory(status)))
+                .build());
     }
 
     private Add_services addAddServices(LoanOfferDTO loanOfferDTO) {
-        Add_services addServices = new Add_services();
-        addServices.setIs_insurance_enabled(loanOfferDTO.getIsInsuranceEnabled());
-        addServices.setIs_salary_client(loanOfferDTO.getIsSalaryClient());
         log.info("addAddServices() - Add_services: Информация о Add_services добавлена в БД");
-        return addServesRepository.save(addServices);
+        return addServesRepository.save(Add_services.builder()
+                .is_insurance_enabled(loanOfferDTO.getIsInsuranceEnabled())
+                .is_salary_client(loanOfferDTO.getIsSalaryClient())
+                .build());
     }
 
     private Credit addCredit(LoanOfferDTO loanOfferDTO, Add_services addServices) {
-        Credit credit = new Credit();
-        credit.setAmount(loanOfferDTO.getRequestedAmount());
-        credit.setTerm(loanOfferDTO.getTerm());
-        credit.setMonthlyPayment(loanOfferDTO.getMonthlyPayment());
-        credit.setRate(loanOfferDTO.getRate());
-        credit.setPsk(loanOfferDTO.getTotalAmount());
-        credit.setAddServices(addServices);
-        credit.setCredit_status(Credit_status.CALCULATED);
         log.info("addCredit() - Credit: Информация о Credit добавлена в БД");
-        return creditRepository.save(credit);
+        return creditRepository.save(Credit.builder()
+                .amount(loanOfferDTO.getRequestedAmount())
+                .term(loanOfferDTO.getTerm())
+                .monthlyPayment(loanOfferDTO.getMonthlyPayment())
+                .rate(loanOfferDTO.getRate())
+                .psk(loanOfferDTO.getTotalAmount())
+                .addServices(addServices)
+                .credit_status(Credit_status.CALCULATED)
+                .build());
     }
 }

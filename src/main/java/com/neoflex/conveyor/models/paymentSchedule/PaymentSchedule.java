@@ -1,5 +1,7 @@
 package com.neoflex.conveyor.models.paymentSchedule;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -10,6 +12,8 @@ import java.time.LocalDate;
 @Entity
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Table(name = "payment_schedule")
 public class PaymentSchedule {
 

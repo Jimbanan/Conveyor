@@ -1,6 +1,8 @@
 package com.neoflex.conveyor.models.applicationStatusHistory;
 
 import com.neoflex.conveyor.enums.Status;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -10,6 +12,8 @@ import java.time.LocalDateTime;
 @Entity
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Table(name = "application_status_history")
 public class ApplicationStatusHistory {
 

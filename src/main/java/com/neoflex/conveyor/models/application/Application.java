@@ -4,6 +4,8 @@ import com.neoflex.conveyor.enums.Status;
 import com.neoflex.conveyor.models.applicationStatusHistory.ApplicationStatusHistory;
 import com.neoflex.conveyor.models.client.Client;
 import com.neoflex.conveyor.models.credit.Credit;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -16,6 +18,8 @@ import java.util.List;
 @Entity
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Table(name = "application")
 public class Application {
 

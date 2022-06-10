@@ -4,6 +4,8 @@ import com.neoflex.conveyor.enums.Credit_status;
 import com.neoflex.conveyor.models.add_services.Add_services;
 import com.neoflex.conveyor.models.application.Application;
 import com.neoflex.conveyor.models.paymentSchedule.PaymentSchedule;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import javax.persistence.*;
@@ -13,6 +15,8 @@ import java.util.List;
 @Entity
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Table(name = "credit")
 public class Credit {
 

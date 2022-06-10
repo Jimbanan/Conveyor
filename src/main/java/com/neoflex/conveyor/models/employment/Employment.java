@@ -3,6 +3,8 @@ package com.neoflex.conveyor.models.employment;
 import com.neoflex.conveyor.enums.EmploymentStatus;
 import com.neoflex.conveyor.enums.Position;
 import com.neoflex.conveyor.models.client.Client;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -12,6 +14,8 @@ import java.math.BigDecimal;
 @Entity
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Table(name = "employment")
 public class Employment {
 

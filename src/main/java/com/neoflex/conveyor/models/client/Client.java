@@ -5,6 +5,8 @@ import com.neoflex.conveyor.enums.MaritalStatus;
 import com.neoflex.conveyor.models.application.Application;
 import com.neoflex.conveyor.models.employment.Employment;
 import com.neoflex.conveyor.models.passport.Passport;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -14,6 +16,8 @@ import java.time.LocalDate;
 @Entity
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Table(name = "client")
 public class Client {
 

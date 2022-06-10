@@ -1,6 +1,8 @@
 package com.neoflex.conveyor.models.add_services;
 
 import com.neoflex.conveyor.models.credit.Credit;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -9,6 +11,8 @@ import javax.persistence.*;
 @Entity
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Table(name = "add_services")
 public class Add_services {
 
