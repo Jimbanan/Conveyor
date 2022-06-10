@@ -32,28 +32,30 @@ import java.util.NoSuchElementException;
 @Slf4j
 public class DealServiceImpl implements DealService {
 
-    @Autowired
-    private ClientRepository clientRepository;
+    private final ClientRepository clientRepository;
+    private final PassportRepository passportRepository;
+    private final ApplicationRepository applicationRepository;
+    private final CreditRepository creditRepository;
+    private final Add_serivesRepository addServesRepository;
+    private final EmploymentRepository employmentRepository;
+    private final ApplicationStatusHistoryRepository applicationStatusHistoryRepository;
 
-    @Autowired
-    private PassportRepository passportRepository;
+    public DealServiceImpl(@Autowired ClientRepository clientRepository,
+                           @Autowired PassportRepository passportRepository,
+                           @Autowired ApplicationRepository applicationRepository,
+                           @Autowired CreditRepository creditRepository,
+                           @Autowired Add_serivesRepository addServesRepository,
+                           @Autowired EmploymentRepository employmentRepository,
+                           @Autowired ApplicationStatusHistoryRepository applicationStatusHistoryRepository) {
+        this.clientRepository = clientRepository;
+        this.passportRepository = passportRepository;
+        this.applicationRepository = applicationRepository;
+        this.creditRepository = creditRepository;
+        this.addServesRepository = addServesRepository;
+        this.employmentRepository = employmentRepository;
+        this.applicationStatusHistoryRepository = applicationStatusHistoryRepository;
+    }
 
-    @Autowired
-    private ApplicationRepository applicationRepository;
-
-
-    @Autowired
-    private CreditRepository creditRepository;
-
-    @Autowired
-    private Add_serivesRepository addSerivesRepository;
-
-    @Autowired
-    private EmploymentRepository employmentRepository;
-
-
-    @Autowired
-    private ApplicationStatusHistoryRepository applicationStatusHistoryRepository;
 
     public Long addClient(LoanApplicationRequestDTO loanApplicationRequestDTO) {
 
@@ -190,7 +192,7 @@ public class DealServiceImpl implements DealService {
         Add_services addServices = new Add_services();
         addServices.setIs_insurance_enabled(loanOfferDTO.getIsInsuranceEnabled());
         addServices.setIs_salary_client(loanOfferDTO.getIsSalaryClient());
-        return addSerivesRepository.save(addServices);
+        return addServesRepository.save(addServices);
     }
 
     private Credit addCredit(LoanOfferDTO loanOfferDTO, Add_services addServices) {
