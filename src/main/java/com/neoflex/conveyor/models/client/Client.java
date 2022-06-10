@@ -9,7 +9,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import javax.validation.constraints.Null;
 import java.time.LocalDate;
 
 @Entity
@@ -58,15 +57,6 @@ public class Client {
 
     @Column
     private String account;// (Счет клиента)
-
-    public Client(String lastName, String firstName, String middleName, LocalDate birthdate, String email, Passport passport) {
-        this.lastName = lastName;
-        this.firstName = firstName;
-        this.middleName = middleName;
-        this.birthdate = birthdate;
-        this.email = email;
-        this.passport = passport;
-    }
 
     //------------------------------------FOREIGN ENTITIES
     @OneToOne(optional = false, mappedBy = "client")

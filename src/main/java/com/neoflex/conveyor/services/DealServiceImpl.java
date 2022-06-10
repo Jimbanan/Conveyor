@@ -56,36 +56,18 @@ public class DealServiceImpl implements DealService {
         this.applicationStatusHistoryRepository = applicationStatusHistoryRepository;
     }
 
-
+    @Override
     public Long addClient(LoanApplicationRequestDTO loanApplicationRequestDTO) {
-
-        Passport passport = savePassport(loanApplicationRequestDTO);
-
-        Client client = saveClient(loanApplicationRequestDTO, passport);
-
-        return saveApplication(client);
+        return saveApplication(saveClient(loanApplicationRequestDTO, savePassport(loanApplicationRequestDTO)));
     }
 
-
-    //TODO переделать в нормальный вид
     @Override
     public void addOffer(LoanOfferDTO loanOfferDTO) {
-
-        Add_services addServices = addAddServices(loanOfferDTO);
-
-        Credit credit = addCredit(loanOfferDTO, addServices);
-
-
         Application application = getApplication(loanOfferDTO.getApplicationId());
-
-        System.out.println(application.getId());
-
-        //TODO Сделать изменение статуса заявки
-        application.setCredit(credit);
+        application.setCredit(addCredit(loanOfferDTO, addAddServices(loanOfferDTO)));
         application.setAppliedOffer(loanOfferDTO.getApplicationId());
         application.setSign_date(LocalDate.now());
         applicationRepository.save(application);
-
     }
 
     @Override
@@ -133,34 +115,23 @@ public class DealServiceImpl implements DealService {
         applicationRepository.save(application);
     }
 
-    private Credit getCredit(Long creditId) {
-        return creditRepository.findById(creditId).orElseThrow(()
-                -> new NoSuchElementException("with id='" + creditId + "' does not exist"));
-    }
-
-    private Client getClient(Long clientId) {
-        return clientRepository.findById(clientId).orElseThrow(()
-                -> new NoSuchElementException("with id='" + clientId + "' does not exist"));
-    }
-
     private Passport savePassport(LoanApplicationRequestDTO loanApplicationRequestDTO) {
-
         Passport passport = new Passport(loanApplicationRequestDTO.getPassportSeries(), loanApplicationRequestDTO.getPassportNumber());
-
         return passportRepository.save(passport);
     }
 
     private Client saveClient(LoanApplicationRequestDTO loanApplicationRequestDTO, Passport passport) {
-
-        Client client = new Client(loanApplicationRequestDTO.getLastName(), loanApplicationRequestDTO.getFirstName(),
-                loanApplicationRequestDTO.getMiddleName(), loanApplicationRequestDTO.getBirthdate(), loanApplicationRequestDTO.getEmail(),
-                passport);
-
+        Client client = new Client();
+        client.setLastName(loanApplicationRequestDTO.getLastName());
+        client.setFirstName(loanApplicationRequestDTO.getFirstName());
+        client.setMiddleName(loanApplicationRequestDTO.getMiddleName());
+        client.setBirthdate(loanApplicationRequestDTO.getBirthdate());
+        client.setEmail(loanApplicationRequestDTO.getEmail());
+        client.setPassport(passport);
         return clientRepository.save(client);
     }
 
     private Employment saveEmployment(FinishRegistrationRequestDTO finishRegistrationRequestDTO) {
-
         Employment employment = new Employment();
         employment.setEmploymentStatus(finishRegistrationRequestDTO.getEmployment().getEmploymentStatus());
         employment.setEmployerINN(finishRegistrationRequestDTO.getEmployment().getEmployerINN());
@@ -168,7 +139,6 @@ public class DealServiceImpl implements DealService {
         employment.setPosition(finishRegistrationRequestDTO.getEmployment().getPosition());
         employment.setWorkExperienceTotal(finishRegistrationRequestDTO.getEmployment().getWorkExperienceTotal());
         employment.setWorkExperienceCurrent(finishRegistrationRequestDTO.getEmployment().getWorkExperienceCurrent());
-
         return employmentRepository.save(employment);
     }
 
@@ -197,7 +167,6 @@ public class DealServiceImpl implements DealService {
 
     private Credit addCredit(LoanOfferDTO loanOfferDTO, Add_services addServices) {
         Credit credit = new Credit();
-
         credit.setAmount(loanOfferDTO.getRequestedAmount());
         credit.setTerm(loanOfferDTO.getTerm());
         credit.setMonthlyPayment(loanOfferDTO.getMonthlyPayment());
@@ -205,8 +174,6 @@ public class DealServiceImpl implements DealService {
         credit.setPsk(loanOfferDTO.getTotalAmount());
         credit.setAddServices(addServices);
         credit.setCredit_status(Credit_status.CALCULATED);
-
-        creditRepository.save(credit);
-        return credit;
+        return creditRepository.save(credit);
     }
 }

@@ -40,9 +40,6 @@ public class Credit {
     @JoinColumn(name = "addServices_id", unique = true, updatable = false)
     private Add_services addServices;// (доп услуги)
 
-//    @OneToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "credit_status_id", unique = true, updatable = false)
-
     @Column
     @Enumerated(EnumType.STRING)
     private Credit_status credit_status; //(Статус кредита)

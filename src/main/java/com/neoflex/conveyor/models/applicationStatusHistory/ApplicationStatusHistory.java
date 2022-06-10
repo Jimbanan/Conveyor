@@ -8,8 +8,6 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-//Todo
-
 @Entity
 @Data
 @NoArgsConstructor

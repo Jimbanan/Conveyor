@@ -28,9 +28,6 @@ public class ConveyorServiceImpl implements ConveyorService {
     @Autowired
     Calculations calculations;
 
-
-//    private Long id = 1L;
-
     @Override
     public List<LoanOfferDTO> getOffers(LoanApplicationRequestDTO loanApplicationRequestDTO) {
         log.info("getOffers() - loanApplicationRequestDTO: {}", loanApplicationRequestDTO);

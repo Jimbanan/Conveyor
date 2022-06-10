@@ -22,7 +22,7 @@ public class Add_services {
     @Column
     private Boolean is_salary_client; //(Зарплатный клиент?)
 
-//    //------------------------------------FOREIGN ENTITIES
-//    @OneToOne(optional = false, mappedBy = "addServices")
-//    public Credit credit;
+    //------------------------------------FOREIGN ENTITIES
+    @OneToOne(optional = false, mappedBy = "addServices")
+    public Credit credit;
 }

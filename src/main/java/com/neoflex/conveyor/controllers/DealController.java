@@ -25,8 +25,6 @@ public class DealController {
         String uri_Offers = "http://localhost:8080/conveyor/offers";
         List<LoanOfferDTO> loanOfferList = restTemplate.postForObject(uri_Offers, loanApplicationRequestDTO, List.class);
 
-        System.out.println(loanOfferList);
-
         return loanOfferList;
     }
 
