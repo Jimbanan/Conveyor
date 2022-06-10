@@ -18,6 +18,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Optional;
+
 @Service
 @Slf4j
 public class DealServiceImpl implements DealService {
@@ -31,6 +35,7 @@ public class DealServiceImpl implements DealService {
     @Autowired
     private ApplicationRepository applicationRepository;
 
+
     @Autowired
     private CreditRepository creditRepository;
 
@@ -40,16 +45,17 @@ public class DealServiceImpl implements DealService {
     @Autowired
     private Credit_statusRepository creditStatusRepository;
 
-    public void addClient(LoanApplicationRequestDTO loanApplicationRequestDTO) {
+    public Long addClient(LoanApplicationRequestDTO loanApplicationRequestDTO) {
 
         Passport passport = savePassport(loanApplicationRequestDTO);
 
         Client client = saveClient(loanApplicationRequestDTO, passport);
 
-        saveApplication(client);
-
+        return saveApplication(client);
     }
 
+
+    //TODO переделать в нормальный вид
     @Override
     public void addOffer(LoanOfferDTO loanOfferDTO) {
 
@@ -78,9 +84,11 @@ public class DealServiceImpl implements DealService {
         creditRepository.save(credit);
 
 
+        Optional<Application> application = applicationRepository.findById(loanOfferDTO.getApplicationId());
+        ArrayList<Application> applications = new ArrayList<>();
+        application.ifPresent(applications::add);
 
-
-//        applicationRepository.findById()
+        System.out.println(applications);
 
     }
 
@@ -102,9 +110,10 @@ public class DealServiceImpl implements DealService {
         return client;
     }
 
-    private void saveApplication(Client client) {
+    private Long saveApplication(Client client) {
         Application application = new Application(client);
         applicationRepository.save(application);
+        return application.getId();
     }
 
 }

@@ -28,7 +28,7 @@ public class ConveyorServiceImpl implements ConveyorService {
     @Autowired
     Calculations calculations;
 
-    private Long id = 1L;
+//    private Long id = 1L;
 
     @Override
     public List<LoanOfferDTO> getOffers(LoanApplicationRequestDTO loanApplicationRequestDTO) {
@@ -75,7 +75,7 @@ public class ConveyorServiceImpl implements ConveyorService {
         log.info("formationOfOffers() - Ежемесячная плата: {}", monthlyPayment);
 
         return LoanOfferDTO.builder()
-                .applicationId(id++)
+                .applicationId(loanApplicationRequestDTO.getApplicationId())
                 .requestedAmount(loanApplicationRequestDTO.getAmount())
                 .totalAmount(calculations.getTotalAmount(monthlyPayment, loanApplicationRequestDTO.getTerm()))
                 .term(loanApplicationRequestDTO.getTerm())

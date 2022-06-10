@@ -20,6 +20,6 @@ public class Position {
     private String position;
 
 //    //------------------------------------FOREIGN ENTITIES
-//    @OneToOne(optional = false, mappedBy = "position")
-//    public Employment employment;
+    @OneToOne(optional = false, mappedBy = "position")
+    public Employment employment;
 }

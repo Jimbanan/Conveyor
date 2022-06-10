@@ -18,7 +18,7 @@ public class Marital_status {
     private String marital_status;
 
 //    //------------------------------------FOREIGN ENTITIES
-//    @OneToOne(optional = false, mappedBy = "marital_status")
-//    public Client client;
+    @OneToOne(optional = false, mappedBy = "marital_status")
+    public Client client;
 
 }

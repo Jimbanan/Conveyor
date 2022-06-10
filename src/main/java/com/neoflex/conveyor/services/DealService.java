@@ -5,7 +5,7 @@ import com.neoflex.conveyor.dto.LoanOfferDTO;
 
 public interface DealService {
 
-    void addClient(LoanApplicationRequestDTO loanApplicationRequestDTO);
+    Long addClient(LoanApplicationRequestDTO loanApplicationRequestDTO);
 
     void addOffer(LoanOfferDTO loanOfferDTO);
 

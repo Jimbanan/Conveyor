@@ -20,6 +20,6 @@ public class Employment_status {
     private String employment_status;
 
 //    //------------------------------------FOREIGN ENTITIES
-//    @OneToOne(optional = false, mappedBy = "employmentStatus")
-//    public Employment employment;
+    @OneToOne(optional = false, mappedBy = "employmentStatus")
+    public Employment employment;
 }

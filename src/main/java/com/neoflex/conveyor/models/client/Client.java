@@ -46,9 +46,9 @@ public class Client {
     @JoinColumn(name = "gender_id", unique = true, updatable = false)
     private Gender gender;// (Пол)
 
-//    @OneToOne(optional = false)
-//    @JoinColumn(name = "marital_status_id", unique = true, nullable = false, updatable = false)
-//    private Marital_status marital_status;// (Семейное положение)
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "marital_status_id", unique = true, updatable = false)
+    private Marital_status marital_status;// (Семейное положение)
 
     @Column
     private Integer dependentAmount;// (Количество иждивенцев)
@@ -57,9 +57,9 @@ public class Client {
     @JoinColumn(name = "passport_id", unique = true, nullable = false, updatable = false)
     private Passport passport;
 
-//    @OneToOne(optional = false)
-//    @JoinColumn(name = "employment_id", unique = true, nullable = false, updatable = false)
-//    private Employment employment;// (Работа)
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "employment_id", unique = true, updatable = false)
+    private Employment employment;// (Работа)
 
     @Column
     private String account;// (Счет клиента)
