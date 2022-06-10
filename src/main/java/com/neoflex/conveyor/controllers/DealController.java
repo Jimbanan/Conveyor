@@ -47,8 +47,6 @@ public class DealController {
 
         ScoringDataDTO scoringDataDTO = dealService.createScoringDataDTO(finishRegistrationRequestDTO, applicationId);
 
-
-
     }
 
 

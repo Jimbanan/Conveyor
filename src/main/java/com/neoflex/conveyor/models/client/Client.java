@@ -49,11 +49,11 @@ public class Client {
     private Integer dependentAmount;// (Количество иждивенцев)
 
     @OneToOne(optional = false)
-    @JoinColumn(name = "passport_id", unique = true, nullable = false, updatable = false)
+    @JoinColumn(name = "passport_id", unique = true, nullable = false)
     private Passport passport;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "employment_id", unique = true, updatable = false)
+    @JoinColumn(name = "employment_id", unique = true)
     private Employment employment;// (Работа)
 
     @Column

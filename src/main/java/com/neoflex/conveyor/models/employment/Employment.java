@@ -27,6 +27,9 @@ public class Employment {
     private BigDecimal salary;// (зарплата)
 
     @Column
+    private String EmployerINN;
+
+    @Column
     @Enumerated(EnumType.STRING)
     private Position position;// (должность)
 
@@ -36,8 +39,9 @@ public class Employment {
     @Column
     private Integer workExperienceCurrent;// (опыт работы на текущем месте)
 
-//    //------------------------------------FOREIGN ENTITIES
+    //    //------------------------------------FOREIGN ENTITIES
     @OneToOne(optional = false, mappedBy = "employment")
     public Client client;
+
 
 }

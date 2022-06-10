@@ -16,19 +16,17 @@ import com.neoflex.conveyor.models.client.Client;
 import com.neoflex.conveyor.models.client.ClientRepository;
 import com.neoflex.conveyor.models.credit.Credit;
 import com.neoflex.conveyor.models.credit.CreditRepository;
+import com.neoflex.conveyor.models.employment.Employment;
+import com.neoflex.conveyor.models.employment.EmploymentRepository;
 import com.neoflex.conveyor.models.pasport.Passport;
 import com.neoflex.conveyor.models.pasport.PassportRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.lang.reflect.Array;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 
 @Service
 @Slf4j
@@ -49,6 +47,9 @@ public class DealServiceImpl implements DealService {
 
     @Autowired
     private Add_serivesRepository addSerivesRepository;
+
+    @Autowired
+    private EmploymentRepository employmentRepository;
 
 
     @Autowired
@@ -89,6 +90,15 @@ public class DealServiceImpl implements DealService {
     public ScoringDataDTO createScoringDataDTO(FinishRegistrationRequestDTO finishRegistrationRequestDTO, Long applicationId) {
 
         Application application = getApplication(applicationId);
+        application.getClient().setGender(finishRegistrationRequestDTO.getGenders());
+        application.getClient().setMarital_status(finishRegistrationRequestDTO.getMaritalStatus());
+        application.getClient().setDependentAmount(finishRegistrationRequestDTO.getDependentAmount());
+        application.getClient().getPassport().setPassportIssueDate(finishRegistrationRequestDTO.getPassportIssueDate());
+        application.getClient().getPassport().setPassportIssueBranch(finishRegistrationRequestDTO.getPassportIssueBrach());
+        application.getClient().setEmployment(saveEmployment(finishRegistrationRequestDTO));
+        application.getClient().setAccount(finishRegistrationRequestDTO.getAccount());
+
+        updateApplication(application);
 
         return ScoringDataDTO.builder()
                 .amount(application.getCredit().getAmount())
@@ -96,16 +106,16 @@ public class DealServiceImpl implements DealService {
                 .firstName(application.getClient().getFirstName())
                 .lastName(application.getClient().getLastName())
                 .middleName(application.getClient().getMiddleName())
-                .gender(finishRegistrationRequestDTO.getGenders())
+                .gender(application.getClient().getGender())
                 .birthdate(application.getClient().getBirthdate())
                 .passportSeries(application.getClient().getPassport().getPassportSeries())
                 .passportNumber(application.getClient().getPassport().getPassportNumber())
-                .passportIssueDate(finishRegistrationRequestDTO.getPassportIssueDate())
-                .passportIssueBranch(finishRegistrationRequestDTO.getPassportIssueBrach())
-                .maritalStatus(finishRegistrationRequestDTO.getMaritalStatus())
-                .dependentAmount(finishRegistrationRequestDTO.getDependentAmount())
+                .passportIssueDate(application.getClient().getPassport().getPassportIssueDate())
+                .passportIssueBranch(application.getClient().getPassport().getPassportIssueBranch())
+                .maritalStatus(application.getClient().getMarital_status())
+                .dependentAmount(application.getClient().getDependentAmount())
                 .employment(finishRegistrationRequestDTO.getEmployment())
-                .account(finishRegistrationRequestDTO.getAccount())
+                .account(application.getClient().getAccount())
                 .isInsuranceEnabled(application.getCredit().getAddServices().getIs_insurance_enabled())
                 .isSalaryClient(application.getCredit().getAddServices().getIs_salary_client())
                 .build();
@@ -115,6 +125,10 @@ public class DealServiceImpl implements DealService {
     private Application getApplication(Long applicationId) {
         return applicationRepository.findById(applicationId).orElseThrow(()
                 -> new NoSuchElementException("with id='" + applicationId + "' does not exist"));
+    }
+
+    private void updateApplication(Application application) {
+        applicationRepository.save(application);
     }
 
     private Credit getCredit(Long creditId) {
@@ -131,8 +145,7 @@ public class DealServiceImpl implements DealService {
 
         Passport passport = new Passport(loanApplicationRequestDTO.getPassportSeries(), loanApplicationRequestDTO.getPassportNumber());
 
-        passportRepository.save(passport);
-        return passport;
+        return passportRepository.save(passport);
     }
 
     private Client saveClient(LoanApplicationRequestDTO loanApplicationRequestDTO, Passport passport) {
@@ -141,8 +154,20 @@ public class DealServiceImpl implements DealService {
                 loanApplicationRequestDTO.getMiddleName(), loanApplicationRequestDTO.getBirthdate(), loanApplicationRequestDTO.getEmail(),
                 passport);
 
-        clientRepository.save(client);
-        return client;
+        return clientRepository.save(client);
+    }
+
+    private Employment saveEmployment(FinishRegistrationRequestDTO finishRegistrationRequestDTO) {
+
+        Employment employment = new Employment();
+        employment.setEmploymentStatus(finishRegistrationRequestDTO.getEmployment().getEmploymentStatus());
+        employment.setEmployerINN(finishRegistrationRequestDTO.getEmployment().getEmployerINN());
+        employment.setSalary(finishRegistrationRequestDTO.getEmployment().getSalary());
+        employment.setPosition(finishRegistrationRequestDTO.getEmployment().getPosition());
+        employment.setWorkExperienceTotal(finishRegistrationRequestDTO.getEmployment().getWorkExperienceTotal());
+        employment.setWorkExperienceCurrent(finishRegistrationRequestDTO.getEmployment().getWorkExperienceCurrent());
+
+        return employmentRepository.save(employment);
     }
 
     private ApplicationStatusHistory addApplicationStatusHistory(Status status) {
