@@ -25,5 +25,4 @@ public class FinishRegistrationRequestDTO {
     private EmploymentDTO employment;
     private String account;
 
-
 }

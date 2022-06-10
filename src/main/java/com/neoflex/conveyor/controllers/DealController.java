@@ -1,7 +1,9 @@
 package com.neoflex.conveyor.controllers;
 
+import com.neoflex.conveyor.dto.FinishRegistrationRequestDTO;
 import com.neoflex.conveyor.dto.LoanApplicationRequestDTO;
 import com.neoflex.conveyor.dto.LoanOfferDTO;
+import com.neoflex.conveyor.dto.ScoringDataDTO;
 import com.neoflex.conveyor.services.DealServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -37,16 +39,17 @@ public class DealController {
 
         dealService.addOffer(loanOfferDTO);
 
-//        dealService.test();
-
     }
 
-//    @PutMapping("/calculate/{applicationId}")
-//    public List<LoanOfferDTO> offers(@Valid @RequestBody LoanApplicationRequestDTO loanApplicationRequestDTO) {
-//        List<LoanOfferDTO> loanOfferList = conveyorService.getOffers(loanApplicationRequestDTO);
-//        loanOfferList.sort(Comparator.comparing(LoanOfferDTO::getRate).reversed());
-//        return loanOfferList;
-//    }
+    @PutMapping("/calculate/{applicationId}")
+    public void calculate(@RequestBody FinishRegistrationRequestDTO finishRegistrationRequestDTO,
+            @PathVariable Long applicationId) {
+
+        ScoringDataDTO scoringDataDTO = dealService.createScoringDataDTO(finishRegistrationRequestDTO, applicationId);
+
+
+
+    }
 
 
 }

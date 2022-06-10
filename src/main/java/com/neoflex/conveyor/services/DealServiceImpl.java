@@ -1,7 +1,9 @@
 package com.neoflex.conveyor.services;
 
+import com.neoflex.conveyor.dto.FinishRegistrationRequestDTO;
 import com.neoflex.conveyor.dto.LoanApplicationRequestDTO;
 import com.neoflex.conveyor.dto.LoanOfferDTO;
+import com.neoflex.conveyor.dto.ScoringDataDTO;
 import com.neoflex.conveyor.enums.Credit_status;
 import com.neoflex.conveyor.enums.Status;
 import com.neoflex.conveyor.models.add_services.Add_serivesRepository;
@@ -25,6 +27,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -70,18 +73,58 @@ public class DealServiceImpl implements DealService {
         Credit credit = addCredit(loanOfferDTO, addServices);
 
 
-        Optional<Application> application = applicationRepository.findById(loanOfferDTO.getApplicationId());
-        ArrayList<Application> applications = new ArrayList<>();
-        application.ifPresent(applications::add);
+        Application application = getApplication(loanOfferDTO.getApplicationId());
 
-        System.out.println(applications.get(0).getId());
+        System.out.println(application.getId());
 
         //TODO Сделать изменение статуса заявки
-        applications.get(0).setCredit(credit);
-        applications.get(0).setAppliedOffer(loanOfferDTO.getApplicationId());
-        applications.get(0).setSign_date(LocalDate.now());
-        applicationRepository.save(applications.get(0));
+        application.setCredit(credit);
+        application.setAppliedOffer(loanOfferDTO.getApplicationId());
+        application.setSign_date(LocalDate.now());
+        applicationRepository.save(application);
 
+    }
+
+    @Override
+    public ScoringDataDTO createScoringDataDTO(FinishRegistrationRequestDTO finishRegistrationRequestDTO, Long applicationId) {
+
+        Application application = getApplication(applicationId);
+
+        return ScoringDataDTO.builder()
+                .amount(application.getCredit().getAmount())
+                .term(application.getCredit().getTerm())
+                .firstName(application.getClient().getFirstName())
+                .lastName(application.getClient().getLastName())
+                .middleName(application.getClient().getMiddleName())
+                .gender(finishRegistrationRequestDTO.getGenders())
+                .birthdate(application.getClient().getBirthdate())
+                .passportSeries(application.getClient().getPassport().getPassportSeries())
+                .passportNumber(application.getClient().getPassport().getPassportNumber())
+                .passportIssueDate(finishRegistrationRequestDTO.getPassportIssueDate())
+                .passportIssueBranch(finishRegistrationRequestDTO.getPassportIssueBrach())
+                .maritalStatus(finishRegistrationRequestDTO.getMaritalStatus())
+                .dependentAmount(finishRegistrationRequestDTO.getDependentAmount())
+                .employment(finishRegistrationRequestDTO.getEmployment())
+                .account(finishRegistrationRequestDTO.getAccount())
+                .isInsuranceEnabled(application.getCredit().getAddServices().getIs_insurance_enabled())
+                .isSalaryClient(application.getCredit().getAddServices().getIs_salary_client())
+                .build();
+
+    }
+
+    private Application getApplication(Long applicationId) {
+        return applicationRepository.findById(applicationId).orElseThrow(()
+                -> new NoSuchElementException("with id='" + applicationId + "' does not exist"));
+    }
+
+    private Credit getCredit(Long creditId) {
+        return creditRepository.findById(creditId).orElseThrow(()
+                -> new NoSuchElementException("with id='" + creditId + "' does not exist"));
+    }
+
+    private Client getClient(Long clientId) {
+        return clientRepository.findById(clientId).orElseThrow(()
+                -> new NoSuchElementException("with id='" + clientId + "' does not exist"));
     }
 
     private Passport savePassport(LoanApplicationRequestDTO loanApplicationRequestDTO) {
