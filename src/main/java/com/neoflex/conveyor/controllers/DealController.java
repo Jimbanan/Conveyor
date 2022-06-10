@@ -1,9 +1,6 @@
 package com.neoflex.conveyor.controllers;
 
-import com.neoflex.conveyor.dto.FinishRegistrationRequestDTO;
-import com.neoflex.conveyor.dto.LoanApplicationRequestDTO;
-import com.neoflex.conveyor.dto.LoanOfferDTO;
-import com.neoflex.conveyor.dto.ScoringDataDTO;
+import com.neoflex.conveyor.dto.*;
 import com.neoflex.conveyor.services.DealServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -19,15 +16,14 @@ public class DealController {
     @Autowired
     DealServiceImpl dealService;
 
-    private final String uri = "http://localhost:8080/conveyor/offers";
-
     @PostMapping("/application")
     public List<LoanOfferDTO> offersDeal(@Valid @RequestBody LoanApplicationRequestDTO loanApplicationRequestDTO) {
 
         loanApplicationRequestDTO.setApplicationId(dealService.addClient(loanApplicationRequestDTO));
 
         RestTemplate restTemplate = new RestTemplate();
-        List<LoanOfferDTO> loanOfferList = restTemplate.postForObject(uri, loanApplicationRequestDTO, List.class);
+        String uri_Offers = "http://localhost:8080/conveyor/offers";
+        List<LoanOfferDTO> loanOfferList = restTemplate.postForObject(uri_Offers, loanApplicationRequestDTO, List.class);
 
         System.out.println(loanOfferList);
 
@@ -47,6 +43,11 @@ public class DealController {
 
         ScoringDataDTO scoringDataDTO = dealService.createScoringDataDTO(finishRegistrationRequestDTO, applicationId);
 
+        RestTemplate restTemplate = new RestTemplate();
+        String uri_Calculate = "http://localhost:8080/conveyor/calculation";
+        CreditDTO creditDTO = restTemplate.postForObject(uri_Calculate, scoringDataDTO, CreditDTO.class);
+
+        System.out.println(creditDTO);
     }
 
 
