@@ -1,8 +1,8 @@
 package com.neoflex.conveyor.models.employment;
 
+import com.neoflex.conveyor.enums.EmploymentStatus;
+import com.neoflex.conveyor.enums.Position;
 import com.neoflex.conveyor.models.client.Client;
-import com.neoflex.conveyor.models.employment_status.Employment_status;
-import com.neoflex.conveyor.models.position.Position;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -19,15 +19,15 @@ public class Employment {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "employmentStatus_id", unique = true, updatable = false)
-    private Employment_status employmentStatus; // (Рабочий статус)
+    @Column
+    @Enumerated(EnumType.STRING)
+    private EmploymentStatus employmentStatus; // (Рабочий статус)
 
     @Column
     private BigDecimal salary;// (зарплата)
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "position_id", unique = true, updatable = false)
+    @Column
+    @Enumerated(EnumType.STRING)
     private Position position;// (должность)
 
     @Column

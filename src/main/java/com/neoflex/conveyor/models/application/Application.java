@@ -1,8 +1,9 @@
 package com.neoflex.conveyor.models.application;
 
+import com.neoflex.conveyor.enums.Status;
+import com.neoflex.conveyor.models.applicationStatusHistory.ApplicationStatusHistory;
 import com.neoflex.conveyor.models.client.Client;
 import com.neoflex.conveyor.models.credit.Credit;
-import com.neoflex.conveyor.models.status.Status;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -27,8 +28,8 @@ public class Application {
     @JoinColumn(name = "credit_id", unique = true)
     private Credit credit; // (Кредит)
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "status_id", unique = true)
+    @Column
+    @Enumerated(EnumType.STRING)
     private Status status; // (Статус)
 
     @Column
@@ -43,7 +44,9 @@ public class Application {
     @Column
     private String ses_code; // (Код ПЭП (Простая Электронная Подпись))
 
-    //List<ApplicationStatusHistoryDTO> status_history (История изменения статусов)
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "applicationStatusHistory_id", unique = true)
+    private ApplicationStatusHistory status_history; //(История изменения статусов)
 
     public Application(Client client) {
         this.client = client;

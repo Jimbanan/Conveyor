@@ -1,9 +1,9 @@
 package com.neoflex.conveyor.models.client;
 
+import com.neoflex.conveyor.enums.Genders;
+import com.neoflex.conveyor.enums.MaritalStatus;
 import com.neoflex.conveyor.models.application.Application;
 import com.neoflex.conveyor.models.employment.Employment;
-import com.neoflex.conveyor.models.gender.Gender;
-import com.neoflex.conveyor.models.marital_status.Marital_status;
 import com.neoflex.conveyor.models.pasport.Passport;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -37,13 +37,13 @@ public class Client {
     @Column
     private String email;// (Email адрес)
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "gender_id", unique = true, updatable = false)
-    private Gender gender;// (Пол)
+    @Column
+    @Enumerated(EnumType.STRING)
+    private Genders gender;// (Пол)
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "marital_status_id", unique = true, updatable = false)
-    private Marital_status marital_status;// (Семейное положение)
+    @Column
+    @Enumerated(EnumType.STRING)
+    private MaritalStatus marital_status;// (Семейное положение)
 
     @Column
     private Integer dependentAmount;// (Количество иждивенцев)

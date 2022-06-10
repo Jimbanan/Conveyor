@@ -1,8 +1,8 @@
 package com.neoflex.conveyor.models.credit;
 
+import com.neoflex.conveyor.enums.Credit_status;
 import com.neoflex.conveyor.models.add_services.Add_services;
 import com.neoflex.conveyor.models.application.Application;
-import com.neoflex.conveyor.models.credit_status.Credit_status;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -40,8 +40,11 @@ public class Credit {
     @JoinColumn(name = "addServices_id", unique = true, updatable = false)
     private Add_services addServices;// (доп услуги)
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "credit_status_id", unique = true, updatable = false)
+//    @OneToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "credit_status_id", unique = true, updatable = false)
+
+    @Column
+    @Enumerated(EnumType.STRING)
     private Credit_status credit_status; //(Статус кредита)
 
     //------------------------------------FOREIGN ENTITIES

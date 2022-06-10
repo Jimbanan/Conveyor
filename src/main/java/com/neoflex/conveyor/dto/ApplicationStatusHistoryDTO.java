@@ -1,12 +1,13 @@
 package com.neoflex.conveyor.dto;
 
-//TODO - ДОДЕЛАТЬ
+import com.neoflex.conveyor.enums.Status;
+
+import java.time.LocalDateTime;
+
 public class ApplicationStatusHistoryDTO {
 
-//    {
-//        "status":"Enum",
-//            "time":"LocalDateTime",
-//            "changeType":"Enum"
-//    }
+    private Status status;
+
+    private LocalDateTime time;
 
 }
