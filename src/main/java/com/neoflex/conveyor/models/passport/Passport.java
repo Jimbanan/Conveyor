@@ -1,6 +1,8 @@
 package com.neoflex.conveyor.models.passport;
 
 import com.neoflex.conveyor.models.client.Client;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -9,6 +11,8 @@ import java.time.LocalDate;
 
 @Entity
 @Data
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "passport")
 public class Passport {
@@ -35,6 +39,6 @@ public class Passport {
     }
 
     //------------------------------------FOREIGN ENTITIES
-    @OneToOne(optional = false, mappedBy = "passport")
+    @OneToOne(cascade = CascadeType.ALL,optional = false, mappedBy = "passport")
     public Client client;
 }

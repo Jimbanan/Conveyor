@@ -27,11 +27,11 @@ public class Application {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @OneToOne(optional = false)
+    @OneToOne(cascade = {CascadeType.ALL}, optional = false)
     @JoinColumn(name = "client_id", unique = true)
     private Client client; // (Клиент)
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
     @JoinColumn(name = "credit_id", unique = true)
     private Credit credit; // (Кредит)
 
@@ -51,7 +51,7 @@ public class Application {
     @Column
     private String ses_code; // (Код ПЭП (Простая Электронная Подпись))
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
     @JoinColumn(name = "application_id")
     private List<ApplicationStatusHistory> status_history; //(История изменения статусов)
 

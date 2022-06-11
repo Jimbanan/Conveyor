@@ -51,11 +51,11 @@ public class Client {
     @Column
     private Integer dependentAmount;// (Количество иждивенцев)
 
-    @OneToOne(optional = false)
+    @OneToOne(cascade = {CascadeType.ALL}, optional = false)
     @JoinColumn(name = "passport_id", unique = true, nullable = false)
     private Passport passport;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
     @JoinColumn(name = "employment_id", unique = true)
     private Employment employment;// (Работа)
 
@@ -63,6 +63,6 @@ public class Client {
     private String account;// (Счет клиента)
 
     //------------------------------------FOREIGN ENTITIES
-    @OneToOne(optional = false, mappedBy = "client")
+    @OneToOne(cascade = {CascadeType.ALL}, optional = false, mappedBy = "client")
     public Application application;
 }

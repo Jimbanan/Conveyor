@@ -44,7 +44,7 @@ public class Employment {
     private Integer workExperienceCurrent;// (опыт работы на текущем месте)
 
     //    //------------------------------------FOREIGN ENTITIES
-    @OneToOne(optional = false, mappedBy = "employment")
+    @OneToOne(cascade = {CascadeType.ALL}, optional = false, mappedBy = "employment")
     public Client client;
 
 

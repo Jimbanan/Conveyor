@@ -39,11 +39,11 @@ public class Credit {
     @Column
     private BigDecimal psk; // (Полная стоимость кредита)
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
     @JoinColumn(name = "addServices_id", unique = true, updatable = false)
     private Add_services addServices;// (доп услуги)
 
-    @OneToMany()
+    @OneToMany(cascade = {CascadeType.ALL})
     @JoinColumn(name = "paymentSchedules_id")
     private List<PaymentSchedule> payment_schedule; //(График платежей)
 
@@ -52,6 +52,6 @@ public class Credit {
     private Credit_status credit_status; //(Статус кредита)
 
     //------------------------------------FOREIGN ENTITIES
-    @OneToOne(optional = false, mappedBy = "credit")
+    @OneToOne(cascade = {CascadeType.ALL}, optional = false, mappedBy = "credit")
     public Application application;
 }

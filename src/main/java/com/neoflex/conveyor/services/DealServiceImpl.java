@@ -32,32 +32,41 @@ import java.util.*;
 @Slf4j
 public class DealServiceImpl implements DealService {
 
-    private final ClientRepository clientRepository;
-    private final PassportRepository passportRepository;
-    private final ApplicationRepository applicationRepository;
-    private final CreditRepository creditRepository;
-    private final Add_serivesRepository addServesRepository;
-    private final EmploymentRepository employmentRepository;
-    private final ApplicationStatusHistoryRepository applicationStatusHistoryRepository;
-    private final PaymentScheduleRepository paymentScheduleRepository;
+    @Autowired
+    private ClientRepository clientRepository;
+    @Autowired
+    private PassportRepository passportRepository;
+    @Autowired
+    private ApplicationRepository applicationRepository;
+    @Autowired
+    private CreditRepository creditRepository;
+    @Autowired
+    private Add_serivesRepository addServesRepository;
+    @Autowired
+    private EmploymentRepository employmentRepository;
+    @Autowired
+    private ApplicationStatusHistoryRepository applicationStatusHistoryRepository;
+    @Autowired
+    private PaymentScheduleRepository paymentScheduleRepository;
 
-    public DealServiceImpl(@Autowired ClientRepository clientRepository,
-                           @Autowired PassportRepository passportRepository,
-                           @Autowired ApplicationRepository applicationRepository,
-                           @Autowired CreditRepository creditRepository,
-                           @Autowired Add_serivesRepository addServesRepository,
-                           @Autowired EmploymentRepository employmentRepository,
-                           @Autowired ApplicationStatusHistoryRepository applicationStatusHistoryRepository,
-                           @Autowired PaymentScheduleRepository paymentScheduleRepository) {
-        this.clientRepository = clientRepository;
-        this.passportRepository = passportRepository;
-        this.applicationRepository = applicationRepository;
-        this.creditRepository = creditRepository;
-        this.addServesRepository = addServesRepository;
-        this.employmentRepository = employmentRepository;
-        this.applicationStatusHistoryRepository = applicationStatusHistoryRepository;
-        this.paymentScheduleRepository = paymentScheduleRepository;
-    }
+//    public DealServiceImpl(@Autowired ClientRepository clientRepository,
+//                           @Autowired PassportRepository passportRepository,
+//                           @Autowired ApplicationRepository applicationRepository,
+//                           @Autowired CreditRepository creditRepository,
+//                           @Autowired Add_serivesRepository addServesRepository,
+//                           @Autowired EmploymentRepository employmentRepository,
+//                           @Autowired ApplicationStatusHistoryRepository applicationStatusHistoryRepository,
+//                           @Autowired PaymentScheduleRepository paymentScheduleRepository) {
+//        this.clientRepository = clientRepository;
+//        this.passportRepository = passportRepository;
+//        this.applicationRepository = applicationRepository;
+//        this.creditRepository = creditRepository;
+//        this.addServesRepository = addServesRepository;
+//        this.employmentRepository = employmentRepository;
+//        this.applicationStatusHistoryRepository = applicationStatusHistoryRepository;
+//        this.paymentScheduleRepository = paymentScheduleRepository;
+//    }
+
 
     @Override
     public Long addClient(LoanApplicationRequestDTO loanApplicationRequestDTO) {
@@ -65,7 +74,6 @@ public class DealServiceImpl implements DealService {
         Application application = saveApplication(saveClient(loanApplicationRequestDTO, savePassport(loanApplicationRequestDTO)), Status.PREAPPROVAL);
         return application.getId();
     }
-
     @Override
     public void addOffer(LoanOfferDTO loanOfferDTO) {
 
@@ -144,7 +152,7 @@ public class DealServiceImpl implements DealService {
 
     }
 
-    private Application getApplication(Long applicationId) {
+    public Application getApplication(Long applicationId) {
         log.info("getApplication() - Application: запрос для application.id = {}", applicationId);
         return applicationRepository.findById(applicationId).orElseThrow(()
                 -> new NoSuchElementException("with id='" + applicationId + "' does not exist"));
@@ -162,18 +170,18 @@ public class DealServiceImpl implements DealService {
         log.info("updateApplication() - void: Информация о Application обновлена в БД");
     }
 
-    private void updateApplication(Application application) {
+    public void updateApplication(Application application) {
         applicationRepository.save(application);
         log.info("updateApplication() - void: Информация о Application обновлена в БД");
     }
 
-    private Passport savePassport(LoanApplicationRequestDTO loanApplicationRequestDTO) {
+    public Passport savePassport(LoanApplicationRequestDTO loanApplicationRequestDTO) {
         Passport passport = new Passport(loanApplicationRequestDTO.getPassportSeries(), loanApplicationRequestDTO.getPassportNumber());
         log.info("savePassport() - Passport: Информация о Passport добавлена в БД");
         return passportRepository.save(passport);
     }
 
-    private Client saveClient(LoanApplicationRequestDTO loanApplicationRequestDTO, Passport passport) {
+    public Client saveClient(LoanApplicationRequestDTO loanApplicationRequestDTO, Passport passport) {
         log.info("saveClient() - Client: Информация о Client добавлена в БД");
         return clientRepository.save(Client.builder()
                 .lastName(loanApplicationRequestDTO.getLastName())
@@ -185,7 +193,7 @@ public class DealServiceImpl implements DealService {
                 .build());
     }
 
-    private Employment saveEmployment(FinishRegistrationRequestDTO finishRegistrationRequestDTO) {
+    public Employment saveEmployment(FinishRegistrationRequestDTO finishRegistrationRequestDTO) {
         log.info("saveEmployment() - Employment: Информация о Employment добавлена в БД");
         return employmentRepository.save(Employment.builder()
                 .employmentStatus(finishRegistrationRequestDTO.getEmployment().getEmploymentStatus())
@@ -197,7 +205,7 @@ public class DealServiceImpl implements DealService {
                 .build());
     }
 
-    private ApplicationStatusHistory addApplicationStatusHistory(Status status) {
+    public ApplicationStatusHistory addApplicationStatusHistory(Status status) {
         log.info("addApplicationStatusHistory() - ApplicationStatusHistory: Информация о ApplicationStatusHistory добавлена в БД");
         return applicationStatusHistoryRepository.save(ApplicationStatusHistory.builder()
                 .status(status)
@@ -205,7 +213,7 @@ public class DealServiceImpl implements DealService {
                 .build());
     }
 
-    private Application saveApplication(Client client, Status status) {
+    public Application saveApplication(Client client, Status status) {
         log.info("saveApplication() - Long: Информация о Application добавлена в БД");
         return applicationRepository.save(Application.builder()
                 .client(client)
@@ -215,7 +223,7 @@ public class DealServiceImpl implements DealService {
                 .build());
     }
 
-    private Add_services addAddServices(LoanOfferDTO loanOfferDTO) {
+    public Add_services addAddServices(LoanOfferDTO loanOfferDTO) {
         log.info("addAddServices() - Add_services: Информация о Add_services добавлена в БД");
         return addServesRepository.save(Add_services.builder()
                 .is_insurance_enabled(loanOfferDTO.getIsInsuranceEnabled())
@@ -223,7 +231,7 @@ public class DealServiceImpl implements DealService {
                 .build());
     }
 
-    private Credit addCredit(LoanOfferDTO loanOfferDTO, Add_services addServices) {
+    public Credit addCredit(LoanOfferDTO loanOfferDTO, Add_services addServices) {
         log.info("addCredit() - Credit: Информация о Credit добавлена в БД");
         return creditRepository.save(Credit.builder()
                 .amount(loanOfferDTO.getRequestedAmount())

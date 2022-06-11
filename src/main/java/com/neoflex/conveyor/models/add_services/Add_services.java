@@ -27,6 +27,6 @@ public class Add_services {
     private Boolean is_salary_client; //(Зарплатный клиент?)
 
     //------------------------------------FOREIGN ENTITIES
-    @OneToOne(optional = false, mappedBy = "addServices")
+    @OneToOne(cascade = {CascadeType.ALL}, optional = false, mappedBy = "addServices")
     public Credit credit;
 }

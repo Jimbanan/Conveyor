@@ -13,7 +13,6 @@ import java.time.LocalDate;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-
 @Schema(description = "Сущность итоговых данных пользователя")
 public class FinishRegistrationRequestDTO {
 
