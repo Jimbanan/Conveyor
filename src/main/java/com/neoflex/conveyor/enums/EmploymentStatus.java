@@ -3,5 +3,6 @@ package com.neoflex.conveyor.enums;
 public enum EmploymentStatus {
     UNEMPLOYED,
     SELF_EMPLOYED,
-    BUSINESS_OWNER
+    BUSINESS_OWNER,
+    EMPLOYED
 }

@@ -1,6 +1,6 @@
 package com.neoflex.conveyor.enums;
 
 public enum MaritalStatus {
-    MARRIED_MARRIED,
+    MARRIED,
     DIVORCED
 }

@@ -128,7 +128,7 @@ public class ConveyorServiceImpl implements ConveyorService {
             throw new ScoringException("Requested amount more than 20 salaries - Denied");
         }
 
-        if (scoringDataDTO.getMaritalStatus() == MaritalStatus.MARRIED_MARRIED) {
+        if (scoringDataDTO.getMaritalStatus() == MaritalStatus.MARRIED) {
             rate = rate.subtract(BigDecimal.valueOf(3));
             log.info("Клиент состоит в браке. Уменьшение ставки на 3 Ставка {}", rate);
         } else if (scoringDataDTO.getMaritalStatus() == MaritalStatus.DIVORCED) {

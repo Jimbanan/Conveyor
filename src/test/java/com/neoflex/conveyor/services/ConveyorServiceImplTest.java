@@ -95,7 +95,7 @@ class ConveyorServiceImplTest {
         EmploymentDTO employment1 = getEmploymentDTO(EmploymentStatus.BUSINESS_OWNER, "7727563778", BigDecimal.valueOf(10000), Position.MIDDLE_MANAGER, 30, 5);
 
         ScoringDataDTO scoringDataDTO = getScoringDataDTO(BigDecimal.valueOf(200000), 2, "Николай", "Козьяков", "Николаевич", Genders.MALE, LocalDate.of(1980, 9, 29),
-                "1234", "123456", LocalDate.of(2002, 9, 29), "Улица Пушкина - Дом Колотушкина", MaritalStatus.MARRIED_MARRIED, 1, employment1, "40817810099910004312", false, true);
+                "1234", "123456", LocalDate.of(2002, 9, 29), "Улица Пушкина - Дом Колотушкина", MaritalStatus.MARRIED, 1, employment1, "40817810099910004312", false, true);
 
         List<PaymentScheduleElement> paymentSchedule = new ArrayList<>();
 
@@ -164,7 +164,7 @@ class ConveyorServiceImplTest {
             EmploymentDTO employment1 = getEmploymentDTO(EmploymentStatus.UNEMPLOYED, "7727563778", BigDecimal.valueOf(10000), Position.MIDDLE_MANAGER, 30, 5);
 
             ScoringDataDTO scoringDataDTO = getScoringDataDTO(BigDecimal.valueOf(200000), 2, "Николай", "Козьяков", "Николаевич", Genders.MALE, LocalDate.of(1980, 9, 29),
-                    "1234", "123456", LocalDate.of(2002, 9, 29), "Улица Пушкина - Дом Колотушкина", MaritalStatus.MARRIED_MARRIED, 1, employment1, "40817810099910004312", false, true);
+                    "1234", "123456", LocalDate.of(2002, 9, 29), "Улица Пушкина - Дом Колотушкина", MaritalStatus.MARRIED, 1, employment1, "40817810099910004312", false, true);
 
             List<PaymentScheduleElement> paymentSchedule = new ArrayList<>();
 
@@ -193,7 +193,7 @@ class ConveyorServiceImplTest {
             EmploymentDTO employment1 = getEmploymentDTO(EmploymentStatus.SELF_EMPLOYED, "7727563778", BigDecimal.valueOf(10000), Position.MIDDLE_MANAGER, 30, 5);
 
             ScoringDataDTO scoringDataDTO = getScoringDataDTO(BigDecimal.valueOf(500000), 2, "Николай", "Козьяков", "Николаевич", Genders.MALE, LocalDate.of(1980, 9, 29),
-                    "1234", "123456", LocalDate.of(2002, 9, 29), "Улица Пушкина - Дом Колотушкина", MaritalStatus.MARRIED_MARRIED, 1, employment1, "40817810099910004312", false, true);
+                    "1234", "123456", LocalDate.of(2002, 9, 29), "Улица Пушкина - Дом Колотушкина", MaritalStatus.MARRIED, 1, employment1, "40817810099910004312", false, true);
 
             List<PaymentScheduleElement> paymentSchedule = new ArrayList<>();
 
@@ -222,7 +222,7 @@ class ConveyorServiceImplTest {
             EmploymentDTO employment1 = getEmploymentDTO(EmploymentStatus.SELF_EMPLOYED, "7727563778", BigDecimal.valueOf(10000), Position.MIDDLE_MANAGER, 30, 5);
 
             ScoringDataDTO scoringDataDTO = getScoringDataDTO(BigDecimal.valueOf(150000), 2, "Николай", "Козьяков", "Николаевич", Genders.MALE, LocalDate.of(2020, 9, 29),
-                    "1234", "123456", LocalDate.of(2002, 9, 29), "Улица Пушкина - Дом Колотушкина", MaritalStatus.MARRIED_MARRIED, 1, employment1, "40817810099910004312", false, true);
+                    "1234", "123456", LocalDate.of(2002, 9, 29), "Улица Пушкина - Дом Колотушкина", MaritalStatus.MARRIED, 1, employment1, "40817810099910004312", false, true);
 
             List<PaymentScheduleElement> paymentSchedule = new ArrayList<>();
 
@@ -251,7 +251,7 @@ class ConveyorServiceImplTest {
             EmploymentDTO employment1 = getEmploymentDTO(EmploymentStatus.SELF_EMPLOYED, "7727563778", BigDecimal.valueOf(10000), Position.MIDDLE_MANAGER, 30, 5);
 
             ScoringDataDTO scoringDataDTO = getScoringDataDTO(BigDecimal.valueOf(150000), 2, "Николай", "Козьяков", "Николаевич", Genders.MALE, LocalDate.of(1900, 9, 29),
-                    "1234", "123456", LocalDate.of(2002, 9, 29), "Улица Пушкина - Дом Колотушкина", MaritalStatus.MARRIED_MARRIED, 1, employment1, "40817810099910004312", false, true);
+                    "1234", "123456", LocalDate.of(2002, 9, 29), "Улица Пушкина - Дом Колотушкина", MaritalStatus.MARRIED, 1, employment1, "40817810099910004312", false, true);
 
             List<PaymentScheduleElement> paymentSchedule = new ArrayList<>();
 
@@ -280,7 +280,7 @@ class ConveyorServiceImplTest {
             EmploymentDTO employment1 = getEmploymentDTO(EmploymentStatus.SELF_EMPLOYED, "7727563778", BigDecimal.valueOf(10000), Position.MIDDLE_MANAGER, 1, 1);
 
             ScoringDataDTO scoringDataDTO = getScoringDataDTO(BigDecimal.valueOf(150000), 2, "Николай", "Козьяков", "Николаевич", Genders.NOT_BINARY, LocalDate.of(1980, 9, 29),
-                    "1234", "123456", LocalDate.of(2002, 9, 29), "Улица Пушкина - Дом Колотушкина", MaritalStatus.MARRIED_MARRIED, 1, employment1, "40817810099910004312", false, true);
+                    "1234", "123456", LocalDate.of(2002, 9, 29), "Улица Пушкина - Дом Колотушкина", MaritalStatus.MARRIED, 1, employment1, "40817810099910004312", false, true);
 
             List<PaymentScheduleElement> paymentSchedule = new ArrayList<>();
 
@@ -309,7 +309,7 @@ class ConveyorServiceImplTest {
             EmploymentDTO employment1 = getEmploymentDTO(EmploymentStatus.SELF_EMPLOYED, "7727563778", BigDecimal.valueOf(10000), Position.MIDDLE_MANAGER, 30, 1);
 
             ScoringDataDTO scoringDataDTO = getScoringDataDTO(BigDecimal.valueOf(150000), 2, "Николай", "Козьяков", "Николаевич", Genders.NOT_BINARY, LocalDate.of(1980, 9, 29), "1234",
-                    "123456", LocalDate.of(2002, 9, 29), "Улица Пушкина - Дом Колотушкина", MaritalStatus.MARRIED_MARRIED, 1, employment1, "40817810099910004312", false, true);
+                    "123456", LocalDate.of(2002, 9, 29), "Улица Пушкина - Дом Колотушкина", MaritalStatus.MARRIED, 1, employment1, "40817810099910004312", false, true);
 
             List<PaymentScheduleElement> paymentSchedule = new ArrayList<>();
 
