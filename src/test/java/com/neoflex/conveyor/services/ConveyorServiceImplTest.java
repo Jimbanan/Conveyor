@@ -2,7 +2,7 @@ package com.neoflex.conveyor.services;
 
 import com.neoflex.conveyor.Calculations;
 import com.neoflex.conveyor.dto.*;
-import com.neoflex.conveyor.Exceptions.ScoringException;
+import com.neoflex.conveyor.exceptions.ScoringException;
 import com.neoflex.conveyor.enums.EmploymentStatus;
 import com.neoflex.conveyor.enums.Genders;
 import com.neoflex.conveyor.enums.MaritalStatus;
@@ -28,8 +28,6 @@ class ConveyorServiceImplTest {
     @Spy
     Calculations calculations = new Calculations();
 
-    private Long id = 1L;
-
     @Test
     void getOffers() {
 
@@ -37,19 +35,19 @@ class ConveyorServiceImplTest {
 
         List<LoanOfferDTO> loanOfferList = new ArrayList<>();
 
-        LoanOfferDTO loanOfferDTO1 = getLoanOfferDTO(id++, BigDecimal.valueOf(10000), BigDecimal.valueOf(10995.3900000).setScale(7), 6, BigDecimal.valueOf(1832.5650000).setScale(7), BigDecimal.valueOf(16), true, true);
+        LoanOfferDTO loanOfferDTO1 = getLoanOfferDTO(null, BigDecimal.valueOf(10000), BigDecimal.valueOf(10995.3900000).setScale(7), 6, BigDecimal.valueOf(1832.5650000).setScale(7), BigDecimal.valueOf(16), true, true);
 
         loanOfferList.add(loanOfferDTO1);
 
-        LoanOfferDTO loanOfferDTO2 = getLoanOfferDTO(id++, BigDecimal.valueOf(10000), BigDecimal.valueOf(11026.8900000).setScale(7), 6, BigDecimal.valueOf(1837.8150000).setScale(7), BigDecimal.valueOf(17), true, false);
+        LoanOfferDTO loanOfferDTO2 = getLoanOfferDTO(null, BigDecimal.valueOf(10000), BigDecimal.valueOf(11026.8900000).setScale(7), 6, BigDecimal.valueOf(1837.8150000).setScale(7), BigDecimal.valueOf(17), true, false);
 
         loanOfferList.add(loanOfferDTO2);
 
-        LoanOfferDTO loanOfferDTO3 = getLoanOfferDTO(id++, BigDecimal.valueOf(10000), BigDecimal.valueOf(10591.20000).setScale(5), 6, BigDecimal.valueOf(1765.20000).setScale(5), BigDecimal.valueOf(20), false, false);
+        LoanOfferDTO loanOfferDTO3 = getLoanOfferDTO(null, BigDecimal.valueOf(10000), BigDecimal.valueOf(10591.20000).setScale(5), 6, BigDecimal.valueOf(1765.20000).setScale(5), BigDecimal.valueOf(20), false, false);
 
         loanOfferList.add(loanOfferDTO3);
 
-        LoanOfferDTO loanOfferDTO4 = getLoanOfferDTO(id++, BigDecimal.valueOf(10000), BigDecimal.valueOf(10561.20000).setScale(5), 6, BigDecimal.valueOf(1760.20000).setScale(5), BigDecimal.valueOf(19), false, true);
+        LoanOfferDTO loanOfferDTO4 = getLoanOfferDTO(null, BigDecimal.valueOf(10000), BigDecimal.valueOf(10561.20000).setScale(5), 6, BigDecimal.valueOf(1760.20000).setScale(5), BigDecimal.valueOf(19), false, true);
 
         loanOfferList.add(loanOfferDTO4);
 
@@ -71,19 +69,19 @@ class ConveyorServiceImplTest {
         LoanApplicationRequestDTO loanApplicationRequestDTO = getLoanApplicationRequestDTO(BigDecimal.valueOf(10000), 6, "Николай", "Козьяков", "Николаевич", "uservice371@mail.ru",
                 LocalDate.of(1991, 9, 26), "1234", "123456");
 
-        LoanOfferDTO loanOfferDTO1 = getLoanOfferDTO(id++, BigDecimal.valueOf(10000), BigDecimal.valueOf(10995.3900000).setScale(7), 6, BigDecimal.valueOf(1832.5650000).setScale(7), BigDecimal.valueOf(16), true, true);
+        LoanOfferDTO loanOfferDTO1 = getLoanOfferDTO(null, BigDecimal.valueOf(10000), BigDecimal.valueOf(10995.3900000).setScale(7), 6, BigDecimal.valueOf(1832.5650000).setScale(7), BigDecimal.valueOf(16), true, true);
 
         Assertions.assertEquals(loanOfferDTO1, conveyorService.formationOfOffers(loanApplicationRequestDTO, true, true));
 
-        LoanOfferDTO loanOfferDTO2 = getLoanOfferDTO(id++, BigDecimal.valueOf(10000), BigDecimal.valueOf(11026.8900000).setScale(7), 6, BigDecimal.valueOf(1837.8150000).setScale(7), BigDecimal.valueOf(17), true, false);
+        LoanOfferDTO loanOfferDTO2 = getLoanOfferDTO(null, BigDecimal.valueOf(10000), BigDecimal.valueOf(11026.8900000).setScale(7), 6, BigDecimal.valueOf(1837.8150000).setScale(7), BigDecimal.valueOf(17), true, false);
 
         Assertions.assertEquals(loanOfferDTO2, conveyorService.formationOfOffers(loanApplicationRequestDTO, true, false));
 
-        LoanOfferDTO loanOfferDTO3 = getLoanOfferDTO(id++, BigDecimal.valueOf(10000), BigDecimal.valueOf(10591.20000).setScale(5), 6, BigDecimal.valueOf(1765.20000).setScale(5), BigDecimal.valueOf(20), false, false);
+        LoanOfferDTO loanOfferDTO3 = getLoanOfferDTO(null, BigDecimal.valueOf(10000), BigDecimal.valueOf(10591.20000).setScale(5), 6, BigDecimal.valueOf(1765.20000).setScale(5), BigDecimal.valueOf(20), false, false);
 
         Assertions.assertEquals(loanOfferDTO3, conveyorService.formationOfOffers(loanApplicationRequestDTO, false, false));
 
-        LoanOfferDTO loanOfferDTO4 = getLoanOfferDTO(id++, BigDecimal.valueOf(10000), BigDecimal.valueOf(10561.20000).setScale(5), 6, BigDecimal.valueOf(1760.20000).setScale(5), BigDecimal.valueOf(19), false, true);
+        LoanOfferDTO loanOfferDTO4 = getLoanOfferDTO(null, BigDecimal.valueOf(10000), BigDecimal.valueOf(10561.20000).setScale(5), 6, BigDecimal.valueOf(1760.20000).setScale(5), BigDecimal.valueOf(19), false, true);
 
         Assertions.assertEquals(loanOfferDTO4, conveyorService.formationOfOffers(loanApplicationRequestDTO, false, true));
 
@@ -97,7 +95,7 @@ class ConveyorServiceImplTest {
         EmploymentDTO employment1 = getEmploymentDTO(EmploymentStatus.BUSINESS_OWNER, "7727563778", BigDecimal.valueOf(10000), Position.MIDDLE_MANAGER, 30, 5);
 
         ScoringDataDTO scoringDataDTO = getScoringDataDTO(BigDecimal.valueOf(200000), 2, "Николай", "Козьяков", "Николаевич", Genders.MALE, LocalDate.of(1980, 9, 29),
-                "1234", "123456", LocalDate.of(2002, 9, 29), "Улица Пушкина - Дом Колотушкина", MaritalStatus.MARRIED_MARRIED, 1, employment1, "40817810099910004312", false, true);
+                "1234", "123456", LocalDate.of(2002, 9, 29), "Улица Пушкина - Дом Колотушкина", MaritalStatus.MARRIED, 1, employment1, "40817810099910004312", false, true);
 
         List<PaymentScheduleElement> paymentSchedule = new ArrayList<>();
 
@@ -166,7 +164,7 @@ class ConveyorServiceImplTest {
             EmploymentDTO employment1 = getEmploymentDTO(EmploymentStatus.UNEMPLOYED, "7727563778", BigDecimal.valueOf(10000), Position.MIDDLE_MANAGER, 30, 5);
 
             ScoringDataDTO scoringDataDTO = getScoringDataDTO(BigDecimal.valueOf(200000), 2, "Николай", "Козьяков", "Николаевич", Genders.MALE, LocalDate.of(1980, 9, 29),
-                    "1234", "123456", LocalDate.of(2002, 9, 29), "Улица Пушкина - Дом Колотушкина", MaritalStatus.MARRIED_MARRIED, 1, employment1, "40817810099910004312", false, true);
+                    "1234", "123456", LocalDate.of(2002, 9, 29), "Улица Пушкина - Дом Колотушкина", MaritalStatus.MARRIED, 1, employment1, "40817810099910004312", false, true);
 
             List<PaymentScheduleElement> paymentSchedule = new ArrayList<>();
 
@@ -195,7 +193,7 @@ class ConveyorServiceImplTest {
             EmploymentDTO employment1 = getEmploymentDTO(EmploymentStatus.SELF_EMPLOYED, "7727563778", BigDecimal.valueOf(10000), Position.MIDDLE_MANAGER, 30, 5);
 
             ScoringDataDTO scoringDataDTO = getScoringDataDTO(BigDecimal.valueOf(500000), 2, "Николай", "Козьяков", "Николаевич", Genders.MALE, LocalDate.of(1980, 9, 29),
-                    "1234", "123456", LocalDate.of(2002, 9, 29), "Улица Пушкина - Дом Колотушкина", MaritalStatus.MARRIED_MARRIED, 1, employment1, "40817810099910004312", false, true);
+                    "1234", "123456", LocalDate.of(2002, 9, 29), "Улица Пушкина - Дом Колотушкина", MaritalStatus.MARRIED, 1, employment1, "40817810099910004312", false, true);
 
             List<PaymentScheduleElement> paymentSchedule = new ArrayList<>();
 
@@ -224,7 +222,7 @@ class ConveyorServiceImplTest {
             EmploymentDTO employment1 = getEmploymentDTO(EmploymentStatus.SELF_EMPLOYED, "7727563778", BigDecimal.valueOf(10000), Position.MIDDLE_MANAGER, 30, 5);
 
             ScoringDataDTO scoringDataDTO = getScoringDataDTO(BigDecimal.valueOf(150000), 2, "Николай", "Козьяков", "Николаевич", Genders.MALE, LocalDate.of(2020, 9, 29),
-                    "1234", "123456", LocalDate.of(2002, 9, 29), "Улица Пушкина - Дом Колотушкина", MaritalStatus.MARRIED_MARRIED, 1, employment1, "40817810099910004312", false, true);
+                    "1234", "123456", LocalDate.of(2002, 9, 29), "Улица Пушкина - Дом Колотушкина", MaritalStatus.MARRIED, 1, employment1, "40817810099910004312", false, true);
 
             List<PaymentScheduleElement> paymentSchedule = new ArrayList<>();
 
@@ -253,7 +251,7 @@ class ConveyorServiceImplTest {
             EmploymentDTO employment1 = getEmploymentDTO(EmploymentStatus.SELF_EMPLOYED, "7727563778", BigDecimal.valueOf(10000), Position.MIDDLE_MANAGER, 30, 5);
 
             ScoringDataDTO scoringDataDTO = getScoringDataDTO(BigDecimal.valueOf(150000), 2, "Николай", "Козьяков", "Николаевич", Genders.MALE, LocalDate.of(1900, 9, 29),
-                    "1234", "123456", LocalDate.of(2002, 9, 29), "Улица Пушкина - Дом Колотушкина", MaritalStatus.MARRIED_MARRIED, 1, employment1, "40817810099910004312", false, true);
+                    "1234", "123456", LocalDate.of(2002, 9, 29), "Улица Пушкина - Дом Колотушкина", MaritalStatus.MARRIED, 1, employment1, "40817810099910004312", false, true);
 
             List<PaymentScheduleElement> paymentSchedule = new ArrayList<>();
 
@@ -282,7 +280,7 @@ class ConveyorServiceImplTest {
             EmploymentDTO employment1 = getEmploymentDTO(EmploymentStatus.SELF_EMPLOYED, "7727563778", BigDecimal.valueOf(10000), Position.MIDDLE_MANAGER, 1, 1);
 
             ScoringDataDTO scoringDataDTO = getScoringDataDTO(BigDecimal.valueOf(150000), 2, "Николай", "Козьяков", "Николаевич", Genders.NOT_BINARY, LocalDate.of(1980, 9, 29),
-                    "1234", "123456", LocalDate.of(2002, 9, 29), "Улица Пушкина - Дом Колотушкина", MaritalStatus.MARRIED_MARRIED, 1, employment1, "40817810099910004312", false, true);
+                    "1234", "123456", LocalDate.of(2002, 9, 29), "Улица Пушкина - Дом Колотушкина", MaritalStatus.MARRIED, 1, employment1, "40817810099910004312", false, true);
 
             List<PaymentScheduleElement> paymentSchedule = new ArrayList<>();
 
@@ -311,7 +309,7 @@ class ConveyorServiceImplTest {
             EmploymentDTO employment1 = getEmploymentDTO(EmploymentStatus.SELF_EMPLOYED, "7727563778", BigDecimal.valueOf(10000), Position.MIDDLE_MANAGER, 30, 1);
 
             ScoringDataDTO scoringDataDTO = getScoringDataDTO(BigDecimal.valueOf(150000), 2, "Николай", "Козьяков", "Николаевич", Genders.NOT_BINARY, LocalDate.of(1980, 9, 29), "1234",
-                    "123456", LocalDate.of(2002, 9, 29), "Улица Пушкина - Дом Колотушкина", MaritalStatus.MARRIED_MARRIED, 1, employment1, "40817810099910004312", false, true);
+                    "123456", LocalDate.of(2002, 9, 29), "Улица Пушкина - Дом Колотушкина", MaritalStatus.MARRIED, 1, employment1, "40817810099910004312", false, true);
 
             List<PaymentScheduleElement> paymentSchedule = new ArrayList<>();
 

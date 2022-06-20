@@ -1,6 +1,9 @@
 package com.neoflex.conveyor.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jdk.nashorn.internal.ir.annotations.Ignore;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -11,6 +14,8 @@ import java.time.LocalDate;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Schema(description = "Сущность первоначальных данных пользователя")
 public class LoanApplicationRequestDTO {
 
@@ -49,5 +54,8 @@ public class LoanApplicationRequestDTO {
     @NotNull
     @Size(min = 6, max = 6, message = "Длина номера паспорта: 6 символов")
     private String passportNumber;
+
+    @Ignore
+    private Long applicationId;
 
 }

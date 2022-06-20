@@ -2,7 +2,7 @@ package com.neoflex.conveyor.services;
 
 import com.neoflex.conveyor.Calculations;
 import com.neoflex.conveyor.dto.*;
-import com.neoflex.conveyor.Exceptions.ScoringException;
+import com.neoflex.conveyor.exceptions.ScoringException;
 import com.neoflex.conveyor.enums.EmploymentStatus;
 import com.neoflex.conveyor.enums.Genders;
 import com.neoflex.conveyor.enums.MaritalStatus;
@@ -27,8 +27,6 @@ public class ConveyorServiceImpl implements ConveyorService {
 
     @Autowired
     Calculations calculations;
-
-    private Long id = 1L;
 
     @Override
     public List<LoanOfferDTO> getOffers(LoanApplicationRequestDTO loanApplicationRequestDTO) {
@@ -75,7 +73,7 @@ public class ConveyorServiceImpl implements ConveyorService {
         log.info("formationOfOffers() - Ежемесячная плата: {}", monthlyPayment);
 
         return LoanOfferDTO.builder()
-                .applicationId(id++)
+                .applicationId(loanApplicationRequestDTO.getApplicationId())
                 .requestedAmount(loanApplicationRequestDTO.getAmount())
                 .totalAmount(calculations.getTotalAmount(monthlyPayment, loanApplicationRequestDTO.getTerm()))
                 .term(loanApplicationRequestDTO.getTerm())
@@ -130,7 +128,7 @@ public class ConveyorServiceImpl implements ConveyorService {
             throw new ScoringException("Requested amount more than 20 salaries - Denied");
         }
 
-        if (scoringDataDTO.getMaritalStatus() == MaritalStatus.MARRIED_MARRIED) {
+        if (scoringDataDTO.getMaritalStatus() == MaritalStatus.MARRIED) {
             rate = rate.subtract(BigDecimal.valueOf(3));
             log.info("Клиент состоит в браке. Уменьшение ставки на 3 Ставка {}", rate);
         } else if (scoringDataDTO.getMaritalStatus() == MaritalStatus.DIVORCED) {
