@@ -71,7 +71,7 @@ public class ConveyorServiceImpl implements ConveyorService {
         BigDecimal monthlyPayment = calculations.getMonthlyPayment(rate, totalAmount, loanApplicationRequestDTO.getTerm());
 
         log.info("formationOfOffers() - Ежемесячная плата: {}", monthlyPayment);
-
+        
         return LoanOfferDTO.builder()
                 .applicationId(loanApplicationRequestDTO.getApplicationId())
                 .requestedAmount(loanApplicationRequestDTO.getAmount())
