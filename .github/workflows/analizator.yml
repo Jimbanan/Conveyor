@@ -9,14 +9,15 @@ on:
 
 jobs:
   sonarcloud:
-    runs-on: ubuntu-16.04
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
+#      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
       - name: Set up JDK
         uses: actions/setup-java@v1
         with:
           java-version: 1.11
-      - name: Analyze with SonarCloud
+      - name: SonarCloud Scan
         #       set environment variables:
         env:
           GITHUB_TOKEN: ${{ secrets.MVP6_CONVEYOR }}
