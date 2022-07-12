@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.neoflex</groupId>
-    <artifactId>Conveyor</artifactId>
+    <artifactId>conveyor</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>Conveyor</name>
     <description>Conveyor</description>
@@ -104,6 +104,10 @@
                         </exclude>
                     </excludes>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
         </plugins>
     </build>
