@@ -21,4 +21,4 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.MVP6_CONVEYOR }}
           SONAR_TOKEN: ${{ secrets.SONARCLOUD }}
         #       run sonar maven plugin:
-        run: mvn -B verify sonar:sonar -Dsonar.projectKey=Jimbanan_Conveyor -Dsonar.organization=jimbanan -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=$SONAR_TOKEN -Dsonar.coverage.jacoco.xmlReportPaths=./target/site/jacoco/jacoco.xml
+#        run: mvn -B verify sonar:sonar -Dsonar.projectKey=Jimbanan_Conveyor -Dsonar.organization=jimbanan -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=$SONAR_TOKEN -Dsonar.coverage.jacoco.xmlReportPaths=./target/site/jacoco/jacoco.xml
