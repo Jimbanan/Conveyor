@@ -24,6 +24,6 @@ jobs:
           fetch-depth: 0
         env:
           GITHUB_TOKEN: ${{ secrets.MVP6_CONVEYOR }}
-          SONAR_TOKEN: ${{ secrets.SONARCLOUD }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         #       run sonar maven plugin:
         run: mvn -B verify sonar:sonar -Dsonar.projectKey=Jimbanan_Conveyor -Dsonar.organization=jimbanan -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=$SONAR_TOKEN -Dsonar.coverage.jacoco.xmlReportPaths=./target/site/jacoco/jacoco.xml
