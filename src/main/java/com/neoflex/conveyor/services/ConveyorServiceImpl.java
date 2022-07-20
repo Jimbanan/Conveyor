@@ -51,13 +51,13 @@ public class ConveyorServiceImpl implements ConveyorService {
         BigDecimal rate = BaseRate;
         BigDecimal totalAmount = loanApplicationRequestDTO.getAmount();
 
-        if (isSalaryClient) {
+        if (Boolean.TRUE.equals(isSalaryClient)) {
             rate = rate.subtract(BigDecimal.valueOf(1));
 
             log.info("formationOfOffers() - Клиент является Зарплатным: Уменьшение ставки на 1 Ставка: {}", rate);
         }
 
-        if (isInsuranceEnabled) {
+        if (Boolean.TRUE.equals(isInsuranceEnabled)) {
             totalAmount = loanApplicationRequestDTO.getAmount()
                     .add(loanApplicationRequestDTO.getAmount().multiply(BigDecimal.valueOf(0.05)));
 
