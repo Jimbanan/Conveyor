@@ -224,5 +224,4 @@ public class ConveyorServiceImpl implements ConveyorService {
         return paymentScheduleElementList;
     }
 
-
 }
