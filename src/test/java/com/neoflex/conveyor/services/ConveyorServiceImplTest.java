@@ -51,7 +51,7 @@ class ConveyorServiceImplTest {
 
         loanOfferList.add(loanOfferDTO4);
 
-        ReflectionTestUtils.setField(conveyorService, "BaseRate", BigDecimal.valueOf(20));
+        ReflectionTestUtils.setField(conveyorService, "baseRate", BigDecimal.valueOf(20));
         ReflectionTestUtils.setField(conveyorService, "calculations", calculations);
 
         List<LoanOfferDTO> loanOfferListTest = conveyorService.getOffers(loanApplicationRequestDTO);
@@ -63,7 +63,7 @@ class ConveyorServiceImplTest {
     @Test
     void formationOfOffers() {
 
-        ReflectionTestUtils.setField(conveyorService, "BaseRate", BigDecimal.valueOf(20));
+        ReflectionTestUtils.setField(conveyorService, "baseRate", BigDecimal.valueOf(20));
         ReflectionTestUtils.setField(conveyorService, "calculations", calculations);
 
         LoanApplicationRequestDTO loanApplicationRequestDTO = getLoanApplicationRequestDTO(BigDecimal.valueOf(10000), 6, "Николай", "Козьяков", "Николаевич", "uservice371@mail.ru",
@@ -89,7 +89,7 @@ class ConveyorServiceImplTest {
 
     @Test
     void loanCalculation() {
-        ReflectionTestUtils.setField(conveyorService, "BaseRate", BigDecimal.valueOf(20));
+        ReflectionTestUtils.setField(conveyorService, "baseRate", BigDecimal.valueOf(20));
         ReflectionTestUtils.setField(conveyorService, "calculations", calculations);
 
         EmploymentDTO employment1 = getEmploymentDTO(EmploymentStatus.BUSINESS_OWNER, "7727563778", BigDecimal.valueOf(10000), Position.MIDDLE_MANAGER, 30, 5);
@@ -137,7 +137,7 @@ class ConveyorServiceImplTest {
 
     @Test
     void getPaymentScheduleElement() {
-        ReflectionTestUtils.setField(conveyorService, "BaseRate", BigDecimal.valueOf(20));
+        ReflectionTestUtils.setField(conveyorService, "baseRate", BigDecimal.valueOf(20));
         ReflectionTestUtils.setField(conveyorService, "calculations", calculations);
 
         List<PaymentScheduleElement> paymentSchedule = new ArrayList<>();
@@ -158,7 +158,7 @@ class ConveyorServiceImplTest {
     @Test
     void testExpectedExceptionWithUnemployed() {
         Assertions.assertThrows(ScoringException.class, () -> {
-            ReflectionTestUtils.setField(conveyorService, "BaseRate", BigDecimal.valueOf(20));
+            ReflectionTestUtils.setField(conveyorService, "baseRate", BigDecimal.valueOf(20));
             ReflectionTestUtils.setField(conveyorService, "calculations", calculations);
 
             EmploymentDTO employment1 = getEmploymentDTO(EmploymentStatus.UNEMPLOYED, "7727563778", BigDecimal.valueOf(10000), Position.MIDDLE_MANAGER, 30, 5);
@@ -187,7 +187,7 @@ class ConveyorServiceImplTest {
     @Test
     void testExpectedExceptionWithAmount() {
         Assertions.assertThrows(ScoringException.class, () -> {
-            ReflectionTestUtils.setField(conveyorService, "BaseRate", BigDecimal.valueOf(20));
+            ReflectionTestUtils.setField(conveyorService, "baseRate", BigDecimal.valueOf(20));
             ReflectionTestUtils.setField(conveyorService, "calculations", calculations);
 
             EmploymentDTO employment1 = getEmploymentDTO(EmploymentStatus.SELF_EMPLOYED, "7727563778", BigDecimal.valueOf(10000), Position.MIDDLE_MANAGER, 30, 5);
@@ -216,7 +216,7 @@ class ConveyorServiceImplTest {
     @Test
     void testExpectedExceptionWithBirthdate20() {
         Assertions.assertThrows(ScoringException.class, () -> {
-            ReflectionTestUtils.setField(conveyorService, "BaseRate", BigDecimal.valueOf(20));
+            ReflectionTestUtils.setField(conveyorService, "baseRate", BigDecimal.valueOf(20));
             ReflectionTestUtils.setField(conveyorService, "calculations", calculations);
 
             EmploymentDTO employment1 = getEmploymentDTO(EmploymentStatus.SELF_EMPLOYED, "7727563778", BigDecimal.valueOf(10000), Position.MIDDLE_MANAGER, 30, 5);
@@ -245,7 +245,7 @@ class ConveyorServiceImplTest {
     @Test
     void testExpectedExceptionWithBirthdate60() {
         Assertions.assertThrows(ScoringException.class, () -> {
-            ReflectionTestUtils.setField(conveyorService, "BaseRate", BigDecimal.valueOf(20));
+            ReflectionTestUtils.setField(conveyorService, "baseRate", BigDecimal.valueOf(20));
             ReflectionTestUtils.setField(conveyorService, "calculations", calculations);
 
             EmploymentDTO employment1 = getEmploymentDTO(EmploymentStatus.SELF_EMPLOYED, "7727563778", BigDecimal.valueOf(10000), Position.MIDDLE_MANAGER, 30, 5);
@@ -274,7 +274,7 @@ class ConveyorServiceImplTest {
     @Test
     void testExpectedExceptionWithWorkExperienceTotal() {
         Assertions.assertThrows(ScoringException.class, () -> {
-            ReflectionTestUtils.setField(conveyorService, "BaseRate", BigDecimal.valueOf(20));
+            ReflectionTestUtils.setField(conveyorService, "baseRate", BigDecimal.valueOf(20));
             ReflectionTestUtils.setField(conveyorService, "calculations", calculations);
 
             EmploymentDTO employment1 = getEmploymentDTO(EmploymentStatus.SELF_EMPLOYED, "7727563778", BigDecimal.valueOf(10000), Position.MIDDLE_MANAGER, 1, 1);
@@ -303,7 +303,7 @@ class ConveyorServiceImplTest {
     @Test
     void testExpectedExceptionWithWorkExperienceCurrent() {
         Assertions.assertThrows(ScoringException.class, () -> {
-            ReflectionTestUtils.setField(conveyorService, "BaseRate", BigDecimal.valueOf(20));
+            ReflectionTestUtils.setField(conveyorService, "baseRate", BigDecimal.valueOf(20));
             ReflectionTestUtils.setField(conveyorService, "calculations", calculations);
 
             EmploymentDTO employment1 = getEmploymentDTO(EmploymentStatus.SELF_EMPLOYED, "7727563778", BigDecimal.valueOf(10000), Position.MIDDLE_MANAGER, 30, 1);
