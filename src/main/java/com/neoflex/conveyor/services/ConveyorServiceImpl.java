@@ -23,7 +23,7 @@ import java.util.List;
 public class ConveyorServiceImpl implements ConveyorService {
 
     @Value("${credit.baseRate}")
-    BigDecimal baseRate;
+    BigDecimal BaseRate;
 
     @Autowired
     Calculations calculations;
@@ -48,16 +48,16 @@ public class ConveyorServiceImpl implements ConveyorService {
     public LoanOfferDTO formationOfOffers(LoanApplicationRequestDTO loanApplicationRequestDTO, Boolean isInsuranceEnabled, Boolean isSalaryClient) {
         log.info("formationOfOffers() - loanApplicationRequestDTO: {}, isInsuranceEnabled: {}, isSalaryClient: {}", loanApplicationRequestDTO, isInsuranceEnabled, isSalaryClient);
 
-        BigDecimal rate = baseRate;
+        BigDecimal rate = BaseRate;
         BigDecimal totalAmount = loanApplicationRequestDTO.getAmount();
 
-        if (Boolean.TRUE.equals(isSalaryClient)) {
+        if (isSalaryClient) {
             rate = rate.subtract(BigDecimal.valueOf(1));
 
             log.info("formationOfOffers() - Клиент является Зарплатным: Уменьшение ставки на 1 Ставка: {}", rate);
         }
 
-        if (Boolean.TRUE.equals(isInsuranceEnabled)) {
+        if (isInsuranceEnabled) {
             totalAmount = loanApplicationRequestDTO.getAmount()
                     .add(loanApplicationRequestDTO.getAmount().multiply(BigDecimal.valueOf(0.05)));
 
@@ -89,7 +89,7 @@ public class ConveyorServiceImpl implements ConveyorService {
 
         log.info("loanCalculation() - scoringDataDTO: {}", scoringDataDTO);
 
-        BigDecimal rate = baseRate;
+        BigDecimal rate = BaseRate;
         BigDecimal amount = scoringDataDTO.getAmount();
         LocalDate now = LocalDate.now();
 
