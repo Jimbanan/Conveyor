@@ -23,7 +23,7 @@ import java.util.List;
 public class ConveyorServiceImpl implements ConveyorService {
 
     @Value("${credit.baseRate}")
-    BigDecimal BaseRate;
+    BigDecimal baseRate;
 
     @Autowired
     Calculations calculations;
@@ -48,16 +48,16 @@ public class ConveyorServiceImpl implements ConveyorService {
     public LoanOfferDTO formationOfOffers(LoanApplicationRequestDTO loanApplicationRequestDTO, Boolean isInsuranceEnabled, Boolean isSalaryClient) {
         log.info("formationOfOffers() - loanApplicationRequestDTO: {}, isInsuranceEnabled: {}, isSalaryClient: {}", loanApplicationRequestDTO, isInsuranceEnabled, isSalaryClient);
 
-        BigDecimal rate = BaseRate;
+        BigDecimal rate = baseRate;
         BigDecimal totalAmount = loanApplicationRequestDTO.getAmount();
 
-        if (isSalaryClient) {
+        if (Boolean.TRUE.equals(isSalaryClient)) {
             rate = rate.subtract(BigDecimal.valueOf(1));
 
             log.info("formationOfOffers() - Клиент является Зарплатным: Уменьшение ставки на 1 Ставка: {}", rate);
         }
 
-        if (isInsuranceEnabled) {
+        if (Boolean.TRUE.equals(isInsuranceEnabled)) {
             totalAmount = loanApplicationRequestDTO.getAmount()
                     .add(loanApplicationRequestDTO.getAmount().multiply(BigDecimal.valueOf(0.05)));
 
@@ -71,7 +71,7 @@ public class ConveyorServiceImpl implements ConveyorService {
         BigDecimal monthlyPayment = calculations.getMonthlyPayment(rate, totalAmount, loanApplicationRequestDTO.getTerm());
 
         log.info("formationOfOffers() - Ежемесячная плата: {}", monthlyPayment);
-        
+
         return LoanOfferDTO.builder()
                 .applicationId(loanApplicationRequestDTO.getApplicationId())
                 .requestedAmount(loanApplicationRequestDTO.getAmount())
@@ -89,7 +89,7 @@ public class ConveyorServiceImpl implements ConveyorService {
 
         log.info("loanCalculation() - scoringDataDTO: {}", scoringDataDTO);
 
-        BigDecimal rate = BaseRate;
+        BigDecimal rate = baseRate;
         BigDecimal amount = scoringDataDTO.getAmount();
         LocalDate now = LocalDate.now();
 
